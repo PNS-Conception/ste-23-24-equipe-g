@@ -1,4 +1,4 @@
-package fr.unice.polytech.biblio;
+package fr.unice.polytech.app;
 
 import java.util.HashMap;
 import java.util.Map;
