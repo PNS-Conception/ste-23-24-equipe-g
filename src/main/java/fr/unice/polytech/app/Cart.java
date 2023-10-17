@@ -1,21 +1,27 @@
-package fr.unice.polytech.app;
+/*package fr.unice.polytech.app;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import static fr.unice.polytech.app.CartStatus.EMPTY;
+import static fr.unice.polytech.app.OrderStatus.EMPTY;
+import static fr.unice.polytech.app.OrderStatus.Placed;
 
 public class Cart {
-    private Client client;
-    private Map<String, Integer> items;  // Mapez les noms des items à leurs quantités.
-    private String Restaurant;
+    private CampusUser client;
+    private List<Item> items;  // Mapez les noms des items à leurs quantités.
+    private Restaurant restaurant;
 
-    private CartStatus CartStatus;
+    private OrderStatus orderStatus;
 
-    public Cart(Client client) {
-        this.client = client;
-        this.items = new HashMap<>();
-        this.CartStatus =EMPTY;
+    public Cart(List<Item> items) {
+        this.items = items;
+    }
+
+    public Cart() {
+        this.items = new ArrayList<Item>();
+        this.orderStatus =Placed;
     }
 
     public void emptyCart() {
@@ -54,11 +60,11 @@ public class Cart {
         return this.items.isEmpty();
     }
 
-    public fr.unice.polytech.app.CartStatus getCartStatus() {
-        return CartStatus;
+    public OrderStatus getCartStatus() {
+        return OrderStatus;
     }
 
-    public void setCartStatus(fr.unice.polytech.app.CartStatus cartStatus) {
-        CartStatus = cartStatus;
+    public void setCartStatus(OrderStatus orderStatus) {
+        OrderStatus = orderStatus;
     }
-}
+}*/

@@ -5,18 +5,18 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import static fr.unice.polytech.app.CartStatus.VALIDATED;
+//import static fr.unice.polytech.app.OrderStatus.VALIDATED;
 import static org.junit.Assert.*;
 import java.util.List;
 
-public class OrderManagementStepdefs {
+/*public class OrderManagementStepdefs {
 
     private List<String> restaurants;
     private String selectedRestaurant;
     private List<String> menuItems;
     private List<String> cartItems;
     private Cart cart;
-    private Client client ;
+    private CampusUser client ;
     private Order order ;
     private String clientName;
 
@@ -30,7 +30,7 @@ public class OrderManagementStepdefs {
     @When("I log in as {string}")
     public void iLogInAs(String username) {
         // Code to log in as the given user
-        this.client = new Client(username);
+        this.client = new CampusUser(username);
     }
 
     @Then("I should be logged in as {string}")
@@ -116,4 +116,4 @@ public class OrderManagementStepdefs {
         // Code to verify the created order
     }
 
-}
+}*/
