@@ -1,10 +1,22 @@
 package fr.unice.polytech.app;
 
+/**
+ * Énumération représentant les différents états possibles d'un panier.
+ */
 public enum CartStatus {
-    EMPTY,          // Cart is empty
-    ITEMS_ADDED,    // Items have been added to the cart
-    CHECKED_OUT,    // Cart has been checked out and is awaiting payment/validation
-    VALIDATED,      // Cart has been validated and an order has been created
-    CANCELLED       // Cart or order has been cancelled by the user
-}
 
+    /** Le panier est vide. */
+    EMPTY,
+
+    /** Des articles ont été ajoutés au panier. */
+    ITEMS_ADDED,
+
+    /** Le panier a été validé et attend le paiement ou la validation. */
+    CHECKED_OUT,
+
+    /** Le panier a été validé et une commande a été créée. */
+    VALIDATED,
+
+    /** Le panier ou la commande a été annulé par l'utilisateur. */
+    CANCELLED
+}

@@ -5,10 +5,18 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import static org.junit.Assert.*;
 
+/**
+ * Étapes de définition pour les scénarios Cucumber relatifs au panier.
+ */
 public class CartStepdefs {
 
+    /** Le panier utilisé dans les scénarios. */
     private Cart cart;
+
+    /** Le client associé au panier dans les scénarios. */
     private Client client;
+
+    /** La commande associée au panier dans les scénarios. */
     private Order order;
 
     @Given("I am a client {string}")
