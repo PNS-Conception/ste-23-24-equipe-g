@@ -1,4 +1,4 @@
-package fr.unice.polytech.biblio;
+package fr.unice.polytech.app;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;

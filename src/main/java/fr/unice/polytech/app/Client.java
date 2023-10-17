@@ -1,4 +1,4 @@
-package fr.unice.polytech.biblio;
+package fr.unice.polytech.app;
 
 public class Client {
     private String name;
@@ -7,4 +7,7 @@ public class Client {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
 }
