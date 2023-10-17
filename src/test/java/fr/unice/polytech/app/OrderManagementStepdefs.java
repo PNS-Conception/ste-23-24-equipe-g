@@ -1,9 +1,10 @@
 
-package fr.unice.polytech.steps;
+package fr.unice.polytech.app;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import static org.junit.Assert.*;
 import java.util.List;
 
 public class OrderManagementStepdefs {
@@ -13,19 +14,29 @@ public class OrderManagementStepdefs {
     private List<String> menuItems;
     private List<String> cartItems;
 
+    private Order order;
+
+    private Client client;
+
+    private String clientName;
+
     @Given("I am on the login page")
     public void iAmOnTheLoginPage() {
         // Code to navigate to the login page
+        this.clientName = "Alice";
+
     }
 
     @When("I log in as {string}")
     public void iLogInAs(String username) {
         // Code to log in as the given user
+        this.client = new Client(clientName);
     }
 
     @Then("I should be logged in as {string}")
     public void iShouldBeLoggedInAs(String username) {
         // Code to verify the logged-in user
+        assertEquals(this.clientName,this.client.getName());
     }
 
     @When("I view the list of restaurants")
@@ -35,6 +46,7 @@ public class OrderManagementStepdefs {
 
     @Then("I should see the list of available restaurants")
     public void iShouldSeeTheListOfAvailableRestaurants() {
+        ths
         // Code to verify the list of restaurants
     }
 

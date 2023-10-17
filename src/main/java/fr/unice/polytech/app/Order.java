@@ -1,6 +1,8 @@
 package fr.unice.polytech.app;
 
 public class Order {
+
+    private String restaurant ;
     private Client client;
     private String item;
     private int quantity;
@@ -22,6 +24,8 @@ public class Order {
         return quantity;
     }
 
+
+
     @Override
     public String toString() {
         return "Order{" +
@@ -29,5 +33,9 @@ public class Order {
                 ", item='" + item + '\'' +
                 ", quantity=" + quantity +
                 '}';
+    }
+
+    public String getRestaurant() {
+        return restaurant;
     }
 }
