@@ -17,7 +17,7 @@ public class CartStepdefs {
 
     @Given("I am a client {string}")
     public void iAmAClient(String username) {
-        user = new CampusUser(UUID.randomUUID(), username, "password", "address", username + "@example.com", UserType.Client);
+        user = new CampusUser(UUID.randomUUID(), username, "password", "address", username + "@example.com");
     }
 
     @Given("I have an empty cart")
