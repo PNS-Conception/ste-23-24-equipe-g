@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.Arrays;
 
 
-public class CartStepdefs {
+public class CartManagementStepdefs {
     private CampusUser user;
 
     @Given("I am a client {string}")
@@ -104,7 +104,6 @@ public class CartStepdefs {
     }
 
 
-    // Helper methods (assuming you have these methods in your code)
     private Item findItemByName(List<Item> items, String itemName) {
         for (Item item : items) {
             if (item.getDish().getName().equals(itemName)) {
