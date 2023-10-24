@@ -29,13 +29,16 @@ public class CampusUser {
     private UserType user;
     private List<Order> orders;
     private List<Item> cart;
-    public CampusUser(UUID id, String name, String password, String address, String email, UserType user) {
+
+    private final UserType type;
+
+    public CampusUser(UUID id, String name, String password, String address, String email) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.address = address;
         this.email = email;
-        this.user = user;
+        this.type = UserType.Client;
         this.orders = new ArrayList<>();
         this.cart = new ArrayList<>();
     }
@@ -56,8 +59,13 @@ public class CampusUser {
         return newOrder;
     }
 
-    public void cancelOrder(Order order) {
+    public boolean cancelOrder(Order order,int minutesPassed) {
+        if (minutesPassed > 30) {
+            return false;
+        }
         orders.remove(order);
+        order.setStatus(OrderStatus.Cancelled);
+        return true;
     }
 
     public void setAddress(String newAddress) {
@@ -67,6 +75,7 @@ public class CampusUser {
     public List<Order> getHistory() {
         return orders;
     }
+
     public List<Restaurant> getAvailableRestaurants() {
         // Implement logic to get available restaurants (you need to define this method in Restaurant class)
         return new ArrayList<>();
