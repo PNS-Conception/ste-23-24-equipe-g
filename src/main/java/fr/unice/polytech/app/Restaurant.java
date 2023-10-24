@@ -1,7 +1,5 @@
 package fr.unice.polytech.app;
 
-import fr.unice.polytech.app.Menu;
-
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +15,7 @@ public class Restaurant {
     private LocalTime closingTime;
 
     private List<Order> orderList;
+    private boolean full;
 
     public Restaurant(UUID id, String name) {
         this.id = id;
@@ -75,6 +74,14 @@ public class Restaurant {
 
     public void addOrder(Order order) {
         orderList.add(order);
+    }
+
+    public void setFull(boolean full) {
+        this.full = full;
+    }
+
+    public boolean isFull() {
+        return full;
     }
 
 }
