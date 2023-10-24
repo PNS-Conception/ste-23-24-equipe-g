@@ -1,33 +1,16 @@
 package fr.unice.polytech.app;
 
+import java.util.List;
+
+
 public class Order {
-    private Client client;
-    private String item;
-    private int quantity;
-    public Order(Client client, String item, int quantity) {
-        this.client = client;
-        this.item = item;
-        this.quantity = quantity;
+    private List<Item> items;
+
+    public Order(List<Item> items) {
+        this.items = items;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public String getItem() {
-        return item;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "client=" + client +
-                ", item='" + item + '\'' +
-                ", quantity=" + quantity +
-                '}';
+    public List<Item> getItems() {
+        return items;
     }
 }
