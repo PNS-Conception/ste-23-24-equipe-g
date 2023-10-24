@@ -1,4 +1,4 @@
-Feature: cart
+Feature: Cart Management
 
   Background:
     Given I am a client "Kaleb"
