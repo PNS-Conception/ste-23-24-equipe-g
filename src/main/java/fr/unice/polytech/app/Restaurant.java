@@ -8,35 +8,31 @@ import java.util.UUID;
 public class Restaurant {
     private UUID id;
     private String name;
-    private String operatingHours;
     private Menu menu;
 
-    private LocalTime openingTime;
-    private LocalTime closingTime;
+    private String address;
 
+    private CampusUser owner;
+    private List<Shift> schedule;
     private List<Order> orderList;
     private boolean full;
 
-    public Restaurant(UUID id, String name) {
-        this.id = id;
+    public Restaurant( String name) {
+        this.id = UUID.randomUUID();
         this.name = name;
         orderList = new ArrayList<>();
+        schedule = new ArrayList<>();
+        menu= new Menu();
     }
 
-    public void setMenu(Menu menu) {
-        this.menu = menu;
-    }
-
-    public void setOperatingHours(String operatingHours) {
-        this.operatingHours = operatingHours;
+    public void setMenu(Menu menu, RestaurantManager manager) {
+        if (manager.getType() == UserType.Manager) {
+            this.menu = menu;
+        }
     }
 
     public Menu getMenu() {
         return menu;
-    }
-
-    public String getOperatingHours() {
-        return operatingHours;
     }
 
 
@@ -52,20 +48,29 @@ public class Restaurant {
         return false;
     }
 
-    public LocalTime getOpeningTime() {
-        return openingTime;
+    public boolean addShift(LocalTime openingTime, LocalTime closingTime, Day day,RestaurantManager manager) {
+        if (manager == owner) {
+            Shift shift = new Shift(openingTime, closingTime,day);
+            schedule.add(shift);
+            return true;
+        }
+        return false;
     }
 
-    public LocalTime getClosingTime() {
-        return closingTime;
+
+
+    public List<Shift> getSchedule() {
+        return schedule;
     }
 
-    public void setOpeningTime(LocalTime openingTime) {
-        this.openingTime = openingTime;
-    }
+    public boolean scheduleContains( Shift shift) {
+        for (Shift s : schedule) {
+            if (s.getDay() == shift.getDay() && s.getOpeningTime() == shift.getOpeningTime() && s.getClosingTime() == shift.getClosingTime()) {
+                return true;
+            }
+        }
+        return false;
 
-    public void setClosingTime(LocalTime closingTime) {
-        this.closingTime = closingTime;
     }
 
     public String getName() {
@@ -83,5 +88,30 @@ public class Restaurant {
     public boolean isFull() {
         return full;
     }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setOwner(RestaurantManager owner) {
+        this.owner = owner;
+    }
+
+    public CampusUser getOwner() {
+        return owner;
+    }
+
+    public void clearOrderList() {
+        orderList.clear();
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
 
 }

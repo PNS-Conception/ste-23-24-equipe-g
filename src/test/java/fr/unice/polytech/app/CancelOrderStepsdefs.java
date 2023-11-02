@@ -21,7 +21,7 @@ public class CancelOrderStepsdefs {
 
     @Given("^a client \"([^\"]*)\" with order$")
     public void aClientWithOrder(String clientName) {
-        client = new CampusUser(UUID.randomUUID(), clientName, "password", "", "email@example.com");
+        client = new CampusUser( clientName, "password", "", "email@example.com");
         order = new Order(new ArrayList<>());
     }
 
@@ -44,8 +44,7 @@ public class CancelOrderStepsdefs {
 
     @Given("^a restaurant \"([^\"]*)\"$")
     public void aRestaurant(String restaurantName) {
-        restaurant = new Restaurant(UUID.randomUUID(), restaurantName);
-        restaurant.setOperatingHours("10:00-20:00");
+        restaurant = new Restaurant(restaurantName);
         restaurant.addOrder(order);
     }
 
@@ -53,7 +52,7 @@ public class CancelOrderStepsdefs {
     public void restaurantIsOpenAndCloseAt(String restaurantName, int openHour, int openMinute, int closeHour, int closeMinute) {
         assertNotNull("Restaurant is not initialized", restaurant);
         assertEquals("Restaurant name does not match", restaurantName, restaurant.getName());
-        restaurant.setOperatingHours(String.format("%02d:%02d-%02d:%02d", openHour, openMinute, closeHour, closeMinute));
+        restaurant.addShift(LocalTime.of( openHour, openMinute), LocalTime.of( closeHour, closeMinute),Day.Friday, new RestaurantManager("test", "test", "test", "test"));
     }
 
     @When("^the order is placed, paid, and accepted at (\\d+):(\\d+)$")

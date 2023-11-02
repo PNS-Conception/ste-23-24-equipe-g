@@ -4,8 +4,7 @@ public enum UserType {
     Client,
     Staff,
     Manager,
-    DeliveryMan,
-    campusAdmin,
+    campusAdmin, DeliveryPerson,
 
 
 }

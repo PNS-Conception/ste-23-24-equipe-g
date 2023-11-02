@@ -90,7 +90,7 @@ public class Order {
     }
 
     public void reject() {
-        status = OrderStatus.Cancelled;
+        status = OrderStatus.Rejected;
     }
 
     public boolean isRejected() {

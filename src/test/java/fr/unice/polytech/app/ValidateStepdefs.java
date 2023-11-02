@@ -21,7 +21,7 @@ public class ValidateStepdefs {
 
     @Given("the restaurant is full")
     public void the_restaurant_is_full() {
-        restaurant = new Restaurant( null, null);
+        restaurant = new Restaurant(  null);
         restaurant.setFull(true);
     }
 

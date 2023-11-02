@@ -9,7 +9,7 @@ Feature: Validate an order
     Given I have an order with status "Placed"
     And the restaurant is full
     When the cashier rejects the order
-    Then the status of the order should be "Cancelled"
+    Then the status of the order should be "Rejected"
 
   Scenario: Validate the order for pick up
     Given I have an order with status "Accepted"
