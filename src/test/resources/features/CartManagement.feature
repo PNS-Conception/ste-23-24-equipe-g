@@ -1,7 +1,7 @@
-Feature: cart
+Feature: Cart Management
 
   Background:
-    Given I am a client "X"
+    Given I am a client "Kaleb"
 
   Scenario: add Item to cart
     Given I have an empty cart

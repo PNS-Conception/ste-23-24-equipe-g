@@ -1,33 +1,28 @@
-Feature: validate an order
+Feature: Validate an order
 
+  Scenario: Accept order for preparation successfully
+    Given I have an order with status "Placed"
+    When the staff accepts the order
+    Then the status of the order should be "Accepted"
 
-  Scenario: accept order for preparation successfully
-    Given an order
-    And its order with status placed
-    When a the stuff accepte the order
-    Then the status of the order is accepted
-
-  Scenario: reject order
-    Given an order
-    When the status of the order is placed
+  Scenario: Reject order
+    Given I have an order with status "Placed"
     And the restaurant is full
-    Then a cashier reject the order
+    When the cashier rejects the order
+    Then the status of the order should be "Cancelled"
 
-  Scenario: validate the order for pick up
-    Given an order
-    When its order with status accepted
-    And a cashier validate the order
-    Then the status of the order is ready
+  Scenario: Validate the order for pick up
+    Given I have an order with status "Accepted"
+    When the cashier validates the order
+    Then the status of the order should be "Ready"
 
+  Scenario: Order is picked up
+    Given I have an order with status "Ready"
+    When the delivery person validates the pick up
+    Then the status of the order should be "PickedUp"
 
-  Scenario: order is picked up
-    Given an order with status ready
-    And the delivery person validate the pick up
-    Then the status of the order is picked up
-
-
-
-  Scenario: order is delivered
-    Given an order with status picked up
-    And the delivery person validate the delivery
-    Then the status of the order is delivered and the order is closed
+  Scenario: Order is delivered
+    Given I have an order with status "PickedUp"
+    When the delivery person validates the delivery
+    Then the status of the order should be "Delivered"
+    And the order should be closed
