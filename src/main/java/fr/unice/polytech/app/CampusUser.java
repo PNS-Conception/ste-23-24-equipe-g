@@ -1,20 +1,5 @@
 package fr.unice.polytech.app;
 
-/*public class Client {
-    private String name;
-
-
-
-
-    public Client(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-}*/
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -41,6 +26,13 @@ public class CampusUser {
         this.type = UserType.Client;
         this.orders = new ArrayList<>();
         this.cart = new ArrayList<>();
+    }
+
+    public CampusUser() {
+        this.id = UUID.randomUUID();
+        this.name = "mockUser";
+        this.type = UserType.Client;
+        // ... initialize other attributes
     }
 
     public void createItem(Dish dish, int quantity) {
@@ -97,6 +89,10 @@ public class CampusUser {
     public List<Item> getCart() {
         return cart;
 
+    }
+
+    public void setType(UserType client) {
+        this.user = client;
     }
 }
 

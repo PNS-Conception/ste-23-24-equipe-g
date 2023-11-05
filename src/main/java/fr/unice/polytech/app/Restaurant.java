@@ -23,6 +23,12 @@ public class Restaurant {
         orderList = new ArrayList<>();
     }
 
+    public Restaurant(String name, Menu menu) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        this.menu = menu;
+    }
+
     public void setMenu(Menu menu) {
         this.menu = menu;
     }
