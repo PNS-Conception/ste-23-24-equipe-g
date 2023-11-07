@@ -17,12 +17,20 @@ public class Restaurant {
     private List<Order> orderList;
     private boolean full;
 
-    public Restaurant( String name) {
+    public Restaurant(String name){
         this.id = UUID.randomUUID();
         this.name = name;
         orderList = new ArrayList<>();
         schedule = new ArrayList<>();
-        menu= new Menu();
+        this.menu = new Menu();
+    }
+
+    public Restaurant(String name, Menu menu) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        orderList = new ArrayList<>();
+        schedule = new ArrayList<>();
+        this.menu = menu;
     }
 
     public void setMenu(Menu menu, RestaurantManager manager) {

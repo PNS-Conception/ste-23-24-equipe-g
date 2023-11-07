@@ -5,7 +5,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import java.util.List;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -38,7 +38,7 @@ public class ManageGroupOrderStepdefs {
 
     @When("Alice has placed order from the restaurant {string} and paid for it")
     public void hasAPlaceOrderFromTheRestaurantAndPaidForIt( String restaurant) {
-        restaurant1=new Restaurant(restaurant);
+        restaurant1=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", Arrays.asList("Tomato", "Mozzarella", "Basil"), 7.99), new Dish("Pepperoni", Arrays.asList("Tomato", "Mozzarella", "Pepperoni"), 8.99))));
         alice.createItem(new Dish("pizza",10), 2);
         aliceOrder = new Order(alice.getCart());
         groupOrder.addOrder(aliceOrder);
@@ -50,7 +50,7 @@ public class ManageGroupOrderStepdefs {
 
     @And("Bob has placed order form {string} and paid for it")
     public void bobHasPlacedOrderFormAndPaidForIt(String restaurant) {
-        restaurant2=new Restaurant(restaurant);
+        restaurant2=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", Arrays.asList("Tomato", "Mozzarella", "Basil"), 7.99), new Dish("Pepperoni", Arrays.asList("Tomato", "Mozzarella", "Pepperoni"), 8.99))));
         bob.createItem(new Dish("pasta",11), 1);
         bobOrder = new Order(bob.getCart());
         groupOrder.addOrder(bobOrder);
@@ -75,7 +75,7 @@ public class ManageGroupOrderStepdefs {
 
     @And("Bob has a place order form {string} and not paid for it")
     public void bobHasAPlaceOrderFormAndNotPaidForIt(String restaurant) {
-        restaurant3=new Restaurant(restaurant);
+        restaurant3=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", Arrays.asList("Tomato", "Mozzarella", "Basil"), 7.99), new Dish("Pepperoni", Arrays.asList("Tomato", "Mozzarella", "Pepperoni"), 8.99))));
         bob.createItem(new Dish("pasta",11), 1);
         bobOrder = new Order(bob.getCart());
         groupOrder.addOrder(bobOrder);

@@ -19,7 +19,7 @@ public class MenuConsultationSteps {
     private List<Restaurant> availableRestaurants;
     private Menu selectedMenu;
     private Dish dishDetails;
-    
+
     // Mocking services and repositories that would be used in the actual implementation
     private RestaurantService restaurantService =new RestaurantService();
 
@@ -57,8 +57,8 @@ public class MenuConsultationSteps {
     @Then("I should see the full menu offered by that restaurant")
     public void i_should_see_the_full_menu_offered_by_that_restaurant() {
         assertNotNull(selectedMenu);
-        assertNotNull(selectedMenu.getDishes()); // Assuming Menu has a getDishes method
-        assertFalse(selectedMenu.getDishes().isEmpty());
+        assertNotNull(selectedMenu.getMenu()); // Assuming Menu has a getDishes method
+        assertFalse(selectedMenu.getMenu().isEmpty());
     }
 
     @Given("I am viewing a restaurant's menu")
@@ -68,12 +68,12 @@ public class MenuConsultationSteps {
 
     @When("I look at a specific dish")
     public void i_look_at_a_specific_dish() {
-        dishDetails = selectedMenu.getDishes().get(0); // Getting the details of the first dish
+        dishDetails = selectedMenu.getMenu().get(0); // Getting the details of the first dish
     }
 
     @Then("I should see the dish's name, ingredients, and price")
     public void i_should_see_the_dish_s_name_ingredients_and_price() {
-        dishDetails = selectedMenu.getDishes().get(0);
+        dishDetails = selectedMenu.getMenu().get(0);
         assertNotNull(dishDetails.getName());
         assertNotNull(dishDetails.getIngredients());
         assertTrue(dishDetails.getPrice() > 0);

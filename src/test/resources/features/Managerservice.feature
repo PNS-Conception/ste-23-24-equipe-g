@@ -1,4 +1,4 @@
-Feature: Mnager service
+Feature: Manager service
 
   Background:
     Given manager of Restaurant logged in

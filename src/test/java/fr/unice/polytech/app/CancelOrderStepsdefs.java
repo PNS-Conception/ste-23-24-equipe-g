@@ -7,7 +7,7 @@ import io.cucumber.java.en.Then;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -44,7 +44,7 @@ public class CancelOrderStepsdefs {
 
     @Given("^a restaurant \"([^\"]*)\"$")
     public void aRestaurant(String restaurantName) {
-        restaurant = new Restaurant(restaurantName);
+        restaurant = new Restaurant(restaurantName, new Menu(Arrays.asList(new Dish("Margherita", Arrays.asList("Tomato", "Mozzarella", "Basil"), 7.99), new Dish("Pepperoni", Arrays.asList("Tomato", "Mozzarella", "Pepperoni"), 8.99))));
         restaurant.addOrder(order);
     }
 

@@ -12,7 +12,7 @@ public class Menu {
     }
 
     public Menu(List<Dish> asList) {
-        this.dishes = asList;
+        this.menu = asList;
     }
 
     public boolean addDish(Dish dish,RestaurantManager manager) {

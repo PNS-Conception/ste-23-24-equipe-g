@@ -1,8 +1,7 @@
 package fr.unice.polytech.app;
 
-import org.mockito.internal.matchers.Null;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Admin {
@@ -16,7 +15,7 @@ public class Admin {
         deliveryPersons= new ArrayList<>();
     }
     public void addRestaurant(String name, String address, String ownerEmail) {
-        Restaurant restaurant = new Restaurant(name);
+        Restaurant restaurant = new Restaurant(name, new Menu(Arrays.asList(new Dish("Margherita", Arrays.asList("Tomato", "Mozzarella", "Basil"), 7.99), new Dish("Pepperoni", Arrays.asList("Tomato", "Mozzarella", "Pepperoni"), 8.99))));
         restaurant.setAddress(address);
         restaurants.add(restaurant);
         restaurant.setOwner(new RestaurantManager(null,null,null,ownerEmail));

@@ -5,6 +5,7 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -22,7 +23,7 @@ public class ValidateStepdefs {
 
     @Given("the restaurant is full")
     public void the_restaurant_is_full() {
-        restaurant = new Restaurant(null, null);
+        restaurant = new Restaurant(UUID.randomUUID().toString(), new Menu(Arrays.asList(new Dish("Margherita", Arrays.asList("Tomato", "Mozzarella", "Basil"), 7.99), new Dish("Pepperoni", Arrays.asList("Tomato", "Mozzarella", "Pepperoni"), 8.99))));
         restaurant.setFull(true);
     }
 
