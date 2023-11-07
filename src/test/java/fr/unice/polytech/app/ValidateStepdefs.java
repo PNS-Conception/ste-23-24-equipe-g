@@ -30,28 +30,33 @@ public class ValidateStepdefs {
     @When("the staff accepts the order")
     public void the_staff_accepts_the_order() {
         order.accept();
+        assertEquals(OrderStatus.ACCEPTED, order.getStatus());
     }
 
     @When("the cashier rejects the order")
     public void the_cashier_rejects_the_order() {
         if (restaurant.isFull()) {
             order.reject();
+            assertEquals(OrderStatus.REJECTED, order.getStatus());
         }
     }
 
     @When("the cashier validates the order")
     public void the_cashier_validates_the_order() {
         order.validate();
+        assertEquals(OrderStatus.READY, order.getStatus());
     }
 
     @When("the delivery person validates the pick up")
     public void the_delivery_person_validates_the_pick_up() {
         order.pickUp();
+        assertEquals(OrderStatus.PICKED_UP, order.getStatus());
     }
 
     @When("the delivery person validates the delivery")
     public void the_delivery_person_validates_the_delivery() {
         order.deliver();
+        assertEquals(OrderStatus.DELIVERED, order.getStatus());
     }
 
     @Then("the status of the order should be {string}")

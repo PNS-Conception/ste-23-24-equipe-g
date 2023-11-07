@@ -118,7 +118,7 @@ public class ManageGroupStepdefs {
 
     @When("the group order is Accepted")
     public void theGroupOrderIsAccepted() {
-        groupOrder.setStatus(OrderStatus.Accepted);
+        groupOrder.setStatus(OrderStatus.ACCEPTED);
     }
 
     @Then("Alice can not delete the group order")
@@ -129,7 +129,7 @@ public class ManageGroupStepdefs {
 
     @When("the group order is Rejected")
     public void theGroupOrderIsRejected() {
-        groupOrder.setStatus(OrderStatus.Rejected);
+        groupOrder.setStatus(OrderStatus.REJECTED);
     }
 
     @Then("Alice can delete the group order")
@@ -148,7 +148,7 @@ public class ManageGroupStepdefs {
 
     @And("the group order is placed")
     public void theGroupOrderIsPlaced() {
-        groupOrder.setStatus(OrderStatus.Placed);
+        groupOrder.setStatus(OrderStatus.PLACED);
     }
 
     @When("Alice leave the group order")

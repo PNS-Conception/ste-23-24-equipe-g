@@ -54,7 +54,7 @@ public class CampusUser {
         if (minutesPassed > 30) {
             return false;
         }
-        order.setStatus(OrderStatus.Cancelled);
+        order.setStatus(OrderStatus.CANCELLED);
         orders.remove(order);
 
         return true;

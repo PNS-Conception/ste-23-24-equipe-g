@@ -5,12 +5,10 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -71,12 +69,12 @@ public class PlaceOrderStepdefs {
         order = client.order(client.getCart());
         order.setDeliveryTime(deliveryDateTime.toLocalTime());
         order.setPlacedTime(LocalTime.now());
-        order.setStatus(OrderStatus.Placed);
+        order.setStatus(OrderStatus.PLACED);
     }
 
     @Then("^the order status is placed")
     public void the_order_status_is_placed() {
-        assertEquals(OrderStatus.Placed, order.getStatus());
+        assertEquals(OrderStatus.PLACED, order.getStatus());
     }
 
 

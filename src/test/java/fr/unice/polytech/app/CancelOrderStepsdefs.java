@@ -39,7 +39,7 @@ public class CancelOrderStepsdefs {
 
         order = client.order(client.getCart());
 
-        order.setStatus(OrderStatus.Placed);
+        order.setStatus(OrderStatus.PLACED);
     }
 
     @Given("^a restaurant \"([^\"]*)\"$")
@@ -58,8 +58,8 @@ public class CancelOrderStepsdefs {
     @When("^the order is placed, paid, and accepted at (\\d+):(\\d+)$")
     public void order_is_placed_paid_and_accepted_at(int hours, int minutes) {
         order.setPlacedTime(LocalTime.of(hours, minutes));
-        order.setStatus(OrderStatus.Paid);
-        order.setStatus(OrderStatus.Accepted);
+        order.setStatus(OrderStatus.PAID);
+        order.setStatus(OrderStatus.ACCEPTED);
     }
 
 
@@ -87,8 +87,8 @@ public class CancelOrderStepsdefs {
 
     @Then("^the status of the order is cancelled$")
     public void orderStatusIsCancelled() {
-        order.setStatus(OrderStatus.Cancelled);
-        assertEquals(OrderStatus.Cancelled, order.getStatus());
+        order.setStatus(OrderStatus.CANCELLED);
+        assertEquals(OrderStatus.CANCELLED, order.getStatus());
     }
 
     @Then("^the client cannot cancel the order$")
@@ -108,8 +108,8 @@ public class CancelOrderStepsdefs {
 
     @Then("^the status of the order is still accepted$")
     public void orderStatusIsStillAccepted() {
-        order.setStatus(OrderStatus.Accepted);
-        assertEquals(OrderStatus.Accepted, order.getStatus());
+        order.setStatus(OrderStatus.ACCEPTED);
+        assertEquals(OrderStatus.ACCEPTED, order.getStatus());
     }
 
     private LocalTime parseTime(String time) {

@@ -71,7 +71,7 @@ public class GroupOrder {
     }
 
     public Boolean deleteGroup(CampusUser owner) {
-        if (owner.equals(this.owner) && ((status ==OrderStatus.Placed)||(status ==null))) {
+        if (owner.equals(this.owner) && ((status ==OrderStatus.PLACED)||(status ==null))) {
             members.clear();
             subOrders.clear();
             return true;

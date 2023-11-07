@@ -1,13 +1,13 @@
 package fr.unice.polytech.app;
 
 public enum OrderStatus {
-    Placed,
-    Paid,
-    Accepted,
-    Ready,
-    PickedUp,
-    Delivered,
-    Cancelled,
-    Rejected
+    PLACED,
+    PAID,
+    ACCEPTED,
+    READY,
+    PICKED_UP,
+    DELIVERED,
+    CANCELLED,
+    REJECTED
 }
 

@@ -42,9 +42,9 @@ public class ManageGroupOrderStepdefs {
         alice.createItem(new Dish("pizza",10), 2);
         aliceOrder = new Order(alice.getCart());
         groupOrder.addOrder(aliceOrder);
-        aliceOrder.setStatus(OrderStatus.Placed);
+        aliceOrder.setStatus(OrderStatus.PLACED);
         alice.makePayment(aliceOrder);
-        aliceOrder.setStatus(OrderStatus.Paid);
+        aliceOrder.setStatus(OrderStatus.PAID);
 
     }
 
@@ -54,17 +54,17 @@ public class ManageGroupOrderStepdefs {
         bob.createItem(new Dish("pasta",11), 1);
         bobOrder = new Order(bob.getCart());
         groupOrder.addOrder(bobOrder);
-        bobOrder.setStatus(OrderStatus.Placed);
+        bobOrder.setStatus(OrderStatus.PLACED);
         bob.makePayment(bobOrder);
-        bobOrder.setStatus(OrderStatus.Paid);
+        bobOrder.setStatus(OrderStatus.PAID);
     }
 
     @Then("the order group status should be Placed")
     public void theOrderGroupStatusShouldBe() {
-        assertEquals(bobOrder.getStatus(),OrderStatus.Paid);
-        assertEquals(aliceOrder.getStatus(),OrderStatus.Paid);
-        groupOrder.setStatus(OrderStatus.Placed);
-        assertEquals(groupOrder.getStatus(),OrderStatus.Placed);
+        assertEquals(bobOrder.getStatus(),OrderStatus.PAID);
+        assertEquals(aliceOrder.getStatus(),OrderStatus.PAID);
+        groupOrder.setStatus(OrderStatus.PLACED);
+        assertEquals(groupOrder.getStatus(),OrderStatus.PLACED);
     }
 
     @And("the restaurants le déclice and Vapiano receive the order")
@@ -79,7 +79,7 @@ public class ManageGroupOrderStepdefs {
         bob.createItem(new Dish("pasta",11), 1);
         bobOrder = new Order(bob.getCart());
         groupOrder.addOrder(bobOrder);
-        bobOrder.setStatus(OrderStatus.Placed);
+        bobOrder.setStatus(OrderStatus.PLACED);
     }
 
     @And("the restaurants does not receive the order")
@@ -89,7 +89,7 @@ public class ManageGroupOrderStepdefs {
 
     @Given("group order is placed")
     public void groupOrderIsPlaced() {
-        groupOrder.setStatus(OrderStatus.Placed);
+        groupOrder.setStatus(OrderStatus.PLACED);
     }
 
     @When("Bob cancels his order")
@@ -102,7 +102,7 @@ public class ManageGroupOrderStepdefs {
 
     @Then("the order group still should be Placed")
     public void theOrderGroupStillShouldBe() {
-        assertEquals(groupOrder.getStatus(),OrderStatus.Placed);
+        assertEquals(groupOrder.getStatus(),OrderStatus.PLACED);
     }
 
     @And("Bob should not be a member of the order group")
@@ -121,7 +121,7 @@ public class ManageGroupOrderStepdefs {
         groupOrder.quit(bob);
         groupOrder.cancelOrder(aliceOrder,alice,2);
         groupOrder.quit(alice);
-        groupOrder.setStatus(OrderStatus.Cancelled);
+        groupOrder.setStatus(OrderStatus.CANCELLED);
     }
 
     @And("all members should be refunded")
@@ -139,17 +139,17 @@ public class ManageGroupOrderStepdefs {
     public void allSubOrdersAreAccepted() {
         alice.createItem(new Dish("pasta",11), 1);
         aliceOrder = new Order(alice.getCart());
-        aliceOrder.setStatus(OrderStatus.Accepted);
+        aliceOrder.setStatus(OrderStatus.ACCEPTED);
         bob.createItem(new Dish("pasta",11), 1);
         bobOrder = new Order(bob.getCart());
-        bobOrder.setStatus(OrderStatus.Accepted);
+        bobOrder.setStatus(OrderStatus.ACCEPTED);
     }
 
     @When("all sub orders are ready")
     public void allSubOrdersAreReady() {
-        aliceOrder.setStatus(OrderStatus.Ready);
-        bobOrder.setStatus(OrderStatus.Ready);
-        groupOrder.setStatus(OrderStatus.Ready);
+        aliceOrder.setStatus(OrderStatus.READY);
+        bobOrder.setStatus(OrderStatus.READY);
+        groupOrder.setStatus(OrderStatus.READY);
     }
 
     @And("all members should be notified")
@@ -160,7 +160,7 @@ public class ManageGroupOrderStepdefs {
 
     @Given("group order is ready")
     public void groupOrderIsReady() {
-        groupOrder.setStatus(OrderStatus.Ready);
+        groupOrder.setStatus(OrderStatus.READY);
     }
 
     @When("the delivery person validates group order")
@@ -170,7 +170,7 @@ public class ManageGroupOrderStepdefs {
 
     @Given("group order is picked up")
     public void groupOrderIsPickedUp() {
-        groupOrder.setStatus(OrderStatus.PickedUp);
+        groupOrder.setStatus(OrderStatus.PICKED_UP);
     }
 
     @When("the delivery person delivers the order")
@@ -181,29 +181,29 @@ public class ManageGroupOrderStepdefs {
 
     @Then("the order group status should be not placed")
     public void theOrderGroupStatusShouldBeNotPlaced() {
-        assertNotEquals(groupOrder.getStatus(),OrderStatus.Placed);
+        assertNotEquals(groupOrder.getStatus(),OrderStatus.PLACED);
     }
 
 
     @Then("the order group status should be Canceled")
     public void theOrderGroupStatusShouldBeCanceled() {
-        assertEquals(groupOrder.getStatus(),OrderStatus.Cancelled);
+        assertEquals(groupOrder.getStatus(),OrderStatus.CANCELLED);
     }
 
 
     @Then("the order group status should be Ready")
     public void theOrderGroupStatusShouldBeReady() {
-        assertEquals(groupOrder.getStatus(),OrderStatus.Ready);
+        assertEquals(groupOrder.getStatus(),OrderStatus.READY);
     }
 
     @Then("the order group status should be Picked up")
     public void theOrderGroupStatusShouldBePickedUp() {
-        assertEquals(groupOrder.getStatus(),OrderStatus.PickedUp);
+        assertEquals(groupOrder.getStatus(),OrderStatus.PICKED_UP);
     }
 
     @Then("the order group status should be Delivered")
     public void theOrderGroupStatusShouldBeDelivered() {
-        assertEquals(groupOrder.getStatus(),OrderStatus.Delivered);
+        assertEquals(groupOrder.getStatus(),OrderStatus.DELIVERED);
     }
 
     @And("Bob should be refunded")

@@ -1,7 +1,5 @@
 package fr.unice.polytech.app;
 
-import java.util.UUID;
-
 public class DeliveryPerson extends CampusUser{
 
     public DeliveryPerson( String name, String password, String address, String email) {
@@ -10,10 +8,10 @@ public class DeliveryPerson extends CampusUser{
     }
 
     public void validateOrder(GroupOrder groupOrder) {
-        groupOrder.setStatus(OrderStatus.PickedUp);
+        groupOrder.setStatus(OrderStatus.PICKED_UP);
     }
 
     public void deliverOrder(GroupOrder groupOrder) {
-        groupOrder.setStatus(OrderStatus.Delivered);
+        groupOrder.setStatus(OrderStatus.DELIVERED);
     }
 }
