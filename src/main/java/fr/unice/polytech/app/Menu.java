@@ -11,6 +11,10 @@ public class Menu {
         menu = new ArrayList<>();
     }
 
+    public Menu(List<Dish> asList) {
+        this.dishes = asList;
+    }
+
     public boolean addDish(Dish dish,RestaurantManager manager) {
         if (manager.getType() == UserType.Manager) {
             menu.add(dish);

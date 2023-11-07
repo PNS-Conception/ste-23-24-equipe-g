@@ -1,6 +1,5 @@
 package fr.unice.polytech.app;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +27,13 @@ public class CampusUser {
         this.cart = new ArrayList<>();
     }
 
+    public CampusUser() {
+        this.id = UUID.randomUUID();
+        this.name = "mockUser";
+        this.type = UserType.Client;
+        // ... initialize other attributes
+    }
+
     public void createItem(Dish dish, int quantity) {
         Item newItem = new Item(dish, quantity);
         cart.add(newItem);
@@ -40,7 +46,7 @@ public class CampusUser {
     public Order order(List<Item> items) {
         Order newOrder = new Order(items);
         orders.add(newOrder);
-        cart.clear();
+        cart.clear(); // Clear the cart after creating an order
         return newOrder;
     }
 
