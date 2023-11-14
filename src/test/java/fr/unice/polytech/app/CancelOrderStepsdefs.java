@@ -7,7 +7,7 @@ import io.cucumber.java.en.Then;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -21,7 +21,7 @@ public class CancelOrderStepsdefs {
 
     @Given("^a client \"([^\"]*)\" with order$")
     public void aClientWithOrder(String clientName) {
-        client = new CampusUser(UUID.randomUUID(), clientName, "password", "", "email@example.com");
+        client = new CampusUser( clientName, "password", "", "email@example.com");
         order = new Order(new ArrayList<>());
     }
 
@@ -39,13 +39,12 @@ public class CancelOrderStepsdefs {
 
         order = client.order(client.getCart());
 
-        order.setStatus(OrderStatus.Placed);
+        order.setStatus(OrderStatus.PLACED);
     }
 
     @Given("^a restaurant \"([^\"]*)\"$")
     public void aRestaurant(String restaurantName) {
-        restaurant = new Restaurant(UUID.randomUUID(), restaurantName);
-        restaurant.setOperatingHours("10:00-20:00");
+        restaurant = new Restaurant(restaurantName, new Menu(Arrays.asList(new Dish("Margherita", Arrays.asList("Tomato", "Mozzarella", "Basil"), 7.99), new Dish("Pepperoni", Arrays.asList("Tomato", "Mozzarella", "Pepperoni"), 8.99))));
         restaurant.addOrder(order);
     }
 
@@ -53,14 +52,14 @@ public class CancelOrderStepsdefs {
     public void restaurantIsOpenAndCloseAt(String restaurantName, int openHour, int openMinute, int closeHour, int closeMinute) {
         assertNotNull("Restaurant is not initialized", restaurant);
         assertEquals("Restaurant name does not match", restaurantName, restaurant.getName());
-        restaurant.setOperatingHours(String.format("%02d:%02d-%02d:%02d", openHour, openMinute, closeHour, closeMinute));
+        restaurant.addShift(LocalTime.of( openHour, openMinute), LocalTime.of( closeHour, closeMinute),Day.Friday, new RestaurantManager("test", "test", "test", "test"));
     }
 
     @When("^the order is placed, paid, and accepted at (\\d+):(\\d+)$")
     public void order_is_placed_paid_and_accepted_at(int hours, int minutes) {
         order.setPlacedTime(LocalTime.of(hours, minutes));
-        order.setStatus(OrderStatus.Paid);
-        order.setStatus(OrderStatus.Accepted);
+        order.setStatus(OrderStatus.PAID);
+        order.setStatus(OrderStatus.ACCEPTED);
     }
 
 
@@ -88,8 +87,8 @@ public class CancelOrderStepsdefs {
 
     @Then("^the status of the order is cancelled$")
     public void orderStatusIsCancelled() {
-        order.setStatus(OrderStatus.Cancelled);
-        assertEquals(OrderStatus.Cancelled, order.getStatus());
+        order.setStatus(OrderStatus.CANCELLED);
+        assertEquals(OrderStatus.CANCELLED, order.getStatus());
     }
 
     @Then("^the client cannot cancel the order$")
@@ -109,8 +108,8 @@ public class CancelOrderStepsdefs {
 
     @Then("^the status of the order is still accepted$")
     public void orderStatusIsStillAccepted() {
-        order.setStatus(OrderStatus.Accepted);
-        assertEquals(OrderStatus.Accepted, order.getStatus());
+        order.setStatus(OrderStatus.ACCEPTED);
+        assertEquals(OrderStatus.ACCEPTED, order.getStatus());
     }
 
     private LocalTime parseTime(String time) {

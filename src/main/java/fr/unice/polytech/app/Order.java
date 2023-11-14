@@ -69,55 +69,55 @@ public class Order {
     }
 
     public void pay() {
-        status = OrderStatus.Paid;
+        status = OrderStatus.PAID;
     }
 
     public void accept() {
-        status = OrderStatus.Accepted;
+        status = OrderStatus.ACCEPTED;
         acceptedTime = LocalTime.now();
     }
 
     public void pickUp() {
-        status = OrderStatus.PickedUp;
+        status = OrderStatus.PICKED_UP;
     }
 
     public void deliver() {
-        status = OrderStatus.Delivered;
+        status = OrderStatus.DELIVERED;
     }
 
     public void validate() {
-        status = OrderStatus.Ready;
+        status = OrderStatus.READY;
     }
 
     public void reject() {
-        status = OrderStatus.Cancelled;
+        status = OrderStatus.REJECTED;
     }
 
     public boolean isRejected() {
-        return status == OrderStatus.Cancelled;
+        return status == OrderStatus.CANCELLED;
     }
 
     public boolean isAccepted() {
-        return status == OrderStatus.Accepted;
+        return status == OrderStatus.ACCEPTED;
     }
 
     public boolean isPickedUp() {
-        return status == OrderStatus.PickedUp;
+        return status == OrderStatus.PICKED_UP;
     }
     public boolean isDelivered() {
-        return status == OrderStatus.Delivered;
+        return status == OrderStatus.DELIVERED;
     }
     public boolean isPlaced() {
-        return status == OrderStatus.Placed;
+        return status == OrderStatus.PLACED;
     }
     public boolean isPaid() {
-        return status == OrderStatus.Paid;
+        return status == OrderStatus.PAID;
     }
     public boolean isReady() {
-        return status == OrderStatus.Ready;
+        return status == OrderStatus.READY;
     }
 
     public boolean isClosed() {
-        return status == OrderStatus.Cancelled || status == OrderStatus.Delivered;
+        return status == OrderStatus.CANCELLED || status == OrderStatus.DELIVERED;
     }
 }

@@ -4,29 +4,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Menu {
-    private List<Dish> dishes; // Assumes that a Dish class exists with appropriate attributes.
+
+    private List<Dish> menu;
 
     public Menu() {
-        this.dishes = new ArrayList<>();
+        menu = new ArrayList<>();
     }
 
     public Menu(List<Dish> asList) {
-        this.dishes = asList;
+        this.menu = asList;
     }
 
-    public void addDish(Dish dish) {
-        dishes.add(dish);
+    public boolean addDish(Dish dish,RestaurantManager manager) {
+        if (manager.getType() == UserType.Manager) {
+            menu.add(dish);
+            return true;
+        }
+        return false;
     }
 
-    public List<Dish> getDishes() {
-        return new ArrayList<>(dishes); // Return a copy of the list to prevent external modification.
+    public boolean removeDish(Dish dish,RestaurantManager manager) {
+        if (manager.getType() == UserType.Manager){
+            menu.remove(dish);
+            return true;
+
+        }
+        return false;
     }
 
-    // If there's functionality to remove a dish
-    public void removeDish(Dish dish) {
-        dishes.remove(dish);
+    public List<Dish> getMenu() {
+        return menu;
     }
 
+    public boolean setMenu(List<Dish> menu,RestaurantManager manager) {
+        if (manager.getType() == UserType.Manager) {
+            this.menu = menu;
+            return true;
+        }
+        return false;
+    }
 
-    // Additional functionality can be added as needed
+    public boolean contains(String dishName) {
+        for (Dish dish : menu) {
+            if (dish.getName().equals(dishName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -11,14 +11,13 @@ public class CampusUser {
     private String password;
     private String address;
     private String email;
-    private UserType user;
     private List<Order> orders;
     private List<Item> cart;
+    private double balance;
+    private UserType type;
 
-    private final UserType type;
-
-    public CampusUser(UUID id, String name, String password, String address, String email) {
-        this.id = id;
+    public CampusUser( String name, String password, String address, String email) {
+        this.id = UUID.randomUUID();
         this.name = name;
         this.password = password;
         this.address = address;
@@ -55,8 +54,9 @@ public class CampusUser {
         if (minutesPassed > 30) {
             return false;
         }
+        order.setStatus(OrderStatus.CANCELLED);
         orders.remove(order);
-        order.setStatus(OrderStatus.Cancelled);
+
         return true;
     }
 
@@ -69,20 +69,20 @@ public class CampusUser {
     }
 
     public List<Restaurant> getAvailableRestaurants() {
-        // Implement logic to get available restaurants (you need to define this method in Restaurant class)
+        // todo
         return new ArrayList<>();
     }
 
     public void selectRestaurant(Restaurant restaurant) {
-        // Implement logic to select a restaurant
+        // todo
     }
 
     public void makePayment(Order order) {
-        // Implement logic to make a payment for the order
+        //todo
     }
 
     public Menu selectRestaurant(UUID restaurantId) {
-        // Implement logic to select a restaurant and get its menu
+        //todo
         return new Menu(); // Assuming Menu is a class you've defined
     }
 
@@ -91,8 +91,28 @@ public class CampusUser {
 
     }
 
-    public void setType(UserType client) {
-        this.user = client;
+    public String getAddress() {
+        return address;
+    }
+
+    public void setType(UserType type) {
+        this.type = type;
+    }
+
+    public UserType getType(){
+        return type;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+
+    public void getRefund() {
+
+    }
+
+    public void notifyUser() {
     }
 }
 
