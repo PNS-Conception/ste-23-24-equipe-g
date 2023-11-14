@@ -38,3 +38,13 @@ Scenario: client cancel order before 30 minutes
     And 30 minutes have passed
     Then the restaurant cannot cancel the order
     And the status of the order is still accepted
+
+  Scenario: the order is cancelled by the restaurant and the user is refunded
+    When the order is placed, paid, and accepted at 12:00
+    Then the restaurant can cancel the order
+    And the user is refunded
+
+  Scenario: the order is cancelled by the user and the user is refunded
+    When the order is placed, paid, and accepted at 12:00
+    Then client can cancel order
+    And the user is refunded

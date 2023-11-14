@@ -1,6 +1,7 @@
 package fr.unice.polytech.app;
 
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -21,8 +22,8 @@ public class CancelOrderStepsdefs {
 
     @Given("^a client \"([^\"]*)\" with order$")
     public void aClientWithOrder(String clientName) {
-        client = new CampusUser( clientName, "password", "", "email@example.com");
-        order = new Order(new ArrayList<>());
+        client = new CampusUser( clientName, "password", "email@example.com");
+        order = new Order(new ArrayList<>(), client);
     }
 
 
@@ -52,7 +53,7 @@ public class CancelOrderStepsdefs {
     public void restaurantIsOpenAndCloseAt(String restaurantName, int openHour, int openMinute, int closeHour, int closeMinute) {
         assertNotNull("Restaurant is not initialized", restaurant);
         assertEquals("Restaurant name does not match", restaurantName, restaurant.getName());
-        restaurant.addShift(LocalTime.of( openHour, openMinute), LocalTime.of( closeHour, closeMinute),Day.Friday, new RestaurantManager("test", "test", "test", "test"));
+        restaurant.addShift(LocalTime.of( openHour, openMinute), LocalTime.of( closeHour, closeMinute),Day.Friday, new RestaurantManager("test", "test", "test"));
     }
 
     @When("^the order is placed, paid, and accepted at (\\d+):(\\d+)$")
@@ -82,7 +83,6 @@ public class CancelOrderStepsdefs {
     @Then("^client can cancel order$")
     public void clientCanCancelOrder() {
         assertTrue(client.cancelOrder(order,0));
-
     }
 
     @Then("^the status of the order is cancelled$")
@@ -117,4 +117,8 @@ public class CancelOrderStepsdefs {
     }
 
 
+    @And("the user is refunded")
+    public void theUserIsRefunded() {
+        assertEquals(order.getPrice(),client.getBalance(), 0);
+    }
 }

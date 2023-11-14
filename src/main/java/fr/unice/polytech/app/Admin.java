@@ -18,11 +18,11 @@ public class Admin {
         Restaurant restaurant = new Restaurant(name, new Menu(Arrays.asList(new Dish("Margherita", Arrays.asList("Tomato", "Mozzarella", "Basil"), 7.99), new Dish("Pepperoni", Arrays.asList("Tomato", "Mozzarella", "Pepperoni"), 8.99))));
         restaurant.setAddress(address);
         restaurants.add(restaurant);
-        restaurant.setOwner(new RestaurantManager(null,null,null,ownerEmail));
+        restaurant.setOwner(new RestaurantManager(null,null,ownerEmail));
     }
 
     public void addDeliveryPerson(String name, String ownerEmail) {
-        DeliveryPerson deliveryPerson = new DeliveryPerson(null,null,null,ownerEmail);
+        DeliveryPerson deliveryPerson = new DeliveryPerson(null,null,ownerEmail);
         deliveryPersons.add(deliveryPerson);
 
     }

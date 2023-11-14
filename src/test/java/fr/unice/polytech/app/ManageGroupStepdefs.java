@@ -19,7 +19,7 @@ public class ManageGroupStepdefs {
 
     @When("{string} create a group order")
     public void createAGroupOrder(String arg0) {
-        alice = new CampusUser(arg0, null, null, null);
+        alice = new CampusUser(arg0, null, null);
         groupOrder = new GroupOrder(alice);
 
     }
@@ -47,14 +47,14 @@ public class ManageGroupStepdefs {
 
     @Given("a group is created")
     public void a_group_is_created() {
-        alice = new CampusUser("Alice", null, null, null);
+        alice = new CampusUser("Alice", null, null);
         groupOrder = new GroupOrder(alice);
 
     }
 
     @And("Alice is the owner of the group order add {string} to the group order")
     public void isTheOwnerOfTheGroupOrderAddToTheGroupOrder(String user) {
-        bob = new CampusUser(user, null, null, null);
+        bob = new CampusUser(user, null, null);
         groupOrder.addMember(bob, alice);
     }
 
@@ -142,7 +142,7 @@ public class ManageGroupStepdefs {
 
     @And("Sam is a member of the group order")
     public void samIsAMemberOfTheGroupOrder() {
-        CampusUser sam = new CampusUser("Sam", null, null, null);
+        CampusUser sam = new CampusUser("Sam", null, null);
         groupOrder.addMember(sam, alice);
     }
 
@@ -154,7 +154,7 @@ public class ManageGroupStepdefs {
     @When("Alice leave the group order")
     public void aliceLeaveTheGroupOrder() {
         alice.createItem(new Dish("pizza",10), 2);
-        aliceOrder = new Order(alice.getCart());
+        aliceOrder = new Order(alice.getCart(), alice);
         groupOrder.addOrder(aliceOrder);
         groupOrder.quit(alice);
         groupOrder.setOwner(groupOrder.getMembers().get(0));
@@ -168,7 +168,7 @@ public class ManageGroupStepdefs {
 
     @And("Alice should be refunded")
     public void aliceShouldBeRefunded() {
-        alice.getRefund();
+        assertEquals(20, alice.getBalance(), 0);
     }
 
     @And("Bob should be the owner of the group order")

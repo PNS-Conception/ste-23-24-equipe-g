@@ -19,8 +19,8 @@ public class PaymentStepdefs {
 
     @Given("a client {string}")
     public void a_client_with_a_cart(String name) {
-        client = new CampusUser( name, "password", "", "email@example.com");
-        order= new Order(new ArrayList<>());
+        client = new CampusUser( name, "password", "email@example.com");
+        order= new Order(new ArrayList<>(), client);
     }
 
     @Given("having a cart of {int} {string} and {int} {string} price {double}€ and {double}€")

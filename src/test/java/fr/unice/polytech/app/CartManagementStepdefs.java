@@ -17,7 +17,7 @@ public class CartManagementStepdefs {
 
     @Given("I am a client {string}")
     public void iAmAClient(String username) {
-        user = new CampusUser( username, "password", "address", username + "@example.com");
+        user = new CampusUser( username, "password", username + "@example.com");
     }
 
     @Given("I have an empty cart")
