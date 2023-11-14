@@ -8,23 +8,31 @@ import java.util.UUID;
 public class Order {
     private List<Item> items;
     private String clientAddress;
-
     private LocalTime placedTime;
-
     private UUID id;
     private OrderStatus status;
     private LocalTime acceptedTime;
-
     private LocalTime deliveryTime;
+    private double price;
 
     public Order(List<Item> items) {
         this.items = items;
+        for (Item item : items) {
+            price += item.getPrice();
+        }
     }
 
     public List<Item> getItems() {
         return items;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price){
+        this.price = price;
+    }
 
     public void setClientAddress(String clientAddress) {
         this.clientAddress = clientAddress;
@@ -66,10 +74,6 @@ public class Order {
      }
     public LocalTime getDeliveryTime() {
         return deliveryTime;
-    }
-
-    public void pay() {
-        status = OrderStatus.PAID;
     }
 
     public void accept() {
