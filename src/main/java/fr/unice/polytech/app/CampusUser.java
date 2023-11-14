@@ -22,11 +22,20 @@ public class CampusUser {
     private String notifiedDeliveryPersonPhoneNumber;
 
 
-    public CampusUser( String name, String password, String address, String email) {
+    public CampusUser( String name, String password, String email) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.password = password;
-        this.address = address;
+        this.email = email;
+        this.type = UserType.Client;
+        this.orders = new ArrayList<>();
+        this.cart = new ArrayList<>();
+        this.balance = 0;
+    }
+
+    public CampusUser( String name, String email) {
+        this.id = UUID.randomUUID();
+        this.name = name;
         this.email = email;
         this.type = UserType.Client;
         this.orders = new ArrayList<>();
@@ -41,9 +50,9 @@ public class CampusUser {
 
     }
 
-    public CampusUser(String id, String name) {
+    public CampusUser( String name) {
         this.id = UUID.randomUUID();
-        this.name = "mockUser";
+        this.name = name;
     }
 
     public void createItem(Dish dish, int quantity) {

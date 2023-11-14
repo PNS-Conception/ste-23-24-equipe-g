@@ -18,7 +18,7 @@ public class AdminServiceStepdefs {
 
     @When("the admin add delivery person with email {string}")
     public void the_admin_add_delivery_person_with_email(String email) {
-        admin.addDeliveryPerson("name",email);
+        admin.addDeliveryPerson("name",email,null);
 
     }
     @Then("{string} should be in the list of delivery persons")

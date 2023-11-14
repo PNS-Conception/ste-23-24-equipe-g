@@ -24,7 +24,7 @@ public class OrderDeliveryConfirmationSteps {
         order = new Order(items);
         order.setStatus(OrderStatus.valueOf(status));
 
-        deliveryPerson = new DeliveryPerson("id", "Delivery Person", "123456789");
+        deliveryPerson = new DeliveryPerson( "Delivery Person",null, "123456789");
         deliverySystem.addDeliveryPerson(deliveryPerson);
         deliveryPerson.assignOrder(order);
     }

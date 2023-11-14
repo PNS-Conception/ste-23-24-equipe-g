@@ -32,6 +32,8 @@ public class Order {
         this.requiresSignatureAndVerification = false; // Initialement, pas besoin de signature ni de vérification
     }
 
+    public Order (){}
+
     public List<Item> getItems() {
         return items;
     }

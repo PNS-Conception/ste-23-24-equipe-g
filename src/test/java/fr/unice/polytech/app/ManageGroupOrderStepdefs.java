@@ -24,17 +24,17 @@ public class ManageGroupOrderStepdefs {
     Restaurant restaurant3;
 
     //DeliveryPerson deliveryPerson=new DeliveryPerson("deliveryPerson",null,null,null);
-    DeliveryPerson deliveryPerson = new DeliveryPerson(UUID.randomUUID().toString(), "Nom du livreur", "Numéro de téléphone");
+    DeliveryPerson deliveryPerson = new DeliveryPerson( "Nom du livreur", null,"Numéro de téléphone");
 
     @Given("a order group with {string} the owner")
     public void aOrderGroupWithTheOwner(String name) {
-        alice= new CampusUser(name,null,null,null);
+        alice= new CampusUser(name,null,null);
         groupOrder = new GroupOrder(alice);
     }
 
     @And("Bob is a member of the order group")
     public void bobIsAMemberOfTheOrderGroup() {
-        bob= new CampusUser("Bob",null,null,null);
+        bob= new CampusUser("Bob",null,null);
         groupOrder.addMember(bob,alice);
     }
 
@@ -198,7 +198,8 @@ public class ManageGroupOrderStepdefs {
 
     @Then("the order group status should be Picked up")
     public void theOrderGroupStatusShouldBePickedUp() {
-        assertEquals(groupOrder.getStatus(),OrderStatus.PICKED_UP);
+
+        assertEquals(OrderStatus.PICKED_UP,groupOrder.getStatus());
     }
 
     @Then("the order group status should be Delivered")

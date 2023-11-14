@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class GroupOrder {
+public class GroupOrder extends Order {
 
     private List<Order> subOrders;
     private UUID groupID;
@@ -17,6 +17,7 @@ public class GroupOrder {
 
 
     GroupOrder(CampusUser owner) {
+        super();
         this.groupID = UUID.randomUUID();
         this.subOrders=new ArrayList<>();
         this.members=new ArrayList<>();

@@ -21,7 +21,7 @@ public class CancelOrderStepsdefs {
 
     @Given("^a client \"([^\"]*)\" with order$")
     public void aClientWithOrder(String clientName) {
-        client = new CampusUser( clientName, "password", "", "email@example.com");
+        client = new CampusUser( clientName, "password", "email@example.com");
         order = new Order(new ArrayList<>());
     }
 
@@ -52,7 +52,7 @@ public class CancelOrderStepsdefs {
     public void restaurantIsOpenAndCloseAt(String restaurantName, int openHour, int openMinute, int closeHour, int closeMinute) {
         assertNotNull("Restaurant is not initialized", restaurant);
         assertEquals("Restaurant name does not match", restaurantName, restaurant.getName());
-        restaurant.addShift(LocalTime.of( openHour, openMinute), LocalTime.of( closeHour, closeMinute),Day.Friday, new RestaurantManager("test", "test", "test", "test"));
+        restaurant.addShift(LocalTime.of( openHour, openMinute), LocalTime.of( closeHour, closeMinute),Day.Friday, new RestaurantManager("test", "test", "test"));
     }
 
     @When("^the order is placed, paid, and accepted at (\\d+):(\\d+)$")

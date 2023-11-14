@@ -21,7 +21,7 @@ public class ManagerServiceStepdefs {
 
     @Given("manager of Restaurant logged in")
     public void managerOfRestaurantLoggedIn() {
-        manager = new RestaurantManager("test", "test", "test", "test");
+        manager = new RestaurantManager("test", "test", "test");
         restaurant = new Restaurant("test");
         restaurant.setOwner(manager);
     }

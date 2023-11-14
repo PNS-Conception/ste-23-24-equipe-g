@@ -24,7 +24,7 @@ public class PlaceOrderStepdefs {
 
     @Given("a client {string} with a cart")
     public void aClientWithAOrder(String name) {
-        client = new CampusUser( name, "password", "", "email@example.com");
+        client = new CampusUser( name, "password", "email@example.com");
         order= new Order(new ArrayList<>());
     }
 
@@ -48,7 +48,7 @@ public class PlaceOrderStepdefs {
 
     @Given("^le délice is open at (\\d+):(\\d+) and close at (\\d+):(\\d+)$")
     public void le_délice_is_open_at_and_close_at(int openHour, int openMinute, int closeHour, int closeMinute) {
-        restaurant.addShift(LocalTime.of(openHour, openMinute), LocalTime.of(closeHour, closeMinute),Day.Friday ,new RestaurantManager("test", "test", "test", "test"));
+        restaurant.addShift(LocalTime.of(openHour, openMinute), LocalTime.of(closeHour, closeMinute),Day.Friday ,new RestaurantManager("test", "test", "test"));
     }
 
     @Given("^the restaurant is open$")
