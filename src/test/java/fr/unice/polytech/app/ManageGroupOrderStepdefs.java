@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +23,9 @@ public class ManageGroupOrderStepdefs {
     Restaurant restaurant2;
     Restaurant restaurant3;
 
-    DeliveryPerson deliveryPerson=new DeliveryPerson("deliveryPerson",null,null,null);
+    //DeliveryPerson deliveryPerson=new DeliveryPerson("deliveryPerson",null,null,null);
+    DeliveryPerson deliveryPerson = new DeliveryPerson(UUID.randomUUID().toString(), "Nom du livreur", "Numéro de téléphone");
+
     @Given("a order group with {string} the owner")
     public void aOrderGroupWithTheOwner(String name) {
         alice= new CampusUser(name,null,null,null);

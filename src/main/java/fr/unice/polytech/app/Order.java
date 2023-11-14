@@ -6,6 +6,7 @@ import java.util.UUID;
 
 
 public class Order {
+    private boolean requiresSignatureAndVerification;
     private List<Item> items;
     private String clientAddress;
 
@@ -16,9 +17,18 @@ public class Order {
     private LocalTime acceptedTime;
 
     private LocalTime deliveryTime;
+    private boolean userConfirmationPossible = true;
+    private String routeDetails;
+    private LocalTime pickupTime;
+    private List<Restaurant> restaurants;
+    private String deliveryLocation;
+
 
     public Order(List<Item> items) {
+        this.id = UUID.randomUUID();
         this.items = items;
+        this.status = OrderStatus.PLACED; // La commande est initialisée avec le statut PLACED
+        this.requiresSignatureAndVerification = false; // Initialement, pas besoin de signature ni de vérification
     }
 
     public List<Item> getItems() {
@@ -76,6 +86,36 @@ public class Order {
         status = OrderStatus.ACCEPTED;
         acceptedTime = LocalTime.now();
     }
+    public String getRouteDetails() {
+        return routeDetails;
+    }
+
+    public void setRouteDetails(String routeDetails) {
+        this.routeDetails = routeDetails;
+    }
+
+    public LocalTime getPickupTime() {
+        return pickupTime;
+    }
+
+    public void setPickupTime(LocalTime pickupTime) {
+        this.pickupTime = pickupTime;
+    }
+    public List<Restaurant> getRestaurants() {
+        return restaurants;
+    }
+
+    public void setRestaurants(List<Restaurant> restaurants) {
+        this.restaurants = restaurants;
+    }
+
+    public String getDeliveryLocation() {
+        return deliveryLocation;
+    }
+
+    public void setDeliveryLocation(String deliveryLocation) {
+        this.deliveryLocation = deliveryLocation;
+    }
 
     public void pickUp() {
         status = OrderStatus.PICKED_UP;
@@ -120,4 +160,37 @@ public class Order {
     public boolean isClosed() {
         return status == OrderStatus.CANCELLED || status == OrderStatus.DELIVERED;
     }
+    public void setUserUnableToConfirm() {
+        this.userConfirmationPossible = false;
+    }
+    public boolean canUserConfirmReceipt() {
+        return userConfirmationPossible;
+    }
+    public void confirmReceipt() {
+        if (this.canUserConfirmReceipt() && this.status == OrderStatus.PICKED_UP) {
+            this.status = OrderStatus.DELIVERED;
+            this.deliveryTime = LocalTime.now();
+        }
+    }
+    public void deliverWithoutConfirmation() {
+        if (!this.canUserConfirmReceipt() && this.status == OrderStatus.PICKED_UP) {
+            this.status = OrderStatus.DELIVERED;
+            this.deliveryTime = LocalTime.now();
+            this.requiresSignatureAndVerification = true;
+        }
+    }
+
+    public boolean requiresSignatureAndVerification() {
+        return !this.canUserConfirmReceipt() && this.status == OrderStatus.DELIVERED;
+    }
+
+
+    public boolean needsSignatureAndVerification() {
+        return requiresSignatureAndVerification;
+    }
+
+
+
+
+
 }
