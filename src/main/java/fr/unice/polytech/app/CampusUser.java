@@ -15,6 +15,7 @@ public class CampusUser {
     private List<Item> cart;
     private double balance;
     private UserType type;
+    private RandomGenerator randomGenerator;
     private String deliveryPersonIdReceived;
     private String deliveryPersonPhoneNumberReceived;
     private String notifiedDeliveryPersonId;
@@ -30,6 +31,7 @@ public class CampusUser {
         this.type = UserType.Client;
         this.orders = new ArrayList<>();
         this.cart = new ArrayList<>();
+        this.balance = 0;
     }
 
     public CampusUser() {
@@ -65,6 +67,7 @@ public class CampusUser {
             return false;
         }
         order.setStatus(OrderStatus.CANCELLED);
+        setBalance(order.getPrice());
         orders.remove(order);
 
         return true;
@@ -80,6 +83,14 @@ public class CampusUser {
         System.out.println("Delivery Person ID: " + deliveryPersonId);
         System.out.println("Delivery Person Phone: " + deliveryPersonPhoneNumber);
 
+    }
+
+    void setBalance(double price) {
+        this.balance += price;
+    }
+
+    public void setRandomGenerator(RandomGenerator randomGenerator) {
+        this.randomGenerator = randomGenerator;
     }
 
     public void setAddress(String newAddress) {
@@ -99,8 +110,42 @@ public class CampusUser {
         // todo
     }
 
-    public void makePayment(Order order) {
-        //todo
+    public boolean makePayment(Order order, CampusUser user) {
+        //9 fois sur 10, la commande est validée, 1 fois sur 10 il y a une erreur.
+        if (Math.random() < 0.9) {
+            if (balance > 0){
+                if(balance >= order.getPrice()){
+                    balance -= order.getPrice();
+                }else{
+                    order.setPrice(order.getPrice() - balance);
+                    balance = 0;
+                }
+            }
+            order.setStatus(OrderStatus.PAID);
+            orders.add(order);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean makePaymentmock(Order order, CampusUser client) {
+        //9 fois sur 10, la commande est validée, 1 fois sur 10 il y a une erreur.
+        if (randomGenerator.nextDouble() < 0.9) {
+            if (balance > 0){
+                if(balance >= order.getPrice()){
+                    balance -= order.getPrice();
+                }else{
+                    order.setPrice(order.getPrice() - balance);
+                    balance = 0;
+                }
+            }
+            order.setStatus(OrderStatus.PAID);
+            orders.add(order);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Menu selectRestaurant(UUID restaurantId) {
@@ -162,6 +207,14 @@ public class CampusUser {
     }
 
     public void notifyUser() {
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public Order getLastOrder(){
+        return orders.get(orders.size()-1);
     }
 
 }

@@ -9,14 +9,12 @@ public class Order {
     private boolean requiresSignatureAndVerification;
     private List<Item> items;
     private String clientAddress;
-
     private LocalTime placedTime;
-
     private UUID id;
     private OrderStatus status;
     private LocalTime acceptedTime;
-
     private LocalTime deliveryTime;
+    private double price;
     private boolean userConfirmationPossible = true;
     private String routeDetails;
     private LocalTime pickupTime;
@@ -27,6 +25,9 @@ public class Order {
     public Order(List<Item> items) {
         this.id = UUID.randomUUID();
         this.items = items;
+        for (Item item : items) {
+            price += item.getPrice();
+        }
         this.status = OrderStatus.PLACED; // La commande est initialisée avec le statut PLACED
         this.requiresSignatureAndVerification = false; // Initialement, pas besoin de signature ni de vérification
     }
@@ -35,6 +36,13 @@ public class Order {
         return items;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price){
+        this.price = price;
+    }
 
     public void setClientAddress(String clientAddress) {
         this.clientAddress = clientAddress;

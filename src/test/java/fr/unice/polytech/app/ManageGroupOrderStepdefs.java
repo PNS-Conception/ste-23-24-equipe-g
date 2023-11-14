@@ -46,9 +46,7 @@ public class ManageGroupOrderStepdefs {
         aliceOrder = new Order(alice.getCart());
         groupOrder.addOrder(aliceOrder);
         aliceOrder.setStatus(OrderStatus.PLACED);
-        alice.makePayment(aliceOrder);
-        aliceOrder.setStatus(OrderStatus.PAID);
-
+        alice.makePayment(aliceOrder, alice);
     }
 
     @And("Bob has placed order form {string} and paid for it")
@@ -58,8 +56,7 @@ public class ManageGroupOrderStepdefs {
         bobOrder = new Order(bob.getCart());
         groupOrder.addOrder(bobOrder);
         bobOrder.setStatus(OrderStatus.PLACED);
-        bob.makePayment(bobOrder);
-        bobOrder.setStatus(OrderStatus.PAID);
+        bob.makePayment(bobOrder, bob);
     }
 
     @Then("the order group status should be Placed")
