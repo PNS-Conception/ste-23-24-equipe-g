@@ -16,6 +16,11 @@ public class CampusUser {
     private double balance;
     private UserType type;
     private RandomGenerator randomGenerator;
+    private String deliveryPersonIdReceived;
+    private String deliveryPersonPhoneNumberReceived;
+    private String notifiedDeliveryPersonId;
+    private String notifiedDeliveryPersonPhoneNumber;
+
 
     public CampusUser( String name, String password, String address, String email) {
         this.id = UUID.randomUUID();
@@ -33,6 +38,12 @@ public class CampusUser {
         this.id = UUID.randomUUID();
         this.name = "mockUser";
         this.type = UserType.Client;
+
+    }
+
+    public CampusUser(String id, String name) {
+        this.id = UUID.randomUUID();
+        this.name = "mockUser";
     }
 
     public void createItem(Dish dish, int quantity) {
@@ -47,7 +58,7 @@ public class CampusUser {
     public Order order(List<Item> items) {
         Order newOrder = new Order(items);
         orders.add(newOrder);
-        cart.clear();
+        cart.clear(); // Clear the cart after creating an order
         return newOrder;
     }
 
@@ -58,7 +69,20 @@ public class CampusUser {
         order.setStatus(OrderStatus.CANCELLED);
         setBalance(order.getPrice());
         orders.remove(order);
+
         return true;
+    }
+    /**
+     * Reçoit les détails de la livraison et les traite d'une certaine manière.
+     * @param deliveryPersonId L'ID du livreur.
+     * @param deliveryPersonPhoneNumber Le numéro de téléphone du livreur.
+     */
+    public void receiveDeliveryDetails(String deliveryPersonId, String deliveryPersonPhoneNumber) {
+        // Traitez les détails de la livraison ici
+        // Par exemple, affichez-les à l'utilisateur ou enregistrez-les dans l'interface utilisateur
+        System.out.println("Delivery Person ID: " + deliveryPersonId);
+        System.out.println("Delivery Person Phone: " + deliveryPersonPhoneNumber);
+
     }
 
     void setBalance(double price) {
@@ -133,7 +157,9 @@ public class CampusUser {
         return cart;
 
     }
-
+    public UUID getId() {
+        return id;
+    }
     public String getAddress() {
         return address;
     }
@@ -151,6 +177,31 @@ public class CampusUser {
     }
 
 
+
+    // Getters pour obtenir les informations du livreur reçues
+    public String getDeliveryPersonIdReceived() {
+        return deliveryPersonIdReceived;
+    }
+
+    public String getDeliveryPersonPhoneNumberReceived() {
+        return deliveryPersonPhoneNumberReceived;
+    }
+    public void setNotifiedDeliveryPersonId(String id) {
+        this.notifiedDeliveryPersonId = id;
+    }
+
+    public String getNotifiedDeliveryPersonId() {
+        return notifiedDeliveryPersonId;
+    }
+
+    public void setNotifiedDeliveryPersonPhoneNumber(String phoneNumber) {
+        this.notifiedDeliveryPersonPhoneNumber = phoneNumber;
+    }
+
+    public String getNotifiedDeliveryPersonPhoneNumber() {
+        return notifiedDeliveryPersonPhoneNumber;
+    }
+
     public void getRefund() {
 
     }
@@ -165,5 +216,6 @@ public class CampusUser {
     public Order getLastOrder(){
         return orders.get(orders.size()-1);
     }
+
 }
 
