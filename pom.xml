@@ -17,7 +17,7 @@
         <!-- Propriétés pour SonarQube -->
         <sonar.projectKey>fr.unice.polytech.cf:demo</sonar.projectKey>
         <sonar.host.url>http://localhost:9000</sonar.host.url>
-        <sonar.login>sqa_7d89e457780d345048ea777ae9a284a2926173a5</sonar.login>
+        <sonar.token>sqa_58b7d6cdfce5280d20458a0b500252a9af92d8f7</sonar.token>
     </properties>
 
     <dependencyManagement>
@@ -37,6 +37,26 @@
                 <scope>import</scope>
             </dependency>
 
+
+            <dependency>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.7</version> <!-- Replace with the latest version -->
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-java</artifactId>
+                <version>7.3.3</version> <!-- Replace with the latest version -->
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-junit</artifactId>
+                <version>7.3.3</version> <!-- Replace with the latest version -->
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -97,6 +117,26 @@
             <version>4.7.0</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.7</version> <!-- Replace with the latest version -->
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>7.3.3</version> <!-- Replace with the latest version -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>7.3.3</version> <!-- Replace with the latest version -->
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -125,9 +165,73 @@
             </plugin>
             <!-- Plugin SonarQube ajouté -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <properties>
+                        <configurationParameters>
+                            cucumber.features=src/test/resources/features
+                            cucumber.glue=fr.unice.polytech.app
+                        </configurationParameters>
+                    </properties>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.9.1.2184</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M6</version> <!-- Replace with the latest version -->
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.1.0</version> <!-- Replace with the latest version -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>**/*IT.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.7</version> <!-- Replace with the latest version -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
