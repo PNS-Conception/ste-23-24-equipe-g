@@ -18,6 +18,7 @@ public class Order {
     private boolean userConfirmationPossible = true;
     private String routeDetails;
     private LocalTime pickupTime;
+    private Restaurant restaurant;
     private List<Restaurant> restaurants;
     private String deliveryLocation;
 
@@ -109,12 +110,15 @@ public class Order {
     public void setPickupTime(LocalTime pickupTime) {
         this.pickupTime = pickupTime;
     }
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
     public List<Restaurant> getRestaurants() {
         return restaurants;
     }
 
-    public void setRestaurants(List<Restaurant> restaurants) {
-        this.restaurants = restaurants;
+    public void setRestaurant(Restaurant restaurants) {
+        this.restaurant = restaurant;
     }
 
     public String getDeliveryLocation() {

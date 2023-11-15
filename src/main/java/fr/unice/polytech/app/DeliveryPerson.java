@@ -1,6 +1,8 @@
 package fr.unice.polytech.app;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static fr.unice.polytech.app.OrderStatus.ASSIGNED;
@@ -15,7 +17,15 @@ public class DeliveryPerson extends CampusUser {
     private LocalTime pickupTime;
     private List<Restaurant> restaurants;
     private String deliveryLocation;
-    private List<DeliveryPerson> deliveryPeople;
+
+
+
+    private static List<DeliveryPerson> deliveryPeople;
+    private List<Order> deliveryHistory; // Historique des livraisons
+
+
+
+
 
 
     public DeliveryPerson(String id, String name, String phoneNumber) {
@@ -23,6 +33,7 @@ public class DeliveryPerson extends CampusUser {
         this.phoneNumber = phoneNumber;
         this.currentOrder = null;
         this.isAvailable = true; // Le livreur est initialement disponible
+        this.deliveryHistory = new ArrayList<>();
     }
 
     public boolean assignOrder(Order order) {
@@ -49,12 +60,24 @@ public class DeliveryPerson extends CampusUser {
     }
     public void receiveOrderDetails(Order order) {
         // Stocker les informations de la commande dans les attributs de la classe DeliveryPerson
-        this.routeDetails = order.getRouteDetails(); // Cette méthode doit être implémentée dans la classe Order
-        this.pickupTime = order.getPickupTime(); // Idem
-        this.restaurants = order.getRestaurants(); // Idem
-        this.deliveryLocation = order.getDeliveryLocation(); // Idem
+        this.routeDetails = order.getRouteDetails();
+        this.pickupTime = order.getPickupTime();
+        this.restaurants = order.getRestaurants();
+        this.deliveryLocation = order.getDeliveryLocation();
+    }
+    public void completeDelivery() {
+        if (this.currentOrder != null) {
+            this.deliveryHistory.add(this.currentOrder); // Ajoute la commande à l'historique
+            this.currentOrder.setStatus(DELIVERED);
+            this.currentOrder = null;
+            this.isAvailable = true;
+        }
     }
 
+    // Getters pour l'historique des livraisons
+    public List<Order> getDeliveryHistory() {
+        return Collections.unmodifiableList(deliveryHistory);
+    }
 
     // Getters pour les nouveaux attributs
     public String getRouteDetails() {
@@ -71,6 +94,9 @@ public class DeliveryPerson extends CampusUser {
 
     public String getDeliveryLocation() {
         return deliveryLocation;
+    }
+    public static List<DeliveryPerson> getDeliveryPeople() {
+        return deliveryPeople;
     }
 
     // Getters et setters pour phoneNumber
