@@ -32,7 +32,13 @@ public class Restaurant {
         schedule = new ArrayList<>();
         this.menu = menu;
     }
-
+    public Restaurant(String name, String address) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        orderList = new ArrayList<>();
+        schedule = new ArrayList<>();
+        this.address = address;
+    }
     public void setMenu(Menu menu, RestaurantManager manager) {
         if (manager.getType() == UserType.MANAGER) {
             this.menu = menu;

@@ -3,6 +3,7 @@ package fr.unice.polytech.app;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class Admin {
 
@@ -22,10 +23,10 @@ public class Admin {
     }
 
     public void addDeliveryPerson(String name, String ownerEmail) {
-        DeliveryPerson deliveryPerson = new DeliveryPerson(null,null,ownerEmail);
+        DeliveryPerson deliveryPerson = new DeliveryPerson(UUID.randomUUID().toString(), name, ownerEmail);
         deliveryPersons.add(deliveryPerson);
-
     }
+
 
     public List<Restaurant> getRestaurants() {
         return restaurants;

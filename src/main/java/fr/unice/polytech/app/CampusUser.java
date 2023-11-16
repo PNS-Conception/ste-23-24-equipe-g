@@ -16,6 +16,11 @@ public class CampusUser {
     private double balance;
     private UserType type;
     private RandomGenerator randomGenerator;
+    private String deliveryPersonIdReceived;
+    private String deliveryPersonPhoneNumberReceived;
+    private String notifiedDeliveryPersonId;
+    private String notifiedDeliveryPersonPhoneNumber;
+
 
     public CampusUser( String name, String password, String email) {
         this.id = UUID.randomUUID();
@@ -57,6 +62,18 @@ public class CampusUser {
         refund(order);
         order.setStatus(OrderStatus.CANCELLED);
         return true;
+    }
+    /**
+     * Reçoit les détails de la livraison et les traite d'une certaine manière.
+     * @param deliveryPersonId L'ID du livreur.
+     * @param deliveryPersonPhoneNumber Le numéro de téléphone du livreur.
+     */
+    public void receiveDeliveryDetails(String deliveryPersonId, String deliveryPersonPhoneNumber) {
+        // Traitez les détails de la livraison ici
+        // Par exemple, affichez-les à l'utilisateur ou enregistrez-les dans l'interface utilisateur
+        System.out.println("Delivery Person ID: " + deliveryPersonId);
+        System.out.println("Delivery Person Phone: " + deliveryPersonPhoneNumber);
+
     }
 
     void setBalance(double price) {
@@ -129,6 +146,10 @@ public class CampusUser {
 
     }
 
+    public UUID getId() {
+        return id;
+    }
+
     public void setType(UserType type) {
         this.type = type;
     }
@@ -139,6 +160,32 @@ public class CampusUser {
 
     public String getEmail() {
         return email;
+    }
+
+
+
+    // Getters pour obtenir les informations du livreur reçues
+    public String getDeliveryPersonIdReceived() {
+        return deliveryPersonIdReceived;
+    }
+
+    public String getDeliveryPersonPhoneNumberReceived() {
+        return deliveryPersonPhoneNumberReceived;
+    }
+    public void setNotifiedDeliveryPersonId(String id) {
+        this.notifiedDeliveryPersonId = id;
+    }
+
+    public String getNotifiedDeliveryPersonId() {
+        return notifiedDeliveryPersonId;
+    }
+
+    public void setNotifiedDeliveryPersonPhoneNumber(String phoneNumber) {
+        this.notifiedDeliveryPersonPhoneNumber = phoneNumber;
+    }
+
+    public String getNotifiedDeliveryPersonPhoneNumber() {
+        return notifiedDeliveryPersonPhoneNumber;
     }
 
     public void notifyUser() {
@@ -158,5 +205,6 @@ public class CampusUser {
             orders.remove(order);
         //}
     }
+
 }
 

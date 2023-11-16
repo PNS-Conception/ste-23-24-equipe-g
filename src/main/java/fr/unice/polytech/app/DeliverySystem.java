@@ -1,0 +1,64 @@
+
+package fr.unice.polytech.app;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class DeliverySystem {
+
+    private List<DeliveryPerson> deliveryPeople;
+
+    public DeliverySystem() {
+        this.deliveryPeople = new ArrayList<>();
+    }
+
+    public void addDeliveryPerson(DeliveryPerson deliveryPerson) {
+        this.deliveryPeople.add(deliveryPerson);
+    }
+
+    public boolean removeDeliveryPerson(DeliveryPerson deliveryPerson) {
+        return this.deliveryPeople.remove(deliveryPerson);
+    }
+
+    public Optional<DeliveryPerson> assignOrderToDeliveryPerson(Order order) {
+        for (DeliveryPerson deliveryPerson : this.deliveryPeople) {
+            if (deliveryPerson.isAvailable()) {
+                boolean assigned = deliveryPerson.assignOrder(order);
+                if (assigned) {
+                    return Optional.of(deliveryPerson);
+                }
+            }
+        }
+        return Optional.empty(); // Aucun livreur disponible
+    }
+
+    public List<DeliveryPerson> getAvailableDeliveryPeople() {
+        List<DeliveryPerson> availableDeliveryPeople = new ArrayList<>();
+        for (DeliveryPerson deliveryPerson : this.deliveryPeople) {
+            if (deliveryPerson.isAvailable()) {
+                availableDeliveryPeople.add(deliveryPerson);
+            }
+        }
+        return availableDeliveryPeople;
+    }
+//    /**
+//     * Notifie l'utilisateur avec les détails de la livraison.
+//     * @param user L'utilisateur à notifier.
+//     * @param deliveryPerson Le livreur dont les détails doivent être envoyés.
+//     */
+//    public void notifyUserWithDeliveryDetails(CampusUser user, DeliveryPerson deliveryPerson) {
+//        if(user != null && deliveryPerson != null) {
+//
+//            user.receiveDeliveryDetails(deliveryPerson.getId().toString(), deliveryPerson.getPhoneNumber());
+//        }
+//    }
+    public List<DeliveryPerson> getDeliveryPeople() {
+        return new ArrayList<>(this.deliveryPeople);
+    }
+    public void notifyUserWithDeliveryDetails(CampusUser user, DeliveryPerson deliveryPerson) {
+        user.setNotifiedDeliveryPersonId(deliveryPerson.getId().toString());
+        user.setNotifiedDeliveryPersonPhoneNumber(deliveryPerson.getPhoneNumber());
+    }
+}
+
