@@ -18,8 +18,8 @@ public class DeliveryPerson extends CampusUser {
     private List<DeliveryPerson> deliveryPeople;
 
 
-    public DeliveryPerson(String id, String name, String phoneNumber) {
-        super(id, name); // Appel au constructeur de la superclasse CampusUser
+    public DeliveryPerson(String id, String name, String email,  String phoneNumber) {
+        super(id, name, email); // Appel au constructeur de la superclasse CampusUser
         this.phoneNumber = phoneNumber;
         this.currentOrder = null;
         this.isAvailable = true; // Le livreur est initialement disponible
@@ -102,9 +102,11 @@ public class DeliveryPerson extends CampusUser {
 
 
     public void validateOrder(GroupOrder groupOrder) {
+        groupOrder.setStatus(OrderStatus.PICKED_UP);
     }
 
     public void deliverOrder(GroupOrder groupOrder) {
+        groupOrder.setStatus(OrderStatus.DELIVERED);
     }
 
 

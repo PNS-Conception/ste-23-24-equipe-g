@@ -22,8 +22,8 @@ public class Admin {
         restaurant.setOwner(new RestaurantManager(null,null,ownerEmail));
     }
 
-    public void addDeliveryPerson(String name, String ownerEmail) {
-        DeliveryPerson deliveryPerson = new DeliveryPerson(UUID.randomUUID().toString(), name, ownerEmail);
+    public void addDeliveryPerson(String name, String ownerEmail, String phoneNumber) {
+        DeliveryPerson deliveryPerson = new DeliveryPerson(UUID.randomUUID().toString(), name, ownerEmail, phoneNumber);
         deliveryPersons.add(deliveryPerson);
     }
 

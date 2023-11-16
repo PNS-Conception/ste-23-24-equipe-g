@@ -86,7 +86,6 @@ import io.cucumber.java.en.Then;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -101,7 +100,7 @@ public class OrderDetailsNotificationSteps {
     @Given("an order has been assigned to a delivery person")
     public void an_order_has_been_assigned_to_a_delivery_person() {
         deliverySystem = new DeliverySystem();
-        deliveryPerson = new DeliveryPerson(UUID.randomUUID().toString(), "Delivery Guy", "+334567890");
+        deliveryPerson = new DeliveryPerson(UUID.randomUUID().toString(), "Delivery Guy", "+334567890", "delivery@gmail.com" );
         Dish dish = new Dish("Pizza", 10.0);
         Item item = new Item(dish, 2);
         ArrayList<Item> items = new ArrayList<>();
@@ -134,7 +133,7 @@ public class OrderDetailsNotificationSteps {
     @Given("an order is assigned to a delivery person")
     public void an_order_is_assigned_to_a_delivery_person() {
         an_order_has_been_assigned_to_a_delivery_person(); // Reuse the first Given method
-        user = new CampusUser("user123", "User123"); // Example of a possible User constructor
+        user = new CampusUser("user123", "User123", "email"); // Example of a possible User constructor
     }
 
     @When("the system sends the delivery details to the user")

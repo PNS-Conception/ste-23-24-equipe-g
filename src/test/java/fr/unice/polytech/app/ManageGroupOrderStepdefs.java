@@ -24,7 +24,7 @@ public class ManageGroupOrderStepdefs {
     Restaurant restaurant3;
 
     //DeliveryPerson deliveryPerson=new DeliveryPerson("deliveryPerson",null,null,null);
-    DeliveryPerson deliveryPerson = new DeliveryPerson(UUID.randomUUID().toString(), "Nom du livreur", "Numéro de téléphone");
+    DeliveryPerson deliveryPerson = new DeliveryPerson(UUID.randomUUID().toString(), "Nom du livreur", "Numéro de téléphone", "email@livreur.com" );
 
     @Given("a order group with {string} the owner")
     public void aOrderGroupWithTheOwner(String name) {

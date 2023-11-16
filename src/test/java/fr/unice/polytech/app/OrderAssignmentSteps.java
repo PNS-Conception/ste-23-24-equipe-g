@@ -5,7 +5,6 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -27,7 +26,7 @@ public class OrderAssignmentSteps {
             ArrayList<Restaurant> restaurants = new ArrayList<>();
             restaurants.add(restaurant);
 
-            CampusUser user = new CampusUser("John Doe", "password", "1234 Street Name", "johndoe@example.com");
+            CampusUser user = new CampusUser("John Doe", "password", "johndoe@example.com");
 
 
             order = new Order(items);
@@ -37,7 +36,7 @@ public class OrderAssignmentSteps {
     @Given("a delivery person is available")
     public void a_delivery_person_is_available() {
 
-        deliveryPerson = new DeliveryPerson("DP001", "John Doe", "555-1234");
+        deliveryPerson = new DeliveryPerson("DP001", "John Doe", "555-1234", "johndoe@gmail.com" );
         deliveryPerson.setAvailable(true);
 
         deliverySystem = new DeliverySystem();
