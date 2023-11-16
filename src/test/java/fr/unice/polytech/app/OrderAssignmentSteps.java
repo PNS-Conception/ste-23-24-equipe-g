@@ -5,7 +5,6 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.Assert.*;
 

@@ -17,7 +17,7 @@ public class ValidateStepdefs {
 
     @Given("I have an order with status {string}")
     public void i_have_an_order_with_status(String status) {
-        order = new Order(new ArrayList<>());
+        order = new Order(new ArrayList<>() );
         order.setStatus(OrderStatus.valueOf(status));
     }
 

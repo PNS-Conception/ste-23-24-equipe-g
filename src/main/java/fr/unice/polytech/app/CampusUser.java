@@ -9,7 +9,7 @@ public class CampusUser {
     private UUID id;
     private String name;
     private String password;
-    private String address;
+
     private String email;
     private List<Order> orders;
     private List<Item> cart;
@@ -34,7 +34,6 @@ public class CampusUser {
     }
 
     public CampusUser( String name, String email) {
-        this.id = UUID.randomUUID();
         this.name = name;
         this.email = email;
         this.type = UserType.Client;
@@ -65,9 +64,9 @@ public class CampusUser {
     }
 
     public Order order(List<Item> items) {
-        Order newOrder = new Order(items);
+        Order newOrder = new Order(items, this);
         orders.add(newOrder);
-        cart.clear(); // Clear the cart after creating an order
+        cart.clear();
         return newOrder;
     }
 
@@ -75,10 +74,8 @@ public class CampusUser {
         if (minutesPassed > 30) {
             return false;
         }
+        refund(order);
         order.setStatus(OrderStatus.CANCELLED);
-        setBalance(order.getPrice());
-        orders.remove(order);
-
         return true;
     }
     /**
@@ -102,9 +99,6 @@ public class CampusUser {
         this.randomGenerator = randomGenerator;
     }
 
-    public void setAddress(String newAddress) {
-        this.address = newAddress;
-    }
 
     public List<Order> getHistory() {
         return orders;
@@ -166,11 +160,9 @@ public class CampusUser {
         return cart;
 
     }
+
     public UUID getId() {
         return id;
-    }
-    public String getAddress() {
-        return address;
     }
 
     public void setType(UserType type) {
@@ -211,10 +203,6 @@ public class CampusUser {
         return notifiedDeliveryPersonPhoneNumber;
     }
 
-    public void getRefund() {
-
-    }
-
     public void notifyUser() {
     }
 
@@ -224,6 +212,13 @@ public class CampusUser {
 
     public Order getLastOrder(){
         return orders.get(orders.size()-1);
+    }
+
+    public void refund(Order order) {
+        //if(order.getStatus() == OrderStatus.PAID && orders.contains(order)){
+            setBalance(order.getPrice());
+            orders.remove(order);
+        //}
     }
 
 }

@@ -1,6 +1,7 @@
 package fr.unice.polytech.app;
 
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -22,7 +23,7 @@ public class CancelOrderStepsdefs {
     @Given("^a client \"([^\"]*)\" with order$")
     public void aClientWithOrder(String clientName) {
         client = new CampusUser( clientName, "password", "email@example.com");
-        order = new Order(new ArrayList<>());
+        order = new Order(new ArrayList<>(), client);
     }
 
 
@@ -82,7 +83,6 @@ public class CancelOrderStepsdefs {
     @Then("^client can cancel order$")
     public void clientCanCancelOrder() {
         assertTrue(client.cancelOrder(order,0));
-
     }
 
     @Then("^the status of the order is cancelled$")
@@ -117,4 +117,8 @@ public class CancelOrderStepsdefs {
     }
 
 
+    @And("the user is refunded")
+    public void theUserIsRefunded() {
+        assertEquals(order.getPrice(),client.getBalance(), 0);
+    }
 }

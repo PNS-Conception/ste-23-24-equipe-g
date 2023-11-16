@@ -154,7 +154,7 @@ public class ManageGroupStepdefs {
     @When("Alice leave the group order")
     public void aliceLeaveTheGroupOrder() {
         alice.createItem(new Dish("pizza",10), 2);
-        aliceOrder = new Order(alice.getCart());
+        aliceOrder = new Order(alice.getCart(), alice);
         groupOrder.addOrder(aliceOrder);
         groupOrder.quit(alice);
         groupOrder.setOwner(groupOrder.getMembers().get(0));
@@ -168,7 +168,7 @@ public class ManageGroupStepdefs {
 
     @And("Alice should be refunded")
     public void aliceShouldBeRefunded() {
-        alice.getRefund();
+        assertEquals(20, alice.getBalance(), 0);
     }
 
     @And("Bob should be the owner of the group order")

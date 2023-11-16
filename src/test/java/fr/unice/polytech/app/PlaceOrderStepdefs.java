@@ -58,7 +58,6 @@ public class PlaceOrderStepdefs {
 
     @Given("^client choose the address \"([^\"]*)\"$")
     public void client_choose_the_address(String address) {
-        client.setAddress(address);
         order.setClientAddress(address);
     }
 

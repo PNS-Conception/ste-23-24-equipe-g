@@ -40,7 +40,7 @@ public class Restaurant {
         this.address = address;
     }
     public void setMenu(Menu menu, RestaurantManager manager) {
-        if (manager.getType() == UserType.Manager) {
+        if (manager.getType() == UserType.MANAGER) {
             this.menu = menu;
         }
     }
@@ -54,12 +54,31 @@ public class Restaurant {
         if (orderList.contains(order)) {
             LocalTime currentTime = LocalTime.now();
             LocalTime acceptedTime = order.getAcceptedTime();
-            /*long minutesPassed = java.time.Duration.between(acceptedTime, currentTime).toMinutes();
-            order.setStatus(OrderStatus.Cancelled);*/
+//            long minutesPassed = java.time.Duration.between(acceptedTime, currentTime).toMinutes();
+            userRefund(order);
+            order.setStatus(OrderStatus.CANCELLED);
             return minutesPassed <= 30;
         }
 
         return false;
+    }
+
+    public void acceptOrder(Order order) {
+        if (orderList.contains(order)) {
+            order.setStatus(OrderStatus.ACCEPTED);
+            order.setAcceptedTime(LocalTime.now());
+        }
+    }
+
+    public void cancelOrder(Order order) {
+        if (orderList.contains(order)) {
+            order.setStatus(OrderStatus.CANCELLED);
+            userRefund(order);
+        }
+    }
+
+    private void userRefund(Order order) {
+        order.getClient().refund(order);
     }
 
     public boolean addShift(LocalTime openingTime, LocalTime closingTime, Day day,RestaurantManager manager) {
