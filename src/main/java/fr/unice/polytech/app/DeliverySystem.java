@@ -57,6 +57,7 @@ public class DeliverySystem {
         return new ArrayList<>(this.deliveryPeople);
     }
     public void notifyUserWithDeliveryDetails(CampusUser user, DeliveryPerson deliveryPerson) {
+        System.out.println("Delivery Person ID: " + deliveryPerson.getId());
         user.setNotifiedDeliveryPersonId(deliveryPerson.getId().toString());
         user.setNotifiedDeliveryPersonPhoneNumber(deliveryPerson.getPhoneNumber());
     }

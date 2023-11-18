@@ -1,5 +1,6 @@
 package fr.unice.polytech.app;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -13,6 +14,11 @@ public class AdminServiceStepdefs {
     @Given("admin logged in")
     public void adminLoggedIn() {
          admin=new Admin();
+    }
+
+    @And("a restaurant manager with email {string}")
+    public void aRestaurantManagerWithEmail(String arg0) {
+        admin.addCampusUser("name","password",arg0);
     }
 
 
@@ -29,7 +35,7 @@ public class AdminServiceStepdefs {
 
     @When("the admin add restaurant with name {string} and address {string} and a restaurant manager with email {string}")
     public void theAdminAddRestaurantWithNameAndAddressAndARestaurantManagerWithEmail(String restaurantName, String restaurantAddress, String restaurantOwnerEmail) {
-        admin.addRestaurant(restaurantName,restaurantAddress,restaurantOwnerEmail);
+        admin.addRestaurant(restaurantName,restaurantAddress,admin.getUserByEmail(restaurantOwnerEmail));
 
     }
 
@@ -41,4 +47,7 @@ public class AdminServiceStepdefs {
         assertEquals(restaurantOwnerEmail, admin.getRestaurants().get(0).getOwner().getEmail());
 
     }
+
+
+
 }

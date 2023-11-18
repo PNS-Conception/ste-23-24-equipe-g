@@ -31,7 +31,7 @@ public class PaymentStepdefs {
 
     @When("Alice orders a pizza and a pasta")
     public void alice_orders_items() {
-        order = client.order(client.getCart());
+        order = client.order(client.getCart(),new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
     }
 
     @When("Alice pays {double}€")

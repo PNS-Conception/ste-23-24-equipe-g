@@ -2,7 +2,7 @@ Feature: Admin service
 
   Background:
     Given admin logged in
-
+    And a restaurant manager with email "manager@manager.fr"
 
   Scenario: Add restaurant
     When the admin add restaurant with name "Restaurant 1" and address "Address 1" and a restaurant manager with email "manager@manager.fr"

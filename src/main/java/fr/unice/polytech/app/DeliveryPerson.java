@@ -14,15 +14,20 @@ public class DeliveryPerson extends CampusUser {
     private String routeDetails;
     private LocalTime pickupTime;
     private List<Restaurant> restaurants;
+
+    private Restaurant restaurant;
     private String deliveryLocation;
     private List<DeliveryPerson> deliveryPeople;
 
 
+
     public DeliveryPerson( String name,String email,String phoneNumber) {
-        super(name,email); // Appel au constructeur de la superclasse CampusUser
+        super(name,email);
+        setType(UserType.DELIVERY_PERSON);
         this.phoneNumber = phoneNumber;
         this.currentOrder = null;
-        this.isAvailable = true; // Le livreur est initialement disponible
+        this.isAvailable = true;
+
     }
 
     public boolean assignOrder(Order order) {
@@ -48,11 +53,17 @@ public class DeliveryPerson extends CampusUser {
         }
     }
     public void receiveOrderDetails(Order order) {
-        // Stocker les informations de la commande dans les attributs de la classe DeliveryPerson
-        this.routeDetails = order.getRouteDetails(); // Cette méthode doit être implémentée dans la classe Order
-        this.pickupTime = order.getPickupTime(); //
-        this.restaurants = order.getRestaurants(); //
-        this.deliveryLocation = order.getDeliveryLocation(); //
+        this.routeDetails = order.getRouteDetails();
+        this.pickupTime = order.getPickupTime();
+        this.restaurant = order.getRestaurant();
+        this.deliveryLocation = order.getDeliveryLocation();
+    }
+
+    public void receiveGroupOrderDetails(GroupOrder order) {
+        this.routeDetails = order.getRouteDetails();
+        this.pickupTime = order.getPickupTime();
+        this.restaurants = order.getRestaurants();
+        this.deliveryLocation = order.getDeliveryLocation();
     }
 
 

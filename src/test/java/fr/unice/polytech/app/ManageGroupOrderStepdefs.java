@@ -41,9 +41,9 @@ public class ManageGroupOrderStepdefs {
 
     @When("Alice has placed order from the restaurant {string} and paid for it")
     public void hasAPlaceOrderFromTheRestaurantAndPaidForIt( String restaurant) {
-        restaurant1=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", Arrays.asList("Tomato", "Mozzarella", "Basil"), 7.99), new Dish("Pepperoni", Arrays.asList("Tomato", "Mozzarella", "Pepperoni"), 8.99))));
+        restaurant1=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita",  7.99), new Dish("Pepperoni",8.99))));
         alice.createItem(new Dish("pizza",10), 2);
-        aliceOrder = new Order(alice.getCart(),alice );
+        aliceOrder = new Order(alice.getCart(),alice,restaurant1 );
         groupOrder.addOrder(aliceOrder);
         aliceOrder.setStatus(OrderStatus.PLACED);
         alice.makePayment(aliceOrder, alice);
@@ -51,12 +51,13 @@ public class ManageGroupOrderStepdefs {
 
     @And("Bob has placed order form {string} and paid for it")
     public void bobHasPlacedOrderFormAndPaidForIt(String restaurant) {
-        restaurant2=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", Arrays.asList("Tomato", "Mozzarella", "Basil"), 7.99), new Dish("Pepperoni", Arrays.asList("Tomato", "Mozzarella", "Pepperoni"), 8.99))));
+        restaurant2=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
         bob.createItem(new Dish("pasta",11), 1);
-        bobOrder = new Order(bob.getCart(), bob);
+        bobOrder = new Order(bob.getCart(), bob,restaurant2);
         groupOrder.addOrder(bobOrder);
         bobOrder.setStatus(OrderStatus.PLACED);
         bob.makePayment(bobOrder, bob);
+
     }
 
     @Then("the order group status should be Placed")
@@ -75,9 +76,9 @@ public class ManageGroupOrderStepdefs {
 
     @And("Bob has a place order form {string} and not paid for it")
     public void bobHasAPlaceOrderFormAndNotPaidForIt(String restaurant) {
-        restaurant3=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", Arrays.asList("Tomato", "Mozzarella", "Basil"), 7.99), new Dish("Pepperoni", Arrays.asList("Tomato", "Mozzarella", "Pepperoni"), 8.99))));
+        restaurant3=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni", 8.99))));
         bob.createItem(new Dish("pasta",11), 1);
-        bobOrder = new Order(bob.getCart(), bob );
+        bobOrder = new Order(bob.getCart(), bob,restaurant3 );
         groupOrder.addOrder(bobOrder);
         bobOrder.setStatus(OrderStatus.PLACED);
     }
@@ -90,12 +91,14 @@ public class ManageGroupOrderStepdefs {
     @Given("group order is paid")
     public void groupOrderIsPaid() {
         groupOrder.setStatus(OrderStatus.PAID);
+        restaurant1 = new Restaurant("restaurant", new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
+        restaurant3 = new Restaurant("restaurant", new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni", 8.99))));
     }
 
     @When("Bob cancels his order")
     public void bobCancelsHisOrder() {
         bob.createItem(new Dish("pasta",11), 1);
-        bobOrder = new Order(bob.getCart(), bob );
+        bobOrder = new Order(bob.getCart(), bob,restaurant3 );
         groupOrder.cancelOrder(bobOrder,bob,2);
         groupOrder.quit(bob);
     }
@@ -113,10 +116,10 @@ public class ManageGroupOrderStepdefs {
 
     @When("all members cancels their order")
     public void allMembersCancelsTheirOrder() {
-        bob.createItem(new Dish("pasta",11), 1);
-        bobOrder = new Order(bob.getCart(), bob);
-        alice.createItem(new Dish("pasta",11), 1);
-        aliceOrder = new Order(alice.getCart(), alice);
+        bob.createItem(new Dish("pasta",11,0), 1);
+        bobOrder = new Order(bob.getCart(), bob, restaurant3);
+        alice.createItem(new Dish("pasta",11,0), 1);
+        aliceOrder = new Order(alice.getCart(), alice, restaurant1);
         groupOrder.cancelOrder(bobOrder,bob,2);
         groupOrder.quit(bob);
         groupOrder.cancelOrder(aliceOrder,alice,2);
@@ -137,11 +140,13 @@ public class ManageGroupOrderStepdefs {
 
     @Given("all sub orders are accepted")
     public void allSubOrdersAreAccepted() {
-        alice.createItem(new Dish("pasta",11), 1);
-        aliceOrder = new Order(alice.getCart(), alice );
+        restaurant2=new Restaurant("restaurant", new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
+        restaurant1=new Restaurant("restaurant", new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
+        alice.createItem(new Dish("pasta",11,0), 1);
+        aliceOrder = new Order(alice.getCart(), alice, restaurant1);
         aliceOrder.setStatus(OrderStatus.ACCEPTED);
-        bob.createItem(new Dish("pasta",11), 1);
-        bobOrder = new Order(bob.getCart(), bob );
+        bob.createItem(new Dish("pasta",11,0), 1);
+        bobOrder = new Order(bob.getCart(), bob , restaurant2);
         bobOrder.setStatus(OrderStatus.ACCEPTED);
     }
 

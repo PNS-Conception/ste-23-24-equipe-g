@@ -9,7 +9,6 @@ public class CampusUser {
     private UUID id;
     private String name;
     private String password;
-
     private String email;
     private List<Order> orders;
     private List<Item> cart;
@@ -27,16 +26,17 @@ public class CampusUser {
         this.name = name;
         this.password = password;
         this.email = email;
-        this.type = UserType.Client;
+        this.type = UserType.CLIENT;
         this.orders = new ArrayList<>();
         this.cart = new ArrayList<>();
         this.balance = 0;
     }
 
     public CampusUser( String name, String email) {
+        this.id = UUID.randomUUID();
         this.name = name;
         this.email = email;
-        this.type = UserType.Client;
+        this.type = UserType.CLIENT;
         this.orders = new ArrayList<>();
         this.cart = new ArrayList<>();
         this.balance = 0;
@@ -45,14 +45,10 @@ public class CampusUser {
     public CampusUser() {
         this.id = UUID.randomUUID();
         this.name = "mockUser";
-        this.type = UserType.Client;
+        this.type = UserType.CLIENT;
 
     }
 
-    public CampusUser( String name) {
-        this.id = UUID.randomUUID();
-        this.name = name;
-    }
 
     public void createItem(Dish dish, int quantity) {
         Item newItem = new Item(dish, quantity);
@@ -63,8 +59,8 @@ public class CampusUser {
         cart.remove(item);
     }
 
-    public Order order(List<Item> items) {
-        Order newOrder = new Order(items, this);
+    public Order order(List<Item> items, Restaurant restaurant) {
+        Order newOrder = new Order(items, this, restaurant);
         orders.add(newOrder);
         cart.clear();
         return newOrder;
@@ -124,7 +120,7 @@ public class CampusUser {
                     balance = 0;
                 }
             }
-            order.setStatus(OrderStatus.PAID);
+            order.pay();
             orders.add(order);
             return true;
         } else {
@@ -145,6 +141,7 @@ public class CampusUser {
             }
             order.setStatus(OrderStatus.PAID);
             orders.add(order);
+
             return true;
         } else {
             return false;
@@ -165,6 +162,7 @@ public class CampusUser {
         return id;
     }
 
+
     public void setType(UserType type) {
         this.type = type;
     }
@@ -179,7 +177,6 @@ public class CampusUser {
 
 
 
-    // Getters pour obtenir les informations du livreur reçues
     public String getDeliveryPersonIdReceived() {
         return deliveryPersonIdReceived;
     }
@@ -220,6 +217,15 @@ public class CampusUser {
             orders.remove(order);
         //}
     }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public String getName(){
+        return name;
+    }
+
 
 }
 

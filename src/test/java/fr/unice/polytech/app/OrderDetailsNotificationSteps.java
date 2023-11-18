@@ -102,7 +102,7 @@ public class OrderDetailsNotificationSteps {
     public void an_order_has_been_assigned_to_a_delivery_person() {
         deliverySystem = new DeliverySystem();
         deliveryPerson = new DeliveryPerson( "Delivery Guy", null, "+334567890");
-        Dish dish = new Dish("Pizza", 10.0);
+        Dish dish = new Dish("Pizza", 10,0);
         Item item = new Item(dish, 2);
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
@@ -111,7 +111,6 @@ public class OrderDetailsNotificationSteps {
         order.setStatus(OrderStatus.ASSIGNED);
         order.setRouteDetails("Some route");
         order.setPickupTime(LocalTime.now());
-        order.setRestaurants(new ArrayList<>()); // Assume Restaurant is a defined class
         order.setDeliveryLocation("Some delivery location");
 
         deliveryPerson.setCurrentOrder(order);
@@ -127,14 +126,15 @@ public class OrderDetailsNotificationSteps {
     public void the_delivery_person_should_have_details_including_route_pickup_time_restaurants_and_delivery_location() {
         assertEquals(order.getRouteDetails(), deliveryPerson.getRouteDetails());
         assertEquals(order.getPickupTime(), deliveryPerson.getPickupTime());
-        assertEquals(order.getRestaurants(), deliveryPerson.getRestaurants());
+        assertEquals(order.getRestaurant(), deliveryPerson.getRestaurants());
         assertEquals(order.getDeliveryLocation(), deliveryPerson.getDeliveryLocation());
     }
 
     @Given("an order is assigned to a delivery person")
     public void an_order_is_assigned_to_a_delivery_person() {
-        an_order_has_been_assigned_to_a_delivery_person(); // Reuse the first Given method
-        user = new CampusUser("user123"); // Example of a possible User constructor
+        an_order_has_been_assigned_to_a_delivery_person();
+        user = new CampusUser("user123","null", "User123"); // Assume User is a defined class
+
     }
 
     @When("the system sends the delivery details to the user")

@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class CancelOrderStepsdefs {
 
     private CampusUser client;
-    private Restaurant restaurant;
+    private Restaurant restaurant=new Restaurant("test", new RestaurantManager("test", "test", "test"), "test");
     private Order order;
 
     private LocalTime currentTime;
@@ -23,7 +23,7 @@ public class CancelOrderStepsdefs {
     @Given("^a client \"([^\"]*)\" with order$")
     public void aClientWithOrder(String clientName) {
         client = new CampusUser( clientName, "password", "email@example.com");
-        order = new Order(new ArrayList<>(), client);
+        order = new Order(new ArrayList<>(), client,restaurant);
     }
 
 
@@ -38,14 +38,14 @@ public class CancelOrderStepsdefs {
         client.createItem(pizza, quantity1);
         client.createItem(pasta, quantity2);
 
-        order = client.order(client.getCart());
+        order = client.order(client.getCart(),restaurant);
 
         order.setStatus(OrderStatus.PLACED);
     }
 
     @Given("^a restaurant \"([^\"]*)\"$")
     public void aRestaurant(String restaurantName) {
-        restaurant = new Restaurant(restaurantName, new Menu(Arrays.asList(new Dish("Margherita", Arrays.asList("Tomato", "Mozzarella", "Basil"), 7.99), new Dish("Pepperoni", Arrays.asList("Tomato", "Mozzarella", "Pepperoni"), 8.99))));
+        restaurant = new Restaurant(restaurantName, new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni", 8.99))));
         restaurant.addOrder(order);
     }
 

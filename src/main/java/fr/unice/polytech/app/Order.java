@@ -2,6 +2,7 @@ package fr.unice.polytech.app;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -20,28 +21,29 @@ public class Order {
     private boolean userConfirmationPossible = true;
     private String routeDetails;
     private LocalTime pickupTime;
-    private List<Restaurant> restaurants;
+    private Restaurant restaurant;
     private String deliveryLocation;
 
 
-    public Order(List<Item> items, CampusUser user) {
+    public Order(List<Item> items, CampusUser user,Restaurant restaurant) {
+        this.id = UUID.randomUUID();
+        this.restaurant = restaurant;
         this.items = items;
-        for (Item item : items) {
-            price += item.getPrice();
-        }
         this.user = user;
+        this.status = OrderStatus.PLACED;
+        price = calculatePrice();
+        this.requiresSignatureAndVerification = false;
     }
     public Order(List<Item> items) {
         this.id = UUID.randomUUID();
         this.items = items;
-        for (Item item : items) {
-            price += item.getPrice();
-        }
+        //price= calculatePrice();
         this.status = OrderStatus.PLACED; // La commande est initialisée avec le statut PLACED
         this.requiresSignatureAndVerification = false; // Initialement, pas besoin de signature ni de vérification
     }
 
-    public Order (){}
+    public Order(){}
+
 
     public List<Item> getItems() {
         return items;
@@ -120,13 +122,6 @@ public class Order {
     public void setPickupTime(LocalTime pickupTime) {
         this.pickupTime = pickupTime;
     }
-    public List<Restaurant> getRestaurants() {
-        return restaurants;
-    }
-
-    public void setRestaurants(List<Restaurant> restaurants) {
-        this.restaurants = restaurants;
-    }
 
     public String getDeliveryLocation() {
         return deliveryLocation;
@@ -190,8 +185,51 @@ public class Order {
         return requiresSignatureAndVerification;
     }
 
+    public double calculatePrice() {
+        double price = 0;
+
+        for (Item item : items) {
+            double itemPrice = (user.getType() == UserType.CLIENT) ? item.getPrice() : item.getNotRegularPrice();
+
+            if (restaurant.isEligibleForDiscountByNbOfDishes(user)) {
+                itemPrice *= 1 - ((double) restaurant.getPercentageDiscountByNbOfDishes() / 100);
+            }
+
+            if (restaurant.isEligibleForDiscountByNbOfOrders(user)) {
+                itemPrice *= 1 - (restaurant.getPercentageDiscountByNbOfOrders() / 100);
+            }
+
+            price += itemPrice;
+        }
+
+        return price;
+    }
 
 
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
 
 
+    public int getNumberOfDishes(){
+        int numberOfDishes = 0;
+        for(Item item : items){
+            numberOfDishes += item.getQuantity();
+        }
+        return numberOfDishes;
+    }
+
+
+    public void getPaid() {
+        restaurant.addNbDishesToUser(user,this);
+        restaurant.addNbOrderToUser(user);
+        if (!user.makePayment(this,user)) {
+            restaurant.removeNbDishesToUser(user,this);
+            restaurant.removeNbOrderToUser(user);
+        }
+        if (restaurant.getExtensionDiscount(user)!=null){
+            restaurant.getExtensionDiscount(user).setIsDiscountValid(true);
+            restaurant.getExtensionDiscount(user).setNumberOfOrders(0);
+        }
+    }
 }

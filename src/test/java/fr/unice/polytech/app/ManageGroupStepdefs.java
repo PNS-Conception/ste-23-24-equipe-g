@@ -153,8 +153,8 @@ public class ManageGroupStepdefs {
 
     @When("Alice leave the group order")
     public void aliceLeaveTheGroupOrder() {
-        alice.createItem(new Dish("pizza",10), 2);
-        aliceOrder = new Order(alice.getCart(), alice);
+        alice.createItem(new Dish("pizza",10,0), 2);
+        aliceOrder = new Order(alice.getCart(), alice,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
         groupOrder.addOrder(aliceOrder);
         groupOrder.quit(alice);
         groupOrder.setOwner(groupOrder.getMembers().get(0));

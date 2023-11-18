@@ -38,9 +38,6 @@ public class GroupOrder extends Order {
         return groupID;
     }
 
-    public void setGroupID(UUID groupID) {
-        this.groupID = groupID;
-    }
 
     public CampusUser getOwner() {
         return owner;
@@ -110,5 +107,13 @@ public class GroupOrder extends Order {
         if (alice.equals(this.owner)) {
             members.remove(bob);
         }
+    }
+
+    public List<Restaurant> getRestaurants() {
+        List<Restaurant> restaurants = new ArrayList<>();
+        for (Order order : subOrders) {
+            restaurants.add(order.getRestaurant());
+        }
+        return restaurants;
     }
 }

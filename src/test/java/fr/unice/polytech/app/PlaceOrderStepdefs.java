@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 public class PlaceOrderStepdefs {
 
     private CampusUser client;
-    private Restaurant restaurant;
+    private Restaurant restaurant=new Restaurant("test", new RestaurantManager("test", "test", "test"), "test");
     private LocalDateTime deliveryDateTime;
 
     private List<Item> cart;
@@ -65,7 +65,7 @@ public class PlaceOrderStepdefs {
     public void the_client_crate_the_order( int hour, int minute, int day, int month, int year) {
         deliveryTime = LocalTime.of(hour, minute);
         deliveryDateTime = LocalDateTime.of(year, month, day, deliveryTime.getHour(), deliveryTime.getMinute());
-        order = client.order(client.getCart());
+        order = client.order(client.getCart(), restaurant);
         order.setDeliveryTime(deliveryDateTime.toLocalTime());
         order.setPlacedTime(LocalTime.now());
         order.setStatus(OrderStatus.PLACED);

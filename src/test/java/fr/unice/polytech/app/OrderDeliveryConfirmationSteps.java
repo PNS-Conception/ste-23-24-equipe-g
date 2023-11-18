@@ -16,7 +16,7 @@ public class OrderDeliveryConfirmationSteps {
 
     @Given("an order is {string} to a delivery person")
     public void an_order_is_assigned_to_a_delivery_person(String status) {
-        Dish dish = new Dish("Pizza", 10.0);
+        Dish dish = new Dish("Pizza", 10,0);
         Item item = new Item(dish, 2);
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);

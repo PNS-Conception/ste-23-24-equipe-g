@@ -16,13 +16,13 @@ public class OrderAssignmentSteps {
         @Given("there is an order ready for delivery")
         public void there_is_an_order_ready_for_delivery() {
 
-            Dish dish = new Dish("Pizza", 10.0); // Name and price
+            Dish dish = new Dish("Pizza", 10,0); // Name and price
             Item item = new Item(dish, 2); // Dish and quantity
             ArrayList<Item> items = new ArrayList<>();
             items.add(item);
 
 
-            Restaurant restaurant = new Restaurant("Chez Luigi", "123 Pizza Street"); // Name and address
+            Restaurant restaurant = new Restaurant("Chez Luigi", new RestaurantManager("","",""),"123 Pizza Street"); // Name and address
             ArrayList<Restaurant> restaurants = new ArrayList<>();
             restaurants.add(restaurant);
 

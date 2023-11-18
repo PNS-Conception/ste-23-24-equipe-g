@@ -4,6 +4,6 @@ public class RestaurantManager extends CampusUser{
 
     public RestaurantManager(String name, String password, String email) {
         super(name, password, email);
-        setType(UserType.Manager);
+        setType(UserType.MANAGER);
     }
 }
