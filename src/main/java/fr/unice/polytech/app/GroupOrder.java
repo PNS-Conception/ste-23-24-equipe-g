@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class GroupOrder {
+public class GroupOrder extends Order {
 
     private List<Order> subOrders;
     private UUID groupID;
@@ -17,6 +17,7 @@ public class GroupOrder {
 
 
     GroupOrder(CampusUser owner) {
+        super();
         this.groupID = UUID.randomUUID();
         this.subOrders=new ArrayList<>();
         this.members=new ArrayList<>();
@@ -37,9 +38,6 @@ public class GroupOrder {
         return groupID;
     }
 
-    public void setGroupID(UUID groupID) {
-        this.groupID = groupID;
-    }
 
     public CampusUser getOwner() {
         return owner;
@@ -109,5 +107,13 @@ public class GroupOrder {
         if (alice.equals(this.owner)) {
             members.remove(bob);
         }
+    }
+
+    public List<Restaurant> getRestaurants() {
+        List<Restaurant> restaurants = new ArrayList<>();
+        for (Order order : subOrders) {
+            restaurants.add(order.getRestaurant());
+        }
+        return restaurants;
     }
 }

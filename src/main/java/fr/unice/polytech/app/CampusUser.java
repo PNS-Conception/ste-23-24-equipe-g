@@ -9,7 +9,6 @@ public class CampusUser {
     private UUID id;
     private String name;
     private String password;
-    private String address;
     private String email;
     private List<Order> orders;
     private List<Item> cart;
@@ -22,13 +21,22 @@ public class CampusUser {
     private String notifiedDeliveryPersonPhoneNumber;
 
 
-    public CampusUser( String name, String password, String address, String email) {
+    public CampusUser( String name, String password, String email) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.password = password;
-        this.address = address;
         this.email = email;
-        this.type = UserType.Client;
+        this.type = UserType.CLIENT;
+        this.orders = new ArrayList<>();
+        this.cart = new ArrayList<>();
+        this.balance = 0;
+    }
+
+    public CampusUser( String name, String email) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        this.email = email;
+        this.type = UserType.CLIENT;
         this.orders = new ArrayList<>();
         this.cart = new ArrayList<>();
         this.balance = 0;
@@ -37,14 +45,10 @@ public class CampusUser {
     public CampusUser() {
         this.id = UUID.randomUUID();
         this.name = "mockUser";
-        this.type = UserType.Client;
+        this.type = UserType.CLIENT;
 
     }
 
-    public CampusUser(String id, String name) {
-        this.id = UUID.randomUUID();
-        this.name = "mockUser";
-    }
 
     public void createItem(Dish dish, int quantity) {
         Item newItem = new Item(dish, quantity);
@@ -55,10 +59,10 @@ public class CampusUser {
         cart.remove(item);
     }
 
-    public Order order(List<Item> items) {
-        Order newOrder = new Order(items);
+    public Order order(List<Item> items, Restaurant restaurant) {
+        Order newOrder = new Order(items, this, restaurant);
         orders.add(newOrder);
-        cart.clear(); // Clear the cart after creating an order
+        cart.clear();
         return newOrder;
     }
 
@@ -66,10 +70,8 @@ public class CampusUser {
         if (minutesPassed > 30) {
             return false;
         }
+        refund(order);
         order.setStatus(OrderStatus.CANCELLED);
-        setBalance(order.getPrice());
-        orders.remove(order);
-
         return true;
     }
     /**
@@ -93,9 +95,6 @@ public class CampusUser {
         this.randomGenerator = randomGenerator;
     }
 
-    public void setAddress(String newAddress) {
-        this.address = newAddress;
-    }
 
     public List<Order> getHistory() {
         return orders;
@@ -121,7 +120,7 @@ public class CampusUser {
                     balance = 0;
                 }
             }
-            order.setStatus(OrderStatus.PAID);
+            order.pay();
             orders.add(order);
             return true;
         } else {
@@ -142,6 +141,7 @@ public class CampusUser {
             }
             order.setStatus(OrderStatus.PAID);
             orders.add(order);
+
             return true;
         } else {
             return false;
@@ -157,12 +157,11 @@ public class CampusUser {
         return cart;
 
     }
+
     public UUID getId() {
         return id;
     }
-    public String getAddress() {
-        return address;
-    }
+
 
     public void setType(UserType type) {
         this.type = type;
@@ -178,7 +177,6 @@ public class CampusUser {
 
 
 
-    // Getters pour obtenir les informations du livreur reçues
     public String getDeliveryPersonIdReceived() {
         return deliveryPersonIdReceived;
     }
@@ -202,10 +200,6 @@ public class CampusUser {
         return notifiedDeliveryPersonPhoneNumber;
     }
 
-    public void getRefund() {
-
-    }
-
     public void notifyUser() {
     }
 
@@ -216,6 +210,22 @@ public class CampusUser {
     public Order getLastOrder(){
         return orders.get(orders.size()-1);
     }
+
+    public void refund(Order order) {
+        //if(order.getStatus() == OrderStatus.PAID && orders.contains(order)){
+            setBalance(order.getPrice());
+            orders.remove(order);
+        //}
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public String getName(){
+        return name;
+    }
+
 
 }
 

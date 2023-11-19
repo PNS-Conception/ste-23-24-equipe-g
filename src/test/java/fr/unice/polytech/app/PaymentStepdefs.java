@@ -19,7 +19,7 @@ public class PaymentStepdefs {
 
     @Given("a client {string}")
     public void a_client_with_a_cart(String name) {
-        client = new CampusUser( name, "password", "", "email@example.com");
+        client = new CampusUser( name, "password", "email@example.com");
         order= new Order(new ArrayList<>());
     }
 
@@ -31,7 +31,7 @@ public class PaymentStepdefs {
 
     @When("Alice orders a pizza and a pasta")
     public void alice_orders_items() {
-        order = client.order(client.getCart());
+        order = client.order(client.getCart(),new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
     }
 
     @When("Alice pays {double}€")

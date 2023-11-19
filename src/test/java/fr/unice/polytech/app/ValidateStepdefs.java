@@ -17,13 +17,13 @@ public class ValidateStepdefs {
 
     @Given("I have an order with status {string}")
     public void i_have_an_order_with_status(String status) {
-        order = new Order(new ArrayList<>());
+        order = new Order(new ArrayList<>() );
         order.setStatus(OrderStatus.valueOf(status));
     }
 
     @Given("the restaurant is full")
     public void the_restaurant_is_full() {
-        restaurant = new Restaurant(UUID.randomUUID().toString(), new Menu(Arrays.asList(new Dish("Margherita", Arrays.asList("Tomato", "Mozzarella", "Basil"), 7.99), new Dish("Pepperoni", Arrays.asList("Tomato", "Mozzarella", "Pepperoni"), 8.99))));
+        restaurant = new Restaurant( null,new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni", 8.99))));
         restaurant.setFull(true);
     }
 
