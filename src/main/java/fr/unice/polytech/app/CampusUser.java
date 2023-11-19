@@ -1,5 +1,6 @@
 package fr.unice.polytech.app;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -46,7 +47,9 @@ public class CampusUser {
         this.id = UUID.randomUUID();
         this.name = "mockUser";
         this.type = UserType.CLIENT;
-
+        this.orders = new ArrayList<>();
+        this.cart = new ArrayList<>();
+        this.balance = 0;
     }
 
 
@@ -66,6 +69,20 @@ public class CampusUser {
         return newOrder;
     }
 
+    public Order order(List<Item> items, Restaurant restaurant, LocalDateTime orderTime) {
+        int totalQuantity = items.stream().mapToInt(Item::getQuantity).sum();
+        CapacityManager capacityManager = CapacityManager.getInstance();
+        boolean canPlaceOrder = capacityManager.canPlaceOrder(restaurant, orderTime, totalQuantity);
+
+        if (canPlaceOrder) {
+            Order newOrder = new Order(items, this, restaurant);
+            orders.add(newOrder);
+            cart.clear();
+            return newOrder;
+        } else {
+            throw new IllegalStateException("La capacité du restaurant est insuffisante pour cette commande.");
+        }
+    }
     public boolean cancelOrder(Order order,int minutesPassed) {
         if (minutesPassed > 30) {
             return false;
