@@ -1,6 +1,7 @@
 package fr.unice.polytech.app;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ public class Order {
     private String routeDetails;
     private LocalTime pickupTime;
     private Restaurant restaurant;
-    private List<Restaurant> restaurants;
+    private static List<Restaurant> restaurants;
     private String deliveryLocation;
 
 
@@ -113,7 +114,7 @@ public class Order {
     public Restaurant getRestaurant() {
         return restaurant;
     }
-    public List<Restaurant> getRestaurants() {
+    public static List<Restaurant> getRestaurants() {
         return restaurants;
     }
 
@@ -202,7 +203,7 @@ public class Order {
     }
 
 
-
-
-
+    public void setRestaurants(List<Restaurant> restaurants) {
+        this.restaurants = restaurants;
+    }
 }

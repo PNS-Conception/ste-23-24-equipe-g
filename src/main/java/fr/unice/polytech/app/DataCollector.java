@@ -1,15 +1,18 @@
-/*
+
 package fr.unice.polytech.app;
 
 import fr.unice.polytech.app.*;
 
 import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVFormat;
+import java.util.stream.Collectors;
+//import org.apache.commons.csv.CSVPrinter;
+//import org.apache.commons.csv.CSVFormat;
 
 public class DataCollector {
 
@@ -17,7 +20,7 @@ public class DataCollector {
     private List<DeliveryPerson> deliveryPeople;
     private Map<Item, Integer> menuItemPopularity;
     private Map<CampusUser, List<Order>> userOrders;
-    private String csvDirectory; // Répertoire pour stocker les fichiers CSV
+    private String csvDirectory;
 
     public DataCollector(String csvDirectory) {
         this.orders = new ArrayList<>();
@@ -34,87 +37,97 @@ public class DataCollector {
 
     public void collectDeliveryData(DeliveryPerson deliveryPerson) {
         this.deliveryPeople.add(deliveryPerson);
-        writeDeliveriesToCSV();
+
     }
 
     public void collectMenuItemPopularityData(Item menuItem) {
         menuItemPopularity.merge(menuItem, 1, Integer::sum);
-        writeMenuItemPopularityToCSV();
+
     }
 
     public void collectUserBehaviorData(CampusUser user, Order order) {
         userOrders.computeIfAbsent(user, k -> new ArrayList<>()).add(order);
-        writeUserOrdersToCSV();
+
     }
 
-    // Méthodes pour écrire les données dans les fichiers CSV
     private void writeOrdersToCSV() {
         String filePath = Paths.get(csvDirectory, "orders.csv").toString();
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath));
-             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("Order ID"))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, false))) {
+            // Écriture de l'en-tête
+            writer.println("Order ID");
 
+            // Écriture des données
             for (Order order : orders) {
-                csvPrinter.printRecord(order.getId());
-
+                writer.println(order.getId());
             }
-            csvPrinter.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void writeMenuItemPopularityToCSV() {
-        String filePath = Paths.get(csvDirectory, "menu_items_popularity.csv").toString();
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath));
-             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("Menu Item", "Popularity"))) {
-
-            for (Map.Entry<Item, Integer> entry : menuItemPopularity.entrySet()) {
-                csvPrinter.printRecord(entry.getKey().getDish().getName(), entry.getValue());
-
-            }
-            csvPrinter.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void writeUserOrdersToCSV() {
-        String filePath = Paths.get(csvDirectory, "user_orders.csv").toString();
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath));
-             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("User ID", "Order IDs"))) {
-
-            for (Map.Entry<CampusUser, List<Order>> entry : userOrders.entrySet()) {
-                String orderIds = entry.getValue().stream()
-                        .map(Order::getId)
-                        .reduce("", (a, b) -> a + ", " + b);
-                csvPrinter.printRecord(entry.getKey().getId(), orderIds);
-                // Supposons que CampusUser a une méthode getUserId
-            }
-            csvPrinter.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    private void writeDeliveriesToCSV() {
+//private void writeMenuItemPopularityToCSV() {
+//    String filePath = Paths.get(csvDirectory, "menu_items_popularity.csv").toString();
+//    try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, false))) {
+//        writer.println("Menu Item, Popularity");
+//
+//        for (Map.Entry<Item, Integer> entry : menuItemPopularity.entrySet()) {
+//            writer.println(entry.getKey().getDish().getName() + ", " + entry.getValue());
+//        }
+//    } catch (IOException e) {
+//        e.printStackTrace();
+//    }
+//}
 
-        String filePath = Paths.get(csvDirectory, "deliveries.csv").toString();
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath));
-             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("Delivery Person ID", "Delivery History"))) {
 
-            for (DeliveryPerson person : deliveryPeople) {
-                String deliveryHistory = person.getDeliveryHistory().stream()
-                        .map(Order::getId)
-                        .reduce("", (a, b) -> a + ", " + b);
-                csvPrinter.printRecord(person.getId(), deliveryHistory);
+//private void writeUserOrdersToCSV() {
+//    String filePath = Paths.get(csvDirectory, "user_orders.csv").toString();
+//    try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, false))) {
+//        // Écriture de l'en-tête
+//        writer.println("User ID, Order IDs");
+//
+//        // Écriture des données
+//        for (Map.Entry<CampusUser, List<Order>> entry : userOrders.entrySet()) {
+//            String orderIds = entry.getValue().stream()
+//                    .map(order -> order.getId().toString())
+//                    .collect(Collectors.joining(", "));
+//
+//            writer.println(entry.getKey().getId() + ", " + orderIds);
+//        }
+//    } catch (IOException e) {
+//        e.printStackTrace();
+//    }
+//}
+//
+//private void writeDeliveriesToCSV() {
+//    String filePath = Paths.get(csvDirectory, "deliveries.csv").toString();
+//    try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, false))) {
+//
+//        writer.println("Delivery Person ID, Delivery History");
+//
+//        // Écriture des données
+//        for (DeliveryPerson person : deliveryPeople) {
+//            String deliveryHistory = person.getDeliveryHistory().stream()
+//                    .map(order -> order.getId().toString())
+//                    .collect(Collectors.joining(", "));
+//
+//            writer.println(person.getId() + ", " + deliveryHistory);
+//        }
+//    } catch (IOException e) {
+//        e.printStackTrace();
+//    }
+//}
+    public List<Order> getOrdersForRestaurant(Restaurant restaurant) {
+        List<Order> ordersForRestaurant = new ArrayList<>();
+
+        for (Order order : orders) {
+            if (order.getRestaurant().equals(restaurant)) {
+                ordersForRestaurant.add(order);
             }
-            csvPrinter.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-    }
 
+        return ordersForRestaurant;
+    }
 
     // Getters pour accéder aux collections
     public List<Order> getOrders() {
@@ -131,4 +144,4 @@ public class DataCollector {
         return Collections.unmodifiableMap(userOrders);
     }
 }
-*/
+
