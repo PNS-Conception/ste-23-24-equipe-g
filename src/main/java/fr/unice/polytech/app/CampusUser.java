@@ -11,7 +11,7 @@ public class CampusUser {
     private String name;
     private String password;
     private String email;
-    private List<Order> orders;
+    private List<SingleOrder> singleOrders;
     private List<Item> cart;
     private double balance;
     private UserType type;
@@ -28,7 +28,7 @@ public class CampusUser {
         this.password = password;
         this.email = email;
         this.type = UserType.CLIENT;
-        this.orders = new ArrayList<>();
+        this.singleOrders = new ArrayList<>();
         this.cart = new ArrayList<>();
         this.balance = 0;
     }
@@ -38,7 +38,7 @@ public class CampusUser {
         this.name = name;
         this.email = email;
         this.type = UserType.CLIENT;
-        this.orders = new ArrayList<>();
+        this.singleOrders = new ArrayList<>();
         this.cart = new ArrayList<>();
         this.balance = 0;
     }
@@ -47,7 +47,7 @@ public class CampusUser {
         this.id = UUID.randomUUID();
         this.name = "mockUser";
         this.type = UserType.CLIENT;
-        this.orders = new ArrayList<>();
+        this.singleOrders = new ArrayList<>();
         this.cart = new ArrayList<>();
         this.balance = 0;
     }
@@ -62,33 +62,33 @@ public class CampusUser {
         cart.remove(item);
     }
 
-    public Order order(List<Item> items, Restaurant restaurant) {
-        Order newOrder = new Order(items, this, restaurant);
-        orders.add(newOrder);
+    public SingleOrder order(List<Item> items, Restaurant restaurant) {
+        SingleOrder newSingleOrder = new SingleOrder(items, this, restaurant);
+        singleOrders.add(newSingleOrder);
         cart.clear();
-        return newOrder;
+        return newSingleOrder;
     }
 
-    public Order order(List<Item> items, Restaurant restaurant, LocalDateTime orderTime) {
+    public SingleOrder order(List<Item> items, Restaurant restaurant, LocalDateTime orderTime) {
         int totalQuantity = items.stream().mapToInt(Item::getQuantity).sum();
         CapacityManager capacityManager = CapacityManager.getInstance();
         boolean canPlaceOrder = capacityManager.canPlaceOrder(restaurant, orderTime, totalQuantity);
 
         if (canPlaceOrder) {
-            Order newOrder = new Order(items, this, restaurant);
-            orders.add(newOrder);
+            SingleOrder newSingleOrder = new SingleOrder(items, this, restaurant);
+            singleOrders.add(newSingleOrder);
             cart.clear();
-            return newOrder;
+            return newSingleOrder;
         } else {
             throw new IllegalStateException("La capacité du restaurant est insuffisante pour cette commande.");
         }
     }
-    public boolean cancelOrder(Order order,int minutesPassed) {
+    public boolean cancelOrder(SingleOrder singleOrder, int minutesPassed) {
         if (minutesPassed > 30) {
             return false;
         }
-        refund(order);
-        order.setStatus(OrderStatus.CANCELLED);
+        refund(singleOrder);
+        singleOrder.setStatus(OrderStatus.CANCELLED);
         return true;
     }
     /**
@@ -113,51 +113,47 @@ public class CampusUser {
     }
 
 
-    public List<Order> getHistory() {
-        return orders;
+    public List<SingleOrder> getHistory() {
+        return singleOrders;
     }
 
-    public List<Restaurant> getAvailableRestaurants() {
-        // todo
-        return new ArrayList<>();
+
+    public Restaurant selectRestaurant(Restaurant restaurant) {
+        return restaurant;
     }
 
-    public void selectRestaurant(Restaurant restaurant) {
-        // todo
-    }
-
-    public boolean makePayment(Order order, CampusUser user) {
+    public boolean makePayment(SingleOrder singleOrder, CampusUser user) {
         //9 fois sur 10, la commande est validée, 1 fois sur 10 il y a une erreur.
         if (Math.random() < 0.9) {
             if (balance > 0){
-                if(balance >= order.getPrice()){
-                    balance -= order.getPrice();
+                if(balance >= singleOrder.getPrice()){
+                    balance -= singleOrder.getPrice();
                 }else{
-                    order.setPrice(order.getPrice() - balance);
+                    singleOrder.setPrice(singleOrder.getPrice() - balance);
                     balance = 0;
                 }
             }
-            order.pay();
-            orders.add(order);
+            singleOrder.pay();
+            singleOrders.add(singleOrder);
             return true;
         } else {
             return false;
         }
     }
 
-    public boolean makePaymentmock(Order order, CampusUser client) {
+    public boolean makePaymentmock(SingleOrder singleOrder, CampusUser client) {
         //9 fois sur 10, la commande est validée, 1 fois sur 10 il y a une erreur.
         if (randomGenerator.nextDouble() < 0.9) {
             if (balance > 0){
-                if(balance >= order.getPrice()){
-                    balance -= order.getPrice();
+                if(balance >= singleOrder.getPrice()){
+                    balance -= singleOrder.getPrice();
                 }else{
-                    order.setPrice(order.getPrice() - balance);
+                    singleOrder.setPrice(singleOrder.getPrice() - balance);
                     balance = 0;
                 }
             }
-            order.setStatus(OrderStatus.PAID);
-            orders.add(order);
+            singleOrder.setStatus(OrderStatus.PAID);
+            singleOrders.add(singleOrder);
 
             return true;
         } else {
@@ -165,10 +161,6 @@ public class CampusUser {
         }
     }
 
-    public Menu selectRestaurant(UUID restaurantId) {
-        //todo
-        return new Menu(); // Assuming Menu is a class you've defined
-    }
 
     public List<Item> getCart() {
         return cart;
@@ -224,14 +216,14 @@ public class CampusUser {
         return balance;
     }
 
-    public Order getLastOrder(){
-        return orders.get(orders.size()-1);
+    public SingleOrder getLastOrder(){
+        return singleOrders.get(singleOrders.size()-1);
     }
 
-    public void refund(Order order) {
+    public void refund(SingleOrder singleOrder) {
         //if(order.getStatus() == OrderStatus.PAID && orders.contains(order)){
-            setBalance(order.getPrice());
-            orders.remove(order);
+            setBalance(singleOrder.getPrice());
+            singleOrders.remove(singleOrder);
         //}
     }
 

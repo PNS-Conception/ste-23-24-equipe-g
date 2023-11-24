@@ -21,9 +21,9 @@ public class ApplyingDiscountBasedOnRoleMyStepdefs {
     RestaurantManager manager;
     DeliveryPerson deliveryPerson;
     StaffUser staff;
-    Order order;
-
+    SingleOrder singleOrder;
     Restaurant restaurant;
+
     @Given("a Item contains {int} {string} that costs {int} each for regular customer and {int} each for premium customer")
     public void aItemContainsThatCostsEachForRegularCustomerAndEachForPremiumCustomer(int arg0, String arg1, int arg2, int arg3) {
         dish = new Dish(arg1, arg2, arg3);
@@ -45,7 +45,7 @@ public class ApplyingDiscountBasedOnRoleMyStepdefs {
     @When("the customer validates the cart")
     public void theCustomerValidatesTheCart() {
         user = new CampusUser("regular", "password", "email");
-        order = user.order( new ArrayList<>(Arrays.asList(item, item2)), restaurant);
+        singleOrder = user.order( new ArrayList<>(Arrays.asList(item, item2)), restaurant);
     }
 
     @Given("A staff")
@@ -66,22 +66,22 @@ public class ApplyingDiscountBasedOnRoleMyStepdefs {
 
     @Then("the order total should be {int}")
     public void theOrderTotalShouldBe(double arg0) {
-        assertEquals( arg0,order.getPrice(), 0.0);
+        assertEquals( arg0, singleOrder.getPrice(), 0.0);
     }
 
     @When("the staff validates the cart")
     public void theStaffValidatesTheCart() {
-        order = staff.order(new ArrayList<>(Arrays.asList(item, item2)), restaurant);
+        singleOrder = staff.order(new ArrayList<>(Arrays.asList(item, item2)), restaurant);
     }
 
     @When("the manager validates the cart")
     public void theManagerValidatesTheCart() {
-        order = manager.order(new ArrayList<>(Arrays.asList(item, item2)), restaurant);
+        singleOrder = manager.order(new ArrayList<>(Arrays.asList(item, item2)), restaurant);
     }
 
     @When("the delivery person validates the cart")
     public void theDeliveryPersonValidatesTheCart() {
-        order = deliveryPerson.order(new ArrayList<>(Arrays.asList(item, item2)), restaurant);
+        singleOrder = deliveryPerson.order(new ArrayList<>(Arrays.asList(item, item2)), restaurant);
     }
 
     @And("from a restaurant {string}")

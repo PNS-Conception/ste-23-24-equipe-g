@@ -7,12 +7,10 @@ public class Restaurant {
     private UUID id;
     private String name;
     private Menu menu;
-
     private String address;
-
     private CampusUser owner;
     private List<Shift> schedule;
-    private List<Order> orderList;
+    private List<SingleOrder> singleOrderList;
     private boolean full;
     private Map<CampusUser,Integer> numberOfDishesPerUser = new HashMap<>();
     private int numberOfOrdersPerUser;
@@ -21,15 +19,13 @@ public class Restaurant {
     private List<ExtensionDiscount> extensionDiscounts = new ArrayList<>();
     private int NumberOfDaysForDiscount;
     private int percentageDiscount;
-
     private int percentageDiscountByNbOfOrders;
     private int numberOfDishesForDiscount;
 
     public Restaurant(String name, RestaurantManager manager,String address){
         this.id = UUID.randomUUID();
         this.name = name;
-        this.
-        orderList = new ArrayList<>();
+        this.singleOrderList = new ArrayList<>();
         schedule = new ArrayList<>();
         this.menu = new Menu();
         //System.out.println(manager.getEmail());
@@ -41,13 +37,13 @@ public class Restaurant {
     public Restaurant(String name, Menu menu) {
         this.id = UUID.randomUUID();
         this.name = name;
-        orderList = new ArrayList<>();
+        singleOrderList = new ArrayList<>();
         schedule = new ArrayList<>();
         this.menu = menu;
     }
 
     public void setMenu(Menu menu, RestaurantManager manager) {
-        if (manager.getType() == UserType.MANAGER) {
+        if (manager == owner) {
             this.menu = menu;
         }
     }
@@ -57,35 +53,26 @@ public class Restaurant {
     }
 
 
-    public boolean cancel(Order order, long minutesPassed) {
-        if (orderList.contains(order)) {
-            LocalTime currentTime = LocalTime.now();
-            LocalTime acceptedTime = order.getAcceptedTime();
-//            long minutesPassed = java.time.Duration.between(acceptedTime, currentTime).toMinutes();
-            userRefund(order);
-            order.setStatus(OrderStatus.CANCELLED);
+    public boolean cancel(SingleOrder singleOrder, long minutesPassed) {
+        if (singleOrderList.contains(singleOrder)) {
+            userRefund(singleOrder);
+            singleOrder.setStatus(OrderStatus.CANCELLED);
             return minutesPassed <= 30;
         }
 
         return false;
     }
 
-    public void acceptOrder(Order order) {
-        if (orderList.contains(order)) {
-            order.setStatus(OrderStatus.ACCEPTED);
-            order.setAcceptedTime(LocalTime.now());
+    public void acceptOrder(SingleOrder singleOrder) {
+        if (singleOrderList.contains(singleOrder)) {
+            singleOrder.setStatus(OrderStatus.ACCEPTED);
+            singleOrder.setAcceptedTime(LocalTime.now());
         }
     }
 
-    public void cancelOrder(Order order) {
-        if (orderList.contains(order)) {
-            order.setStatus(OrderStatus.CANCELLED);
-            userRefund(order);
-        }
-    }
 
-    private void userRefund(Order order) {
-        order.getClient().refund(order);
+    private void userRefund(SingleOrder singleOrder) {
+        singleOrder.getClient().refund(singleOrder);
     }
 
     public boolean addShift(LocalTime openingTime, LocalTime closingTime, Day day,RestaurantManager manager) {
@@ -117,8 +104,8 @@ public class Restaurant {
         return name;
     }
 
-    public void addOrder(Order order) {
-        orderList.add(order);
+    public void addOrder(SingleOrder singleOrder) {
+        singleOrderList.add(singleOrder);
     }
 
     public void setFull(boolean full) {
@@ -143,17 +130,17 @@ public class Restaurant {
     }
 
     public void clearOrderList() {
-        orderList.clear();
+        singleOrderList.clear();
     }
 
-    public List<Order> getOrderList() {
-        return orderList;
+    public List<SingleOrder> getOrderList() {
+        return singleOrderList;
     }
 
 
-    public void addNbDishesToUser(CampusUser user,Order order){
+    public void addNbDishesToUser(CampusUser user, SingleOrder singleOrder){
         if(numberOfDishesPerUser.containsKey(user)){
-            int currentOrders = numberOfDishesPerUser.get(user)+ order.getNumberOfDishes() ;
+            int currentOrders = numberOfDishesPerUser.get(user)+ singleOrder.getNumberOfDishes() ;
             if (currentOrders > numberOfDishesForDiscount) {
                 numberOfDishesPerUser.put(user, 0);
             } else {
@@ -239,9 +226,9 @@ public class Restaurant {
         return null;
     }
 
-    public void removeNbDishesToUser(CampusUser user, Order order) {
+    public void removeNbDishesToUser(CampusUser user, SingleOrder singleOrder) {
         if(numberOfDishesPerUser.containsKey(user)){
-            int currentOrders = numberOfDishesPerUser.get(user)- order.getNumberOfDishes() ;
+            int currentOrders = numberOfDishesPerUser.get(user)- singleOrder.getNumberOfDishes() ;
             if (currentOrders > numberOfDishesForDiscount) {
                 numberOfDishesPerUser.put(user, 0);
             } else {
@@ -279,5 +266,17 @@ public class Restaurant {
 
     public void setPercentageDiscountByNbOfOrders(int percentageDiscountByNbOfOrders) {
         this.percentageDiscountByNbOfOrders = percentageDiscountByNbOfOrders;
+    }
+
+    public void removeShift(Shift shift) {
+        schedule.remove(shift);
+    }
+
+    public void addDish(Dish dish, RestaurantManager manager) {
+            menu.addDish(dish, manager);
+    }
+
+    public void removeDish(Dish dish, RestaurantManager manager) {
+            menu.removeDish(dish, manager);
     }
 }

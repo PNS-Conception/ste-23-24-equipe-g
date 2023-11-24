@@ -21,10 +21,10 @@ public class DeliverySystem {
         return this.deliveryPeople.remove(deliveryPerson);
     }
 
-    public Optional<DeliveryPerson> assignOrderToDeliveryPerson(Order order) {
+    public Optional<DeliveryPerson> assignOrderToDeliveryPerson(SingleOrder singleOrder) {
         for (DeliveryPerson deliveryPerson : this.deliveryPeople) {
             if (deliveryPerson.isAvailable()) {
-                boolean assigned = deliveryPerson.assignOrder(order);
+                boolean assigned = deliveryPerson.assignOrder(singleOrder);
                 if (assigned) {
                     return Optional.of(deliveryPerson);
                 }

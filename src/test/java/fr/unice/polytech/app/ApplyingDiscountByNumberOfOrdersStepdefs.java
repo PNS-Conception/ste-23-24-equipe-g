@@ -15,7 +15,7 @@ public class ApplyingDiscountByNumberOfOrdersStepdefs {
 
     private CampusUser user;
     private Restaurant restaurant;
-    private Order order;
+    private SingleOrder singleOrder;
     private Map<CampusUser,Integer> numberOfOrdersPerUser=new HashMap<>();
     @Given("{string} has ordered {int} items from restaurant {string}")
     public void hasOrderedItemsFromRestaurant(String arg0, int arg1, String arg2) {
@@ -36,8 +36,8 @@ public class ApplyingDiscountByNumberOfOrdersStepdefs {
         Dish dish = new Dish(arg2, arg3);
         user.selectRestaurant(restaurant);
         user.createItem(dish, arg1);
-        order =user.order(user.getCart(), restaurant);
-        restaurant.addNbDishesToUser(user,order);
+        singleOrder =user.order(user.getCart(), restaurant);
+        restaurant.addNbDishesToUser(user, singleOrder);
     }
 
 

@@ -13,7 +13,7 @@ public class ManageGroupStepdefs {
 
     CampusUser bob;
     GroupOrder groupOrder;
-    Order aliceOrder;
+    SingleOrder aliceSingleOrder;
 
 
 
@@ -154,11 +154,11 @@ public class ManageGroupStepdefs {
     @When("Alice leave the group order")
     public void aliceLeaveTheGroupOrder() {
         alice.createItem(new Dish("pizza",10,0), 2);
-        aliceOrder = new Order(alice.getCart(), alice,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
-        groupOrder.addOrder(aliceOrder);
+        aliceSingleOrder = new SingleOrder(alice.getCart(), alice,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
+        groupOrder.addOrder(aliceSingleOrder);
         groupOrder.quit(alice);
         groupOrder.setOwner(groupOrder.getMembers().get(0));
-        groupOrder.cancelOrder(aliceOrder, alice, 2);
+        groupOrder.cancelOrder(aliceSingleOrder, alice, 2);
     }
 
     @Then("Alice order should be deleted from the group order")

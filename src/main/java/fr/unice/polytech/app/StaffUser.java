@@ -1,5 +1,7 @@
 package fr.unice.polytech.app;
 
+import java.time.LocalTime;
+
 public class StaffUser extends CampusUser {
 
     private Restaurant restaurant;
@@ -10,15 +12,18 @@ public class StaffUser extends CampusUser {
         this.setType(UserType.STAFF);
     }
 
-    public void acceptOrder(Order order) {
-        if (restaurant.getOrderList().contains(order)) {
-            restaurant.acceptOrder(order);
+    public void acceptOrder(SingleOrder singleOrder) {
+        if (restaurant.getOrderList().contains(singleOrder)) {
+            restaurant.acceptOrder(singleOrder);
         }
     }
 
-    public void refuseOrder(Order order) {
-        if (restaurant.getOrderList().contains(order)) {
-            restaurant.cancelOrder(order);
+    public void refuseOrder(SingleOrder singleOrder) {
+        if (restaurant.getOrderList().contains(singleOrder)) {
+            LocalTime time = LocalTime.now();
+            //difference between the time of the order and the current time
+            long minutesPassed = time.getMinute() - singleOrder.getAcceptedTime().getMinute();
+            restaurant.cancel(singleOrder,minutesPassed);
         }
     }
 

@@ -6,7 +6,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -16,9 +15,9 @@ public class ManageGroupOrderStepdefs {
 
     CampusUser bob;
     GroupOrder groupOrder;
-    Order aliceOrder;
+    SingleOrder aliceSingleOrder;
 
-    Order bobOrder;
+    SingleOrder bobSingleOrder;
     Restaurant restaurant1;
     Restaurant restaurant2;
     Restaurant restaurant3;
@@ -43,44 +42,44 @@ public class ManageGroupOrderStepdefs {
     public void hasAPlaceOrderFromTheRestaurantAndPaidForIt( String restaurant) {
         restaurant1=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita",  7.99), new Dish("Pepperoni",8.99))));
         alice.createItem(new Dish("pizza",10), 2);
-        aliceOrder = new Order(alice.getCart(),alice,restaurant1 );
-        groupOrder.addOrder(aliceOrder);
-        aliceOrder.setStatus(OrderStatus.PLACED);
-        alice.makePayment(aliceOrder, alice);
+        aliceSingleOrder = new SingleOrder(alice.getCart(),alice,restaurant1 );
+        groupOrder.addOrder(aliceSingleOrder);
+        aliceSingleOrder.setStatus(OrderStatus.PLACED);
+        alice.makePayment(aliceSingleOrder, alice);
     }
 
     @And("Bob has placed order form {string} and paid for it")
     public void bobHasPlacedOrderFormAndPaidForIt(String restaurant) {
         restaurant2=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
         bob.createItem(new Dish("pasta",11), 1);
-        bobOrder = new Order(bob.getCart(), bob,restaurant2);
-        groupOrder.addOrder(bobOrder);
-        bobOrder.setStatus(OrderStatus.PLACED);
-        bob.makePayment(bobOrder, bob);
+        bobSingleOrder = new SingleOrder(bob.getCart(), bob,restaurant2);
+        groupOrder.addOrder(bobSingleOrder);
+        bobSingleOrder.setStatus(OrderStatus.PLACED);
+        bob.makePayment(bobSingleOrder, bob);
 
     }
 
     @Then("the order group status should be Placed")
     public void theOrderGroupStatusShouldBe() {
-        assertEquals(bobOrder.getStatus(),OrderStatus.PAID);
-        assertEquals(aliceOrder.getStatus(),OrderStatus.PAID);
+        assertEquals(bobSingleOrder.getStatus(),OrderStatus.PAID);
+        assertEquals(aliceSingleOrder.getStatus(),OrderStatus.PAID);
         groupOrder.setStatus(OrderStatus.PAID);
         assertEquals(groupOrder.getStatus(),OrderStatus.PAID);
     }
 
     @And("the restaurants le déclice and Vapiano receive the order")
     public void theRestaurantsAndReciveTheOrder() {
-        restaurant1.addOrder(aliceOrder);
-        restaurant2.addOrder(bobOrder);
+        restaurant1.addOrder(aliceSingleOrder);
+        restaurant2.addOrder(bobSingleOrder);
     }
 
     @And("Bob has a place order form {string} and not paid for it")
     public void bobHasAPlaceOrderFormAndNotPaidForIt(String restaurant) {
         restaurant3=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni", 8.99))));
         bob.createItem(new Dish("pasta",11), 1);
-        bobOrder = new Order(bob.getCart(), bob,restaurant3 );
-        groupOrder.addOrder(bobOrder);
-        bobOrder.setStatus(OrderStatus.PLACED);
+        bobSingleOrder = new SingleOrder(bob.getCart(), bob,restaurant3 );
+        groupOrder.addOrder(bobSingleOrder);
+        bobSingleOrder.setStatus(OrderStatus.PLACED);
     }
 
     @And("the restaurants does not receive the order")
@@ -98,8 +97,8 @@ public class ManageGroupOrderStepdefs {
     @When("Bob cancels his order")
     public void bobCancelsHisOrder() {
         bob.createItem(new Dish("pasta",11), 1);
-        bobOrder = new Order(bob.getCart(), bob,restaurant3 );
-        groupOrder.cancelOrder(bobOrder,bob,2);
+        bobSingleOrder = new SingleOrder(bob.getCart(), bob,restaurant3 );
+        groupOrder.cancelOrder(bobSingleOrder,bob,2);
         groupOrder.quit(bob);
     }
 
@@ -117,12 +116,12 @@ public class ManageGroupOrderStepdefs {
     @When("all members cancels their order")
     public void allMembersCancelsTheirOrder() {
         bob.createItem(new Dish("pasta",11,0), 1);
-        bobOrder = new Order(bob.getCart(), bob, restaurant3);
+        bobSingleOrder = new SingleOrder(bob.getCart(), bob, restaurant3);
         alice.createItem(new Dish("pasta",11,0), 1);
-        aliceOrder = new Order(alice.getCart(), alice, restaurant1);
-        groupOrder.cancelOrder(bobOrder,bob,2);
+        aliceSingleOrder = new SingleOrder(alice.getCart(), alice, restaurant1);
+        groupOrder.cancelOrder(bobSingleOrder,bob,2);
         groupOrder.quit(bob);
-        groupOrder.cancelOrder(aliceOrder,alice,2);
+        groupOrder.cancelOrder(aliceSingleOrder,alice,2);
         groupOrder.quit(alice);
         groupOrder.setStatus(OrderStatus.CANCELLED);
     }
@@ -143,17 +142,17 @@ public class ManageGroupOrderStepdefs {
         restaurant2=new Restaurant("restaurant", new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
         restaurant1=new Restaurant("restaurant", new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
         alice.createItem(new Dish("pasta",11,0), 1);
-        aliceOrder = new Order(alice.getCart(), alice, restaurant1);
-        aliceOrder.setStatus(OrderStatus.ACCEPTED);
+        aliceSingleOrder = new SingleOrder(alice.getCart(), alice, restaurant1);
+        aliceSingleOrder.setStatus(OrderStatus.ACCEPTED);
         bob.createItem(new Dish("pasta",11,0), 1);
-        bobOrder = new Order(bob.getCart(), bob , restaurant2);
-        bobOrder.setStatus(OrderStatus.ACCEPTED);
+        bobSingleOrder = new SingleOrder(bob.getCart(), bob , restaurant2);
+        bobSingleOrder.setStatus(OrderStatus.ACCEPTED);
     }
 
     @When("all sub orders are ready")
     public void allSubOrdersAreReady() {
-        aliceOrder.setStatus(OrderStatus.READY);
-        bobOrder.setStatus(OrderStatus.READY);
+        aliceSingleOrder.setStatus(OrderStatus.READY);
+        bobSingleOrder.setStatus(OrderStatus.READY);
         groupOrder.setStatus(OrderStatus.READY);
     }
 

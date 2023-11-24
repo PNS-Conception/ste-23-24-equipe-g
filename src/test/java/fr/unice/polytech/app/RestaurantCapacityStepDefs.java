@@ -14,7 +14,7 @@ public class RestaurantCapacityStepDefs {
     private Restaurant restaurant;
     private CapacityManager capacityManager;
     private CampusUser user;
-    private Order order;
+    private SingleOrder singleOrder;
     private static final Map<String, Month> monthMap = createMonthMap();
 
     private static Map<String, Month> createMonthMap() {
@@ -71,15 +71,15 @@ public class RestaurantCapacityStepDefs {
             Dish dish = new Dish("Pizza", 8.99); // Supposons que "Pizza" coûte 8.99
             Item newItem = new Item(dish, quantity);
             System.out.println(quantity+"+"+date+"+"+name);
-            order = user.order(Collections.singletonList(newItem), restaurant, dateTime);
+            singleOrder = user.order(Collections.singletonList(newItem), restaurant, dateTime);
         } catch (IllegalStateException e) {
-            order = null;
+            singleOrder = null;
         }
     }
 
     @Then("the order should be successfully placed")
     public void the_order_should_be_successfully_placed() {
-        assertNotNull(order, "The order was not placed successfully.");
+        assertNotNull(singleOrder, "The order was not placed successfully.");
     }
 
    @And("the remaining capacity for {string} at {int}:{int} PM on {int}th {string} {int} should be {int} meals")
@@ -92,12 +92,12 @@ public class RestaurantCapacityStepDefs {
 
     @Then("the order should not be placed")
     public void the_order_should_not_be_placed() {
-        assertNull(order, "The order was placed despite exceeding capacity.");
+        assertNull(singleOrder, "The order was placed despite exceeding capacity.");
     }
 
     @And("an error message {string} should be displayed")
     public void an_error_message_should_be_displayed(String errorMessage) {
-        if (order == null) {
+        if (singleOrder == null) {
             assertEquals("La capacité du restaurant est insuffisante pour cette commande", errorMessage);
         }
     }
@@ -126,9 +126,9 @@ public class RestaurantCapacityStepDefs {
         try {
             Dish dish = new Dish("Pizza", 8.99);
             Item newItem = new Item(dish, quantity);
-            order = user.order(Collections.singletonList(newItem), restaurant, dateTime);
+            singleOrder = user.order(Collections.singletonList(newItem), restaurant, dateTime);
         } catch (IllegalStateException e) {
-            order = null;
+            singleOrder = null;
         }
         remainingCapacity = capacityManager.getCapacity(restaurant, dateTime);
         remainingCapacity+=5;

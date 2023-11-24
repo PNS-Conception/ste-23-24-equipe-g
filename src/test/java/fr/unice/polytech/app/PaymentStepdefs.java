@@ -15,12 +15,12 @@ import static org.mockito.Mockito.when;
 public class PaymentStepdefs {
 
     private CampusUser client;
-    private Order order;
+    private SingleOrder singleOrder;
 
     @Given("a client {string}")
     public void a_client_with_a_cart(String name) {
         client = new CampusUser( name, "password", "email@example.com");
-        order= new Order(new ArrayList<>());
+        singleOrder = new SingleOrder(new ArrayList<>());
     }
 
     @Given("having a cart of {int} {string} and {int} {string} price {double}€ and {double}€")
@@ -31,7 +31,7 @@ public class PaymentStepdefs {
 
     @When("Alice orders a pizza and a pasta")
     public void alice_orders_items() {
-        order = client.order(client.getCart(),new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
+        singleOrder = client.order(client.getCart(),new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
     }
 
     @When("Alice pays {double}€")
@@ -39,8 +39,8 @@ public class PaymentStepdefs {
         RandomGenerator mockRandomGenerator = Mockito.mock(RandomGenerator.class);
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
         client.setRandomGenerator(mockRandomGenerator);
-        assertTrue(client.makePaymentmock(order, client));
-        assertEquals(amount, order.getPrice(), 0.01);
+        assertTrue(client.makePaymentmock(singleOrder, client));
+        assertEquals(amount, singleOrder.getPrice(), 0.01);
     }
 
     @When("Alice has a balance of {double}€")
@@ -51,17 +51,17 @@ public class PaymentStepdefs {
     @Then("the order's status should be {string}")
     public void the_order_status_should_be(String expectedStatus) {
         // Vérifiez le statut de la commande
-        assertEquals(OrderStatus.valueOf(expectedStatus), order.getStatus());
+        assertEquals(OrderStatus.valueOf(expectedStatus), singleOrder.getStatus());
     }
 
     @Then("Alice's orders should have an order with {int} pizza and {int} pasta and a total of {double}€")
     public void check_alice_orders(int pizzaCount, int pastaCount, double expectedPrice) {
         //Récupérez la dernière commande d'Alice
-        Order lastOrder = client.getLastOrder();
+        SingleOrder lastSingleOrder = client.getLastOrder();
         // Vérifiez la dernière commande d'Alice
-        assertEquals(order, lastOrder);
+        assertEquals(singleOrder, lastSingleOrder);
         // Vérifiez que la dernière commande d'Alice contient les bons plats
-        lastOrder.getItems().forEach(item -> {
+        lastSingleOrder.getItems().forEach(item -> {
             if (item.getDish().getName().equals("pizza")) {
                 assertEquals(pizzaCount, item.getQuantity());
             } else if (item.getDish().getName().equals("pasta")) {
@@ -69,12 +69,12 @@ public class PaymentStepdefs {
             }
         });
         // Vérifiez que la dernière commande d'Alice a le bon prix
-        assertEquals(expectedPrice, lastOrder.getPrice(), 0.01);
+        assertEquals(expectedPrice, lastSingleOrder.getPrice(), 0.01);
     }
 
     @Then("the payment should fail")
     public void the_payment_should_fail() {
-        assertNotEquals(OrderStatus.PAID, order.getStatus());
+        assertNotEquals(OrderStatus.PAID, singleOrder.getStatus());
     }
 
     @Then("Alice's cart should still have {int} pizza and {int} pasta")
@@ -105,12 +105,12 @@ public class PaymentStepdefs {
         RandomGenerator mockRandomGenerator = Mockito.mock(RandomGenerator.class);
         when(mockRandomGenerator.nextDouble()).thenReturn(1.0); // Force l'échec
         client.setRandomGenerator(mockRandomGenerator);
-        assertFalse(client.makePaymentmock(order, client));
+        assertFalse(client.makePaymentmock(singleOrder, client));
     }
 
     @And("the order's status should not be {string}")
     public void theOrderSStatusShouldNotBe(String state) {
-        assertNotEquals(OrderStatus.valueOf(state), order.getStatus());
+        assertNotEquals(OrderStatus.valueOf(state), singleOrder.getStatus());
     }
 }
 

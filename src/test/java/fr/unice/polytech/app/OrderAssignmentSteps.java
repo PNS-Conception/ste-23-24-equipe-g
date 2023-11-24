@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 public class OrderAssignmentSteps {
 
-    private Order order;
+    private SingleOrder singleOrder;
     private DeliveryPerson deliveryPerson;
     private DeliverySystem deliverySystem;
         @Given("there is an order ready for delivery")
@@ -29,8 +29,8 @@ public class OrderAssignmentSteps {
             CampusUser user = new CampusUser("John Doe", "password", "johndoe@example.com");
 
 
-            order = new Order(items);
-            order.setStatus(OrderStatus.READY);
+            singleOrder = new SingleOrder(items);
+            singleOrder.setStatus(OrderStatus.READY);
         }
 
     @Given("a delivery person is available")
@@ -45,7 +45,7 @@ public class OrderAssignmentSteps {
 
     @When("the system assigns the order to the delivery person")
     public void the_system_assigns_the_order_to_the_delivery_person() {
-        Optional<DeliveryPerson> assignedDeliveryPerson = deliverySystem.assignOrderToDeliveryPerson(order);
+        Optional<DeliveryPerson> assignedDeliveryPerson = deliverySystem.assignOrderToDeliveryPerson(singleOrder);
         assertTrue("A delivery person should have been assigned", assignedDeliveryPerson.isPresent());
         deliveryPerson = assignedDeliveryPerson.get();
     }
@@ -53,7 +53,7 @@ public class OrderAssignmentSteps {
 
     @Then("the order status should be ASSIGNED")
     public void the_order_status_should_be_assigned() {
-        assertEquals(OrderStatus.ASSIGNED, order.getStatus());
+        assertEquals(OrderStatus.ASSIGNED, singleOrder.getStatus());
     }
 
     @Then("the delivery person should be unavailable")

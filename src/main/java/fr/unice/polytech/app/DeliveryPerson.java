@@ -9,7 +9,7 @@ import static fr.unice.polytech.app.OrderStatus.DELIVERED;
 public class DeliveryPerson extends CampusUser {
 
     private String phoneNumber;
-    private Order currentOrder;
+    private Order currentSingleOrder;
     private boolean isAvailable;
     private String routeDetails;
     private LocalTime pickupTime;
@@ -25,49 +25,40 @@ public class DeliveryPerson extends CampusUser {
         super(name,email);
         setType(UserType.DELIVERY_PERSON);
         this.phoneNumber = phoneNumber;
-        this.currentOrder = null;
+        this.currentSingleOrder = null;
         this.isAvailable = true;
 
     }
 
-    public boolean assignOrder(Order order) {
-        if (this.isAvailable && this.currentOrder == null) {
-            this.currentOrder = order;
+    public boolean assignOrder(SingleOrder singleOrder) {
+        if (this.isAvailable && this.currentSingleOrder == null) {
+            this.currentSingleOrder = singleOrder;
             this.isAvailable = false; // Le livreur n'est plus disponible après avoir accepté une commande
-            order.setStatus(ASSIGNED);
+            singleOrder.setStatus(ASSIGNED);
             return true;
         }
         return false;
     }
 
     public void markOrderAsDelivered() {
-        if (this.currentOrder != null) {
-            this.currentOrder.setStatus(DELIVERED);
-            this.currentOrder = null;
+        if (this.currentSingleOrder != null) {
+            this.currentSingleOrder.setStatus(DELIVERED);
+            this.currentSingleOrder = null;
             this.isAvailable = true;
         }
     }
-    public void finalizeDeliveryWithoutUserConfirmation(Order order) {
-        if (!order.canUserConfirmReceipt() && this.currentOrder.equals(order)) {
+    public void finalizeDeliveryWithoutUserConfirmation(SingleOrder singleOrder) {
+        if (!singleOrder.canUserConfirmReceipt() && this.currentSingleOrder.equals(singleOrder)) {
             this.markOrderAsDelivered();
         }
     }
-    public void receiveOrderDetails(Order order) {
-        this.routeDetails = order.getRouteDetails();
-        this.pickupTime = order.getPickupTime();
-        this.restaurant = order.getRestaurant();
-        this.deliveryLocation = order.getDeliveryLocation();
+    public void receiveOrderDetails(Order singleOrder) {
+        this.routeDetails = singleOrder.getRouteDetails();
+        this.pickupTime = singleOrder.getPickupTime();
+        this.restaurant = singleOrder.getRestaurant();
+        this.deliveryLocation = singleOrder.getDeliveryLocation();
     }
 
-    public void receiveGroupOrderDetails(GroupOrder order) {
-        this.routeDetails = order.getRouteDetails();
-        this.pickupTime = order.getPickupTime();
-        this.restaurants = order.getRestaurants();
-        this.deliveryLocation = order.getDeliveryLocation();
-    }
-
-
-    // Getters pour les nouveaux attributs
     public String getRouteDetails() {
         return routeDetails;
     }
@@ -95,11 +86,11 @@ public class DeliveryPerson extends CampusUser {
 
     // Getters et setters pour currentOrder
     public Order getCurrentOrder() {
-        return currentOrder;
+        return currentSingleOrder;
     }
 
-    public void setCurrentOrder(Order currentOrder) {
-        this.currentOrder = currentOrder;
+    public void setCurrentOrder(Order currentSingleOrder) {
+        this.currentSingleOrder = currentSingleOrder;
     }
 
     // Getters et setters pour isAvailable
@@ -112,15 +103,15 @@ public class DeliveryPerson extends CampusUser {
     }
 
 
-    public void validateOrder(GroupOrder groupOrder) {
-        setCurrentOrder(groupOrder);
-        groupOrder.setStatus(OrderStatus.PICKED_UP);
+    public void validateOrder(Order order) {
+        setCurrentOrder(order);
+        order.setStatus(OrderStatus.PICKED_UP);
     }
 
-    public void validateOrder(Order groupOrder) {
+    public void validateOrder(SingleOrder groupSingleOrder) {
 
-        setCurrentOrder(groupOrder);
-        groupOrder.setStatus(OrderStatus.PICKED_UP);
+        setCurrentOrder(groupSingleOrder);
+        groupSingleOrder.setStatus(OrderStatus.PICKED_UP);
     }
 
     public void deliverOrder(GroupOrder groupOrder) {

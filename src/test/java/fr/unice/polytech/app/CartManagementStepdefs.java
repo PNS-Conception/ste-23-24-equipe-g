@@ -8,8 +8,6 @@ import static org.junit.Assert.*;
 
 
 import java.util.List;
-import java.util.UUID;
-import java.util.Arrays;
 
 
 public class CartManagementStepdefs {
@@ -63,15 +61,15 @@ public class CartManagementStepdefs {
     @When("I validate my cart of {int} {string}")
     public void iValidateMyCartOf(int quantity, String itemName) {
         List<Item> items = List.of(new Item(new Dish(itemName, 0, 0), quantity));
-        Order order = user.order(items,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
+        SingleOrder singleOrder = user.order(items,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
     }
 
     @Then("my order contains {int} {string}")
     public void myOrderContains(int quantity, String itemName) {
-        Order lastOrder = user.getHistory().get(user.getHistory().size() - 1);
-        assertNotNull(lastOrder);
+        SingleOrder lastSingleOrder = user.getHistory().get(user.getHistory().size() - 1);
+        assertNotNull(lastSingleOrder);
 
-        Item item = findItemByName(lastOrder.getItems(), itemName);
+        Item item = findItemByName(lastSingleOrder.getItems(), itemName);
         assertNotNull(item);
         assertEquals(quantity, item.getQuantity());
     }

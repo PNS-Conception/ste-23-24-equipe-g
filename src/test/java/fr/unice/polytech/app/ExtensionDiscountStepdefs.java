@@ -17,7 +17,7 @@ public class ExtensionDiscountStepdefs {
     private Restaurant restaurant;
     private LocalDate currentDate = LocalDate.now();
     CampusUser user;
-    Order order;
+    SingleOrder singleOrder;
 
     private void simulateTimePassage(int days) {
         currentDate = currentDate.plusDays(days);
@@ -49,13 +49,13 @@ public class ExtensionDiscountStepdefs {
         Dish dish = new Dish("test", arg2);
         user.selectRestaurant(restaurant);
         user.createItem(dish, arg1);
-        order =user.order(user.getCart(), restaurant);
-        order.getPaid();
+        singleOrder =user.order(user.getCart(), restaurant);
+        singleOrder.getPaid();
     }
 
     @Then("the order total is {int}")
     public void theOrderTotalShouldBe(double arg0) {
-        assertEquals( arg0,order.getPrice(), 0.0);
+        assertEquals( arg0, singleOrder.getPrice(), 0.0);
 
     }
 
@@ -111,8 +111,8 @@ public class ExtensionDiscountStepdefs {
         //restaurant = new Restaurant("test", new RestaurantManager("test", "test", "test"), "test");
         //order=user.order(List.of(new Item(new Dish("test", 10, 10), 1)), restaurant);
         user = new CampusUser("test", "password", "email");
-        order=user.order(List.of(new Item(new Dish("test", 10, 10), 1)), restaurant);
-        user.makePayment(order,user);
+        singleOrder =user.order(List.of(new Item(new Dish("test", 10, 10), 1)), restaurant);
+        user.makePayment(singleOrder,user);
         restaurant.addNbOrderToUser(user);
         restaurant.getExtensionDiscount(user).setNumberOfOrders(arg1);
     }
