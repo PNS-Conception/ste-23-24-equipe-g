@@ -11,9 +11,9 @@ import static org.junit.Assert.*;
 
 public class ManageGroupOrderStepdefs {
 
-    CampusUser alice;
+    CampusUser alice = new CampusUser("alice",null,null);
 
-    CampusUser bob;
+    CampusUser bob = new CampusUser("bob",null,null);
     GroupOrder groupOrder;
     SingleOrder aliceSingleOrder;
 

@@ -108,6 +108,10 @@ public class Restaurant {
         singleOrderList.add(singleOrder);
     }
 
+    public void clearOrder() {
+        singleOrderList.clear();
+    }
+
     public void setFull(boolean full) {
         this.full = full;
     }
@@ -279,4 +283,5 @@ public class Restaurant {
     public void removeDish(Dish dish, RestaurantManager manager) {
             menu.removeDish(dish, manager);
     }
+
 }

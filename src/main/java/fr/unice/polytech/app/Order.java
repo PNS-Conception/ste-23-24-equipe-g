@@ -1,6 +1,9 @@
 package fr.unice.polytech.app;
 
+import org.mockito.internal.matchers.Or;
+
 import java.time.LocalTime;
+import java.util.List;
 
 public interface Order {
 
@@ -10,9 +13,19 @@ public interface Order {
 
     LocalTime getPickupTime();
 
-    Restaurant getRestaurant();
+    List<Restaurant> getRestaurants();
 
     String getDeliveryLocation();
 
     void setStatus(OrderStatus orderStatus);
+
+    Restaurant getRestaurant();
+
+    void setDeliveryLocation(String deliveryLocation);
+
+    OrderStatus getStatus();
+
+    //void getPaid();
+
+
 }

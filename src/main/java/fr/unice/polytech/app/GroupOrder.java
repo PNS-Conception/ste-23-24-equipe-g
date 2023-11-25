@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class GroupOrder implements Order{
 
-    private List<SingleOrder> subSingleOrders;
+    private List<Order> subSingleOrders;
     private UUID groupID;
     private CampusUser owner;
     private List<CampusUser> members;
@@ -15,11 +15,9 @@ public class GroupOrder implements Order{
 
     private String routeDetails;
     private LocalTime pickupTime;
-    private Restaurant restaurant;
+    private List<Restaurant> restaurants;
     private String deliveryLocation;
     private String deliveryAddress;
-
-
 
     GroupOrder(CampusUser owner) {
         super();
@@ -31,11 +29,11 @@ public class GroupOrder implements Order{
 
     }
 
-    public List<SingleOrder> getSubOrders() {
+    public List<Order> getSubOrders() {
         return subSingleOrders;
     }
 
-    public void setSubOrders(List<SingleOrder> subSingleOrders) {
+    public void setSubOrders(List<Order> subSingleOrders) {
         this.subSingleOrders = subSingleOrders;
     }
 
@@ -86,7 +84,6 @@ public class GroupOrder implements Order{
     public void cancelOrder(SingleOrder singleOrder, CampusUser user, int minutesPassed) {
         user.cancelOrder(singleOrder,minutesPassed);
         subSingleOrders.remove(singleOrder);
-
     }
 
     public boolean ismember(CampusUser user) {
@@ -115,12 +112,13 @@ public class GroupOrder implements Order{
         }
     }
 
-    public List<Restaurant> getRestaurants() {
-        List<Restaurant> restaurants = new ArrayList<>();
-        for (SingleOrder singleOrder : subSingleOrders) {
-            restaurants.add(singleOrder.getRestaurant());
-        }
-        return restaurants;
+    public Restaurant getRestaurant() {
+        return restaurants.get(0);
+    }
+
+    @Override
+    public void setDeliveryLocation(String deliveryLocation) {
+        this.deliveryAddress = deliveryLocation;
     }
 
     @Override
@@ -134,8 +132,13 @@ public class GroupOrder implements Order{
     }
 
     @Override
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public List<Restaurant> getRestaurants() {
+        for (Order singleOrder : subSingleOrders) {
+            if (singleOrder.getRestaurant() != null) {
+                 restaurants.add( singleOrder.getRestaurant());
+            }
+        }
+        return restaurants;
     }
 
     @Override

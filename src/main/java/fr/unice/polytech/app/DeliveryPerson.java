@@ -114,7 +114,7 @@ public class DeliveryPerson extends CampusUser {
         groupSingleOrder.setStatus(OrderStatus.PICKED_UP);
     }
 
-    public void deliverOrder(GroupOrder groupOrder) {
+    public void deliverOrder(Order groupOrder) {
 
         groupOrder.setStatus(DELIVERED);
         setCurrentOrder(null);

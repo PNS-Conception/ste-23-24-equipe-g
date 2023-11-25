@@ -1,6 +1,7 @@
 package fr.unice.polytech.app;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,6 +69,12 @@ public class SingleOrder implements Order  {
         this.status = status;
     }
 
+    @Override
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+
     public void setPlacedTime(LocalTime placedTime) {
         this.placedTime = placedTime;
     }
@@ -117,6 +124,14 @@ public class SingleOrder implements Order  {
     public LocalTime getPickupTime() {
         return pickupTime;
     }
+
+    @Override
+    public List<Restaurant> getRestaurants() {
+        List<Restaurant> restaurants = new ArrayList<>();
+        restaurants.add(restaurant);
+        return restaurants;
+    }
+
 
     public void setPickupTime(LocalTime pickupTime) {
         this.pickupTime = pickupTime;
@@ -204,10 +219,11 @@ public class SingleOrder implements Order  {
         return price;
     }
 
-
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public void getRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
+
+
 
 
     public int getNumberOfDishes(){
