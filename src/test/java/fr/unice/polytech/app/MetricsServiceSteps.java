@@ -63,8 +63,8 @@ public class MetricsServiceSteps {
         Item item = new Item(dish, 2);
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
-
-        Restaurant testRestaurant = new Restaurant("TestRestaurant", "TestAddress");
+        Menu menu = new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99)));
+        Restaurant testRestaurant =RestaurantService.getInstance().createRestaurant("TestRestaurant", menu);
         SingleOrder testOrder = new SingleOrder(items);
         testRestaurant.addOrder(testOrder);
         DataCollector dataCollector = new DataCollector();
@@ -131,14 +131,14 @@ public class MetricsServiceSteps {
             // Première commande avec 'Location A'
             ArrayList<Item> items1 = new ArrayList<>();
             items1.add(item1);
-            Order order1 = new Order(items1);
+            SingleOrder order1 = new SingleOrder(items1);
             order1.setDeliveryLocation("Location A");
             dataCollector.collectOrderData(order1);
 
             // Deuxième commande avec 'Location B'
             ArrayList<Item> items2 = new ArrayList<>();
             items2.add(item2);
-            Order order2 = new Order(items2);
+            SingleOrder order2 = new SingleOrder(items2);
             order2.setDeliveryLocation("Location B");
             dataCollector.collectOrderData(order2);
         }
@@ -169,12 +169,12 @@ public class MetricsServiceSteps {
         metricsService = new MetricsService(dataCollector);
 
         // Créer des données utilisateur et de commande
-        CampusUser user = new CampusUser("name", "password", "", "email@example.com");
+        CampusUser user = new CampusUser("name", "password","email@example.com");
         Dish dish = new Dish("Burger", 15.0);
         Item item = new Item(dish, 1);
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
-        Order order = new Order(items);
+        SingleOrder order = new SingleOrder(items);
 
         // Collecter des données de comportement utilisateur
         dataCollector.collectUserBehaviorData(user, order);
@@ -190,8 +190,6 @@ public class MetricsServiceSteps {
         assertNotNull("User behavior metrics should not be null", userBehaviorMetrics);
         assertFalse("User behavior metrics should not be empty", userBehaviorMetrics.isEmpty());
     }
-
-
 
 }
 

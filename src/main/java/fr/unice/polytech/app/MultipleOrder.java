@@ -81,6 +81,11 @@ public class MultipleOrder implements Order{
         return getId();
     }
 
+    @Override
+    public void setRestaurant(Restaurant restaurant) {
+
+    }
+
     public void addSubOrder(Order order){
         subOrders.add(order);
     }

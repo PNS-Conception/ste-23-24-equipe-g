@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Admin {
 
-    List<Restaurant> restaurants;
+    static List<Restaurant> restaurants;
     List<DeliveryPerson> deliveryPersons;
 
     List<CampusUser> campusUsers;

@@ -94,6 +94,12 @@ public class SingleOrder implements Order  {
     public UUID getId() {
         return id;
     }
+
+    @Override
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
     @Override
     public LocalTime getAcceptedTime() {
          return placedTime;

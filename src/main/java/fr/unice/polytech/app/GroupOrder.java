@@ -92,6 +92,11 @@ public class GroupOrder implements Order{
         return this.groupID;
     }
 
+    @Override
+    public void setRestaurant(Restaurant restaurant) {
+
+    }
+
     public Boolean deleteGroup(CampusUser owner) {
         if (owner.equals(this.owner) && ((status ==OrderStatus.PLACED)||(status ==null))) {
             members.clear();
