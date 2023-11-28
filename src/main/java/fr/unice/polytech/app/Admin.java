@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Admin {
 
-    List<Restaurant> restaurants;
+    static List<Restaurant> restaurants;
     List<DeliveryPerson> deliveryPersons;
 
     List<CampusUser> campusUsers;
@@ -19,7 +19,7 @@ public class Admin {
         deliveryPersons= new ArrayList<>();
         campusUsers= new ArrayList<>();
     }
-    public void addRestaurant(String name, String address, RestaurantManager owner) {
+    public static void addRestaurant(String name, String address, RestaurantManager owner) {
         Restaurant restaurant = new Restaurant(name,owner,address );
         restaurants.add(restaurant);
     }
@@ -34,7 +34,7 @@ public class Admin {
         campusUsers.add(campusUser);
     }
 
-    public List<Restaurant> getRestaurants() {
+    public static List<Restaurant> getRestaurants() {
         return restaurants;
     }
 

@@ -284,4 +284,7 @@ public class Restaurant {
             menu.removeDish(dish, manager);
     }
 
+    public void setOwner(RestaurantManager manager) {
+        this.owner= manager;
+    }
 }

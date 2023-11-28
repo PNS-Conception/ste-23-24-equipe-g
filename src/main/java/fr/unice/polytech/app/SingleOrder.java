@@ -91,10 +91,17 @@ public class SingleOrder implements Order  {
         return status;
     }
 
-    UUID getId() {
+    public UUID getId() {
         return id;
     }
-     LocalTime getAcceptedTime() {
+
+    @Override
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    @Override
+    public LocalTime getAcceptedTime() {
          return placedTime;
      }
 

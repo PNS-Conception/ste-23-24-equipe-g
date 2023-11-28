@@ -70,7 +70,7 @@ public class MetricsService {
 
     public Map<Restaurant, Double> getDeliveryEfficiencyMetrics() {
         Map<Restaurant, Double> deliveryEfficiency = new HashMap<>();
-        List<Restaurant> restaurants = Admin.getRestaurants();
+        List<Restaurant> restaurants = RestaurantService.getInstance().getAllRestaurants();
 
         if (restaurants == null) {
             return deliveryEfficiency; // Renvoyer une map vide si la liste est null
