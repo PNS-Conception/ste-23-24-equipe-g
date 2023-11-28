@@ -4,10 +4,13 @@ public class Item {
     private int quantity;
     private double price;
 
+    private double notRegularPrice;
+
     public Item(Dish dish, int quantity) {
         this.dish = dish;
         this.quantity = quantity;
-        this.price = dish.getPrice() * quantity;
+        this.price = calculatePrice();
+        this.notRegularPrice = calculateNotRegularPrice();
     }
 
     public Dish getDish() {
@@ -21,6 +24,19 @@ public class Item {
     public double getPrice() {
         return price;
     }
+
+    public double getNotRegularPrice() {
+        return notRegularPrice;
+    }
+
+    public double calculatePrice() {
+        return dish.getPrice() * quantity;
+    }
+
+    public double calculateNotRegularPrice() {
+        return dish.getNotRegularPrice() * quantity;
+    }
+
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;

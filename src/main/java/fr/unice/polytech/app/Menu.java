@@ -16,7 +16,7 @@ public class Menu {
     }
 
     public boolean addDish(Dish dish,RestaurantManager manager) {
-        if (manager.getType() == UserType.Manager) {
+        if (manager.getType() == UserType.MANAGER) {
             menu.add(dish);
             return true;
         }
@@ -24,7 +24,7 @@ public class Menu {
     }
 
     public boolean removeDish(Dish dish,RestaurantManager manager) {
-        if (manager.getType() == UserType.Manager){
+        if (manager.getType() == UserType.MANAGER){
             menu.remove(dish);
             return true;
 
@@ -37,7 +37,7 @@ public class Menu {
     }
 
     public boolean setMenu(List<Dish> menu,RestaurantManager manager) {
-        if (manager.getType() == UserType.Manager) {
+        if (manager.getType() == UserType.MANAGER) {
             this.menu = menu;
             return true;
         }

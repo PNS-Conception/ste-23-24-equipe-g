@@ -17,7 +17,7 @@ public class SignInStepdefs {
     @Given("given users with email {string} and password {string}")
     public void givenUsersWithEmailAndPassword(String email, String password) {
         authenticationSystem = new AuthenticationSystem();
-        logInResult =authenticationSystem.signUp(email, password);
+        logInResult =authenticationSystem.signUp("name",email, password);
     }
 
 

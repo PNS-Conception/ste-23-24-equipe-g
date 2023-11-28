@@ -17,20 +17,20 @@ Feature: Place Order Management
   Scenario: place group order not all orders are paid
     When Alice has placed order from the restaurant "Vapiano" and paid for it
     And Bob has a place order form "le déclice" and not paid for it
-    Then the order group status should be not placed
+    Then the order group status should be not paid
     And the restaurants does not receive the order
 
 
   Scenario: one order in the group is canceled
-    Given group order is placed
+    Given group order is paid
     When Bob cancels his order
-    Then the order group still should be Placed
+    Then the order group still should be Paid
     And Bob should not be a member of the order group
     And Bob should be refunded
 
 
   Scenario: all orders in the group are canceled
-    Given group order is placed
+    Given group order is paid
     When all members cancels their order
     Then the order group status should be Canceled
     And all members should be refunded

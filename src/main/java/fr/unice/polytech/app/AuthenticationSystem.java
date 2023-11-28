@@ -6,14 +6,17 @@ import java.util.Scanner;
 
 public class AuthenticationSystem {
     private Map<String, String> userCredentials;
+    Admin admin;
 
     public AuthenticationSystem() {
         this.userCredentials = new HashMap<>();
+        admin = new Admin();
     }
 
-    public boolean signUp(String email, String password) {
+    public boolean signUp(String name,String email, String password) {
         if (!userCredentials.containsKey(email)) {
             userCredentials.put(email, password);
+            admin.addCampusUser(name, password, email);
             return true;
         }
         return false;
@@ -28,6 +31,12 @@ public class AuthenticationSystem {
 
     public boolean isCredentialsStored(String email, String password) {
         return userCredentials.containsKey(email) && userCredentials.get(email).equals(password);
+    }
+
+    public void userCredentials(){
+        for (CampusUser user : admin.getCampusUsers()){
+            userCredentials.put(user.getEmail(), user.getPassword());
+        }
     }
 
 }

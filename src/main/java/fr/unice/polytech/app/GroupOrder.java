@@ -1,24 +1,28 @@
 package fr.unice.polytech.app;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class GroupOrder {
+public class GroupOrder implements Order{
 
-    private List<Order> subOrders;
+    private List<Order> subSingleOrders;
     private UUID groupID;
     private CampusUser owner;
     private List<CampusUser> members;
     private OrderStatus status;
 
+    private String routeDetails;
+    private LocalTime pickupTime;
+    private List<Restaurant> restaurants;
+    private String deliveryLocation;
     private String deliveryAddress;
 
-
-
     GroupOrder(CampusUser owner) {
+        super();
         this.groupID = UUID.randomUUID();
-        this.subOrders=new ArrayList<>();
+        this.subSingleOrders =new ArrayList<>();
         this.members=new ArrayList<>();
         addMember(owner);
         this.owner = owner;
@@ -26,20 +30,17 @@ public class GroupOrder {
     }
 
     public List<Order> getSubOrders() {
-        return subOrders;
+        return subSingleOrders;
     }
 
-    public void setSubOrders(List<Order> subOrders) {
-        this.subOrders = subOrders;
+    public void setSubOrders(List<Order> subSingleOrders) {
+        this.subSingleOrders = subSingleOrders;
     }
 
     public UUID getGroupID() {
         return groupID;
     }
 
-    public void setGroupID(UUID groupID) {
-        this.groupID = groupID;
-    }
 
     public CampusUser getOwner() {
         return owner;
@@ -54,12 +55,13 @@ public class GroupOrder {
             members.add(user);
         }
     }
+
     public void addMember(CampusUser user) {
         members.add(user);
     }
 
-    public void addOrder(Order order) {
-        subOrders.add(order);
+    public void addOrder(SingleOrder singleOrder) {
+        subSingleOrders.add(singleOrder);
     }
 
     public void setStatus(OrderStatus orderStatus) {
@@ -73,16 +75,15 @@ public class GroupOrder {
     public Boolean deleteGroup(CampusUser owner) {
         if (owner.equals(this.owner) && ((status ==OrderStatus.PLACED)||(status ==null))) {
             members.clear();
-            subOrders.clear();
+            subSingleOrders.clear();
             return true;
         }
         return false;
     }
 
-    public void cancelOrder(Order order,CampusUser user,int minutesPassed) {
-        user.cancelOrder(order,minutesPassed);
-        subOrders.remove(order);
-
+    public void cancelOrder(SingleOrder singleOrder, CampusUser user, int minutesPassed) {
+        user.cancelOrder(singleOrder,minutesPassed);
+        subSingleOrders.remove(singleOrder);
     }
 
     public boolean ismember(CampusUser user) {
@@ -109,5 +110,39 @@ public class GroupOrder {
         if (alice.equals(this.owner)) {
             members.remove(bob);
         }
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurants.get(0);
+    }
+
+    @Override
+    public void setDeliveryLocation(String deliveryLocation) {
+        this.deliveryAddress = deliveryLocation;
+    }
+
+    @Override
+    public String getRouteDetails() {
+        return routeDetails;
+    }
+
+    @Override
+    public LocalTime getPickupTime() {
+        return pickupTime;
+    }
+
+    @Override
+    public List<Restaurant> getRestaurants() {
+        for (Order singleOrder : subSingleOrders) {
+            if (singleOrder.getRestaurant() != null) {
+                 restaurants.add( singleOrder.getRestaurant());
+            }
+        }
+        return restaurants;
+    }
+
+    @Override
+    public String getDeliveryLocation() {
+        return deliveryLocation;
     }
 }

@@ -14,7 +14,7 @@ public class LoginStepdefs {
 
     @Given("the user with email {string} and password {string} in database")
     public void givenUserInDatabase(String email, String password) {
-        authenticationSystem.signUp(email, password);
+        authenticationSystem.signUp("name",email, password);
     }
 
     @When("User enters email {string} and password {string}")

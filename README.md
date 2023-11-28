@@ -39,7 +39,7 @@ Nous les laissons cependant pour votre permettre de vérifier que vous n'avez pa
 Vous mettez en évidence les principales user stories de votre projet.
 Chaque user story doit être décrite par 
    - son identifiant en tant que issue github (#), 
-   - sa forme classique (As a… I want to… In order to…) (pour faciliter la lecture)
+   - sa forme classique (As a… I want to… In singleOrder to…) (pour faciliter la lecture)
    - Le nom du fichier feature Cucumber et le nom des scénarios qui servent de tests d’acceptation pour la story.
    Les contenus détaillés sont dans l'issue elle-même. -->
    

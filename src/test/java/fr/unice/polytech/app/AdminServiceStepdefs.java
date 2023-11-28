@@ -1,5 +1,6 @@
 package fr.unice.polytech.app;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -15,21 +16,26 @@ public class AdminServiceStepdefs {
          admin=new Admin();
     }
 
+    @And("a restaurant manager with email {string}")
+    public void aRestaurantManagerWithEmail(String arg0) {
+        admin.addCampusUser("name","password",arg0);
+    }
 
-    @When("the admin add delivery person with email {string}")
-    public void the_admin_add_delivery_person_with_email(String email) {
-        admin.addDeliveryPerson("name",email);
+
+    @When("the admin add delivery person with email {string} and phone number {string}")
+    public void the_admin_add_delivery_person_with_email_and_phone_number(String phoneNumber, String email) {
+        admin.addDeliveryPerson("name",phoneNumber, email);
 
     }
-    @Then("{string} should be in the list of delivery persons")
-    public void should_be_in_the_list_of_delivery_persons(String email) {
+    @Then("{string} and {string} should be in the list of delivery persons")
+    public void should_be_in_the_list_of_delivery_persons(String email, String phoneNumber) {
+        assertEquals(phoneNumber, admin.getDeliveryPersons().get(0).getPhoneNumber());
         assertEquals(email, admin.getDeliveryPersons().get(0).getEmail());
-
     }
 
     @When("the admin add restaurant with name {string} and address {string} and a restaurant manager with email {string}")
     public void theAdminAddRestaurantWithNameAndAddressAndARestaurantManagerWithEmail(String restaurantName, String restaurantAddress, String restaurantOwnerEmail) {
-        admin.addRestaurant(restaurantName,restaurantAddress,restaurantOwnerEmail);
+        admin.addRestaurant(restaurantName,restaurantAddress,admin.getUserByEmail(restaurantOwnerEmail));
 
     }
 
@@ -41,4 +47,7 @@ public class AdminServiceStepdefs {
         assertEquals(restaurantOwnerEmail, admin.getRestaurants().get(0).getOwner().getEmail());
 
     }
+
+
+
 }
