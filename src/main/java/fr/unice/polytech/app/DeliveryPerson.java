@@ -1,6 +1,7 @@
 package fr.unice.polytech.app;
 
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static fr.unice.polytech.app.OrderStatus.ASSIGNED;
@@ -17,7 +18,7 @@ public class DeliveryPerson extends CampusUser {
 
     private Restaurant restaurant;
     private String deliveryLocation;
-    private List<DeliveryPerson> deliveryPeople;
+    private static List<DeliveryPerson> deliveryPeople;
 
 
 
@@ -28,6 +29,10 @@ public class DeliveryPerson extends CampusUser {
         this.currentSingleOrder = null;
         this.isAvailable = true;
 
+    }
+
+    public static List<DeliveryPerson> getDeliveryPeople() {
+        return deliveryPeople;
     }
 
     public boolean assignOrder(SingleOrder singleOrder) {

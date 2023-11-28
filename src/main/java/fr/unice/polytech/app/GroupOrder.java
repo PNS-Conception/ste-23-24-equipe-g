@@ -72,6 +72,26 @@ public class GroupOrder implements Order{
         return status;
     }
 
+    @Override
+    public LocalTime getAcceptedTime() {
+        return getAcceptedTime();
+    }
+
+    @Override
+    public LocalTime getDeliveryTime() {
+        return null;
+    }
+
+    @Override
+    public double getPrice() {
+        return 0;
+    }
+
+    @Override
+    public UUID getId() {
+        return this.groupID;
+    }
+
     public Boolean deleteGroup(CampusUser owner) {
         if (owner.equals(this.owner) && ((status ==OrderStatus.PLACED)||(status ==null))) {
             members.clear();

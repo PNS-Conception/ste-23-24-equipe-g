@@ -34,11 +34,11 @@ public class MetricsServiceSteps {
 
         LocalTime deliveryTime = LocalTime.now(); // Définir un temps de livraison pour les commandes
 
-        Order order1 = new Order(items);
+        SingleOrder order1 = new SingleOrder(items);
         order1.setDeliveryTime(deliveryTime); // Définir le temps de livraison
         dataCollector.collectOrderData(order1);
 
-        Order order2 = new Order(items);
+        SingleOrder order2 = new SingleOrder(items);
         order2.setDeliveryTime(deliveryTime); // Définir le temps de livraison
         dataCollector.collectOrderData(order2);
     }
@@ -65,7 +65,7 @@ public class MetricsServiceSteps {
         items.add(item);
 
         Restaurant testRestaurant = new Restaurant("TestRestaurant", "TestAddress");
-        Order testOrder = new Order(items);
+        SingleOrder testOrder = new SingleOrder(items);
         testRestaurant.addOrder(testOrder);
         DataCollector dataCollector = new DataCollector();
         dataCollector.collectOrderData(testOrder);

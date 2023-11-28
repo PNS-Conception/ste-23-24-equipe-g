@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class MultipleOrder implements Order{
 
@@ -58,6 +59,26 @@ public class MultipleOrder implements Order{
     @Override
     public OrderStatus getStatus() {
         return status;
+    }
+
+    @Override
+    public LocalTime getAcceptedTime() {
+        return getAcceptedTime();
+    }
+
+    @Override
+    public LocalTime getDeliveryTime() {
+        return getDeliveryTime();
+    }
+
+    @Override
+    public double getPrice() {
+        return getPrice();
+    }
+
+    @Override
+    public UUID getId() {
+        return getId();
     }
 
     public void addSubOrder(Order order){

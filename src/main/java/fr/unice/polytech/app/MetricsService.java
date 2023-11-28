@@ -63,7 +63,7 @@ public class MetricsService {
 
         Map<Restaurant, Double> deliveryEfficiency = new HashMap<>();
 
-        for (Restaurant restaurant : RestaurantService.getInstance()) {
+        for (Restaurant restaurant : RestaurantService.getInstance().getAllRestaurants()) {
             double efficiency = calculateDeliveryEfficiency(restaurant);
             deliveryEfficiency.put(restaurant, efficiency);
         }

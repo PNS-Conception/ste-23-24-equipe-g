@@ -19,7 +19,7 @@ public class Admin {
         deliveryPersons= new ArrayList<>();
         campusUsers= new ArrayList<>();
     }
-    public void addRestaurant(String name, String address, RestaurantManager owner) {
+    public static void addRestaurant(String name, String address, RestaurantManager owner) {
         Restaurant restaurant = new Restaurant(name,owner,address );
         restaurants.add(restaurant);
     }

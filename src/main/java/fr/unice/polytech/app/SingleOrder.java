@@ -91,10 +91,11 @@ public class SingleOrder implements Order  {
         return status;
     }
 
-    UUID getId() {
+    public UUID getId() {
         return id;
     }
-     LocalTime getAcceptedTime() {
+    @Override
+    public LocalTime getAcceptedTime() {
          return placedTime;
      }
 
