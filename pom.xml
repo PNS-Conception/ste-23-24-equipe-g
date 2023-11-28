@@ -164,6 +164,7 @@
                             <formats>
                                 <format>XML</format>
                                 <format>HTML</format> <!-- Ajoute un format HTML pour une visualisation facile. -->
+
                             </formats>
                         </configuration>
                     </execution>
