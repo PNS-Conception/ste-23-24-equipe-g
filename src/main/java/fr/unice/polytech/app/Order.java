@@ -34,6 +34,8 @@ public interface Order {
 
     UUID getId();
 
+    void setRestaurant(Restaurant restaurant);
+
     //void getPaid();
 
 

@@ -34,7 +34,7 @@ public class Admin {
         campusUsers.add(campusUser);
     }
 
-    public List<Restaurant> getRestaurants() {
+    public static List<Restaurant> getRestaurants() {
         return restaurants;
     }
 

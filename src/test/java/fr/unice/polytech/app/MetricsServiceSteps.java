@@ -75,9 +75,9 @@ public class MetricsServiceSteps {
     @Given("I am logged in as a restaurant manager")
     public void managerOfRestaurantLoggedIn() {
         // Créer un nouveau manager
-        manager = new RestaurantManager("testManager", "testPass", "testName", "testEmail");
+        manager = new RestaurantManager("testManager", "testPass",  "testEmail");
 
-        Admin.addRestaurant("My Restaurant", "Some address", "manager@test.com");
+        Admin.addRestaurant("My Restaurant", "Some address", manager);
         restaurant = Admin.getRestaurants().stream()
                 .filter(r -> r.getName().equals("My Restaurant") && r.getAddress().equals("Some address"))
                 .findFirst()
@@ -95,7 +95,7 @@ public class MetricsServiceSteps {
         DataCollector dataCollector = new DataCollector();
         Dish dish = new Dish("Pizza", 10.0);
         Item item = new Item(dish, 2);
-        Order order = new Order(Arrays.asList(item));
+        SingleOrder order = new SingleOrder(Arrays.asList(item));
         order.setRestaurant(restaurant);
         dataCollector.collectOrderData(order);
 

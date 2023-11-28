@@ -1,8 +1,5 @@
 package fr.unice.polytech.app;
 
-import fr.unice.polytech.app.*;
-import fr.unice.polytech.app.DataCollector;
-
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
@@ -22,7 +19,7 @@ public class MetricsService {
                 .collect(Collectors.groupingBy(Order::getDeliveryTime, Collectors.counting()));
     }
 
-    public Map<Restaurant, List<Order>> getOrdersByRestaurant() {
+    public Map<Restaurant, List<Order>> getOrdersByRestaurant(Restaurant restaurant) {
         return dataCollector.getOrders().stream()
                 .collect(Collectors.groupingBy(Order::getRestaurant));
     }
