@@ -86,8 +86,6 @@ import io.cucumber.java.en.Then;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -95,46 +93,46 @@ public class OrderDetailsNotificationSteps {
 
     private DeliverySystem deliverySystem;
     private DeliveryPerson deliveryPerson;
-    private Order order;
+    private SingleOrder singleOrder;
     private CampusUser user;
 
     @Given("an order has been assigned to a delivery person")
     public void an_order_has_been_assigned_to_a_delivery_person() {
         deliverySystem = new DeliverySystem();
-        deliveryPerson = new DeliveryPerson(UUID.randomUUID().toString(), "Delivery Guy", "+334567890");
-        Dish dish = new Dish("Pizza", 10.0);
+        deliveryPerson = new DeliveryPerson( "Delivery Guy", null, "+334567890");
+        Dish dish = new Dish("Pizza", 10,0);
         Item item = new Item(dish, 2);
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
 
-        order = new Order(items);
-        order.setStatus(OrderStatus.ASSIGNED);
-        order.setRouteDetails("Some route");
-        order.setPickupTime(LocalTime.now());
-        order.setRestaurants(new ArrayList<>()); // Assume Restaurant is a defined class
-        order.setDeliveryLocation("Some delivery location");
+        singleOrder = new SingleOrder(items);
+        singleOrder.setStatus(OrderStatus.ASSIGNED);
+        singleOrder.setRouteDetails("Some route");
+        singleOrder.setPickupTime(LocalTime.now());
+        singleOrder.setDeliveryLocation("Some delivery location");
 
-        deliveryPerson.setCurrentOrder(order);
+        deliveryPerson.setCurrentOrder(singleOrder);
         deliverySystem.addDeliveryPerson(deliveryPerson);
     }
 
     @When("the delivery person receives the order details")
     public void the_delivery_person_receives_the_order_details() {
-        deliveryPerson.receiveOrderDetails(order);
+        deliveryPerson.receiveOrderDetails(singleOrder);
     }
 
     @Then("the delivery person should have details including route, pickup time, restaurants, and delivery location")
     public void the_delivery_person_should_have_details_including_route_pickup_time_restaurants_and_delivery_location() {
-        assertEquals(order.getRouteDetails(), deliveryPerson.getRouteDetails());
-        assertEquals(order.getPickupTime(), deliveryPerson.getPickupTime());
-        assertEquals(order.getRestaurants(), deliveryPerson.getRestaurants());
-        assertEquals(order.getDeliveryLocation(), deliveryPerson.getDeliveryLocation());
+        assertEquals(singleOrder.getRouteDetails(), deliveryPerson.getRouteDetails());
+        assertEquals(singleOrder.getPickupTime(), deliveryPerson.getPickupTime());
+        assertEquals(singleOrder.getRestaurant(), deliveryPerson.getRestaurants());
+        assertEquals(singleOrder.getDeliveryLocation(), deliveryPerson.getDeliveryLocation());
     }
 
     @Given("an order is assigned to a delivery person")
     public void an_order_is_assigned_to_a_delivery_person() {
-        an_order_has_been_assigned_to_a_delivery_person(); // Reuse the first Given method
-        user = new CampusUser("user123", "User123"); // Example of a possible User constructor
+        an_order_has_been_assigned_to_a_delivery_person();
+        user = new CampusUser("user123","null", "User123"); // Assume User is a defined class
+
     }
 
     @When("the system sends the delivery details to the user")

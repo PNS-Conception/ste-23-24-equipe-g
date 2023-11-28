@@ -8,8 +8,6 @@ import static org.junit.Assert.*;
 
 
 import java.util.List;
-import java.util.UUID;
-import java.util.Arrays;
 
 
 public class CartManagementStepdefs {
@@ -17,7 +15,7 @@ public class CartManagementStepdefs {
 
     @Given("I am a client {string}")
     public void iAmAClient(String username) {
-        user = new CampusUser( username, "password", "address", username + "@example.com");
+        user = new CampusUser( username, "password", username + "@example.com");
     }
 
     @Given("I have an empty cart")
@@ -27,7 +25,7 @@ public class CartManagementStepdefs {
 
     @When("I choose a {string} with {int} quantity")
     public void iChooseAWithQuantity(String itemName, int quantity) {
-        user.createItem(new Dish(itemName, 0.0), quantity);
+        user.createItem(new Dish(itemName, 0,0), quantity);
     }
 
     @Then("cart contains {int} item {string} with {int} as the quantity")
@@ -40,12 +38,12 @@ public class CartManagementStepdefs {
 
     @Given("I have a cart that already contains {int} {string}")
     public void iHaveACartThatAlreadyContains(int existingQuantity, String existingItem) {
-        user.createItem(new Dish(existingItem, 0.0), existingQuantity);
+        user.createItem(new Dish(existingItem, 0,0), existingQuantity);
     }
 
     @When("I choose a different {string} with {int} quantity")
     public void iChooseADifferentWithQuantity(String newItem, int newQuantity) {
-        user.createItem(new Dish(newItem, 0.0), newQuantity);
+        user.createItem(new Dish(newItem, 0,0), newQuantity);
     }
 
     @Then("my cart contains {int} {string} and {int} {string}")
@@ -62,16 +60,16 @@ public class CartManagementStepdefs {
 
     @When("I validate my cart of {int} {string}")
     public void iValidateMyCartOf(int quantity, String itemName) {
-        List<Item> items = Arrays.asList(new Item(new Dish(itemName, 0.0), quantity));
-        Order order = user.order(items);
+        List<Item> items = List.of(new Item(new Dish(itemName, 0, 0), quantity));
+        SingleOrder singleOrder = user.order(items,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
     }
 
     @Then("my order contains {int} {string}")
     public void myOrderContains(int quantity, String itemName) {
-        Order lastOrder = user.getHistory().get(user.getHistory().size() - 1);
-        assertNotNull(lastOrder);
+        SingleOrder lastSingleOrder = user.getHistory().get(user.getHistory().size() - 1);
+        assertNotNull(lastSingleOrder);
 
-        Item item = findItemByName(lastOrder.getItems(), itemName);
+        Item item = findItemByName(lastSingleOrder.getItems(), itemName);
         assertNotNull(item);
         assertEquals(quantity, item.getQuantity());
     }

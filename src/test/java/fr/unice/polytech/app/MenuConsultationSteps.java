@@ -1,17 +1,12 @@
 package fr.unice.polytech.app;
 
-import fr.unice.polytech.app.CampusUser;
-import fr.unice.polytech.app.Dish;
-import fr.unice.polytech.app.Menu;
-import fr.unice.polytech.app.Restaurant;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import static org.junit.Assert.*;
 import java.util.List;
-import org.mockito.Mockito;
+
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class MenuConsultationSteps {
 
@@ -26,7 +21,7 @@ public class MenuConsultationSteps {
     @Given("I am an internet user")
     public void i_am_an_internet_user() {
         user = new CampusUser(); // Assuming CampusUser has a constructor for internet users
-        user.setType(UserType.Client);
+        user.setType(UserType.CLIENT);
     }
 
     @When("I visit the campus food ordering system")

@@ -15,17 +15,17 @@ import static org.junit.Assert.assertEquals;
 public class PlaceOrderStepdefs {
 
     private CampusUser client;
-    private Restaurant restaurant;
+    private Restaurant restaurant=new Restaurant("test", new RestaurantManager("test", "test", "test"), "test");
     private LocalDateTime deliveryDateTime;
 
     private List<Item> cart;
     private LocalTime deliveryTime;
-    private Order order;
+    private SingleOrder singleOrder;
 
     @Given("a client {string} with a cart")
     public void aClientWithAOrder(String name) {
-        client = new CampusUser( name, "password", "", "email@example.com");
-        order= new Order(new ArrayList<>());
+        client = new CampusUser( name, "password", "email@example.com");
+        singleOrder = new SingleOrder(new ArrayList<>());
     }
 
     @And("having {int} {string} and {int} {string} price {int}")
@@ -43,12 +43,12 @@ public class PlaceOrderStepdefs {
     @Given("^placed at (\\d+):(\\d+) (\\d+)\\|(\\d+)\\|(\\d+)$")
     public void placed_at(int hour, int minute, int day, int month, int year) {
         LocalTime placedTime = LocalTime.of(hour, minute);
-        order.setPlacedTime(placedTime);
+        singleOrder.setPlacedTime(placedTime);
     }
 
     @Given("^le délice is open at (\\d+):(\\d+) and close at (\\d+):(\\d+)$")
     public void le_délice_is_open_at_and_close_at(int openHour, int openMinute, int closeHour, int closeMinute) {
-        restaurant.addShift(LocalTime.of(openHour, openMinute), LocalTime.of(closeHour, closeMinute),Day.Friday ,new RestaurantManager("test", "test", "test", "test"));
+        restaurant.addShift(LocalTime.of(openHour, openMinute), LocalTime.of(closeHour, closeMinute),Day.Friday ,new RestaurantManager("test", "test", "test"));
     }
 
     @Given("^the restaurant is open$")
@@ -58,23 +58,22 @@ public class PlaceOrderStepdefs {
 
     @Given("^client choose the address \"([^\"]*)\"$")
     public void client_choose_the_address(String address) {
-        client.setAddress(address);
-        order.setClientAddress(address);
+        singleOrder.setClientAddress(address);
     }
 
     @When("the client create the order delivery time is {int}:{int} {int}|{int}|{int}")
     public void the_client_crate_the_order( int hour, int minute, int day, int month, int year) {
         deliveryTime = LocalTime.of(hour, minute);
         deliveryDateTime = LocalDateTime.of(year, month, day, deliveryTime.getHour(), deliveryTime.getMinute());
-        order = client.order(client.getCart());
-        order.setDeliveryTime(deliveryDateTime.toLocalTime());
-        order.setPlacedTime(LocalTime.now());
-        order.setStatus(OrderStatus.PLACED);
+        singleOrder = client.order(client.getCart(), restaurant);
+        singleOrder.setDeliveryTime(deliveryDateTime.toLocalTime());
+        singleOrder.setPlacedTime(LocalTime.now());
+        singleOrder.setStatus(OrderStatus.PLACED);
     }
 
     @Then("^the order status is placed")
     public void the_order_status_is_placed() {
-        assertEquals(OrderStatus.PLACED, order.getStatus());
+        assertEquals(OrderStatus.PLACED, singleOrder.getStatus());
     }
 
 

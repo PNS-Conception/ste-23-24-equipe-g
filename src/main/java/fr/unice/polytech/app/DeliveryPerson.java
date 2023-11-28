@@ -1,8 +1,6 @@
 package fr.unice.polytech.app;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static fr.unice.polytech.app.OrderStatus.ASSIGNED;
@@ -11,75 +9,56 @@ import static fr.unice.polytech.app.OrderStatus.DELIVERED;
 public class DeliveryPerson extends CampusUser {
 
     private String phoneNumber;
-    private Order currentOrder;
+    private Order currentSingleOrder;
     private boolean isAvailable;
     private String routeDetails;
     private LocalTime pickupTime;
     private List<Restaurant> restaurants;
+
+    private Restaurant restaurant;
     private String deliveryLocation;
+    private List<DeliveryPerson> deliveryPeople;
 
 
 
-    private static List<DeliveryPerson> deliveryPeople;
-    private List<Order> deliveryHistory; // Historique des livraisons
-
-
-
-
-
-
-    public DeliveryPerson(String id, String name, String phoneNumber) {
-        super(id, name); // Appel au constructeur de la superclasse CampusUser
+    public DeliveryPerson( String name,String email,String phoneNumber) {
+        super(name,email);
+        setType(UserType.DELIVERY_PERSON);
         this.phoneNumber = phoneNumber;
-        this.currentOrder = null;
-        this.isAvailable = true; // Le livreur est initialement disponible
-        this.deliveryHistory = new ArrayList<>();
+        this.currentSingleOrder = null;
+        this.isAvailable = true;
+
     }
 
-    public boolean assignOrder(Order order) {
-        if (this.isAvailable && this.currentOrder == null) {
-            this.currentOrder = order;
+    public boolean assignOrder(SingleOrder singleOrder) {
+        if (this.isAvailable && this.currentSingleOrder == null) {
+            this.currentSingleOrder = singleOrder;
             this.isAvailable = false; // Le livreur n'est plus disponible après avoir accepté une commande
-            order.setStatus(ASSIGNED);
+            singleOrder.setStatus(ASSIGNED);
             return true;
         }
         return false;
     }
 
     public void markOrderAsDelivered() {
-        if (this.currentOrder != null) {
-            this.currentOrder.setStatus(DELIVERED);
-            this.currentOrder = null;
+        if (this.currentSingleOrder != null) {
+            this.currentSingleOrder.setStatus(DELIVERED);
+            this.currentSingleOrder = null;
             this.isAvailable = true;
         }
     }
-    public void finalizeDeliveryWithoutUserConfirmation(Order order) {
-        if (!order.canUserConfirmReceipt() && this.currentOrder.equals(order)) {
+    public void finalizeDeliveryWithoutUserConfirmation(SingleOrder singleOrder) {
+        if (!singleOrder.canUserConfirmReceipt() && this.currentSingleOrder.equals(singleOrder)) {
             this.markOrderAsDelivered();
         }
     }
-    public void receiveOrderDetails(Order order) {
-        // Stocker les informations de la commande dans les attributs de la classe DeliveryPerson
-        this.routeDetails = order.getRouteDetails();
-        this.pickupTime = order.getPickupTime();
-        this.restaurants = order.getRestaurants();
-        this.deliveryLocation = order.getDeliveryLocation();
-    }
-    public void completeDelivery() {
-        if (this.currentOrder != null) {
-            this.deliveryHistory.add(this.currentOrder); // Ajoute la commande à l'historique
-            this.currentOrder.setStatus(DELIVERED);
-            this.currentOrder = null;
-            this.isAvailable = true;
-        }
+    public void receiveOrderDetails(Order singleOrder) {
+        this.routeDetails = singleOrder.getRouteDetails();
+        this.pickupTime = singleOrder.getPickupTime();
+        this.restaurant = singleOrder.getRestaurant();
+        this.deliveryLocation = singleOrder.getDeliveryLocation();
     }
 
-    // Getters pour l'historique des livraisons
-    public List<Order> getDeliveryHistory() {
-        return Collections.unmodifiableList(deliveryHistory);
-    }
-
-    // Getters pour les nouveaux attributs
     public String getRouteDetails() {
         return routeDetails;
     }
@@ -95,9 +74,6 @@ public class DeliveryPerson extends CampusUser {
     public String getDeliveryLocation() {
         return deliveryLocation;
     }
-    public static List<DeliveryPerson> getDeliveryPeople() {
-        return deliveryPeople;
-    }
 
     // Getters et setters pour phoneNumber
     public String getPhoneNumber() {
@@ -110,11 +86,11 @@ public class DeliveryPerson extends CampusUser {
 
     // Getters et setters pour currentOrder
     public Order getCurrentOrder() {
-        return currentOrder;
+        return currentSingleOrder;
     }
 
-    public void setCurrentOrder(Order currentOrder) {
-        this.currentOrder = currentOrder;
+    public void setCurrentOrder(Order currentSingleOrder) {
+        this.currentSingleOrder = currentSingleOrder;
     }
 
     // Getters et setters pour isAvailable
@@ -127,10 +103,21 @@ public class DeliveryPerson extends CampusUser {
     }
 
 
-    public void validateOrder(GroupOrder groupOrder) {
+    public void validateOrder(Order order) {
+        setCurrentOrder(order);
+        order.setStatus(OrderStatus.PICKED_UP);
     }
 
-    public void deliverOrder(GroupOrder groupOrder) {
+    public void validateOrder(SingleOrder groupSingleOrder) {
+
+        setCurrentOrder(groupSingleOrder);
+        groupSingleOrder.setStatus(OrderStatus.PICKED_UP);
+    }
+
+    public void deliverOrder(Order groupOrder) {
+
+        groupOrder.setStatus(DELIVERED);
+        setCurrentOrder(null);
     }
 
 

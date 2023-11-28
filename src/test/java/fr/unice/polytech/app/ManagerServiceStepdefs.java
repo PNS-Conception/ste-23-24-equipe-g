@@ -21,9 +21,9 @@ public class ManagerServiceStepdefs {
 
     @Given("manager of Restaurant logged in")
     public void managerOfRestaurantLoggedIn() {
-        manager = new RestaurantManager("test", "test", "test", "test");
-        restaurant = new Restaurant("test");
-        restaurant.setOwner(manager);
+        manager = new RestaurantManager("test", "test", "test");
+        restaurant = new Restaurant("test",manager,null);
+
     }
 
     @Given("a empty menu")
@@ -38,9 +38,9 @@ public class ManagerServiceStepdefs {
         assertTrue(b);
     }
 
-    @Given("a menu that contain dish with name {string} and price {int}")
-    public void aMenuThatContain(String dishName, int price) {
-        dish = new Dish(dishName, price);
+    @Given("a menu that contain dish with name {string} and price {int} and not regular price {int}")
+    public void aMenuThatContain(String dishName, int price, int notRegularPrice) {
+        dish = new Dish(dishName, price, notRegularPrice);
         restaurant.getMenu().addDish(dish, manager);
     }
 
@@ -52,7 +52,7 @@ public class ManagerServiceStepdefs {
 
     @When("the admin remove dish with name {string}")
     public void theAdminRemoveDishWithName(String arg0) {
-        dish = new Dish(arg0, 10);
+        dish = new Dish(arg0, 10,0);
         boolean b=restaurant.getMenu().removeDish(dish, manager);
         assertTrue(b);
     }
@@ -96,9 +96,9 @@ public class ManagerServiceStepdefs {
     }
 
 
-    @When("the admin add dish with name {string} and price {int}")
-    public void the_admin_add_dish_with_name_and_price(String dishName, double price) {
-        dish = new Dish(dishName, price);
+    @When("the admin add dish with name {string} and price {int}, not regular price {int}")
+    public void the_admin_add_dish_with_name_and_price(String dishName, double price, double notRegularPrice) {
+        dish = new Dish(dishName, price,notRegularPrice);
         restaurant.getMenu().addDish(dish, manager);
     }
 }
