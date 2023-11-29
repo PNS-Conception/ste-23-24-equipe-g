@@ -1,5 +1,6 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.State.PlacedIState;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PlaceOrderStepdefs {
 
@@ -23,7 +25,7 @@ public class PlaceOrderStepdefs {
     private SingleOrder singleOrder;
 
     @Given("a client {string} with a cart")
-    public void aClientWithAOrder(String name) {
+    public void aClientWithAOrder(String name) throws Exception {
         client = new CampusUser( name, "password", "email@example.com");
         singleOrder = new SingleOrder(new ArrayList<>());
     }
@@ -62,18 +64,18 @@ public class PlaceOrderStepdefs {
     }
 
     @When("the client create the order delivery time is {int}:{int} {int}|{int}|{int}")
-    public void the_client_crate_the_order( int hour, int minute, int day, int month, int year) {
+    public void the_client_crate_the_order( int hour, int minute, int day, int month, int year) throws Exception {
         deliveryTime = LocalTime.of(hour, minute);
         deliveryDateTime = LocalDateTime.of(year, month, day, deliveryTime.getHour(), deliveryTime.getMinute());
         singleOrder = client.order(client.getCart(), restaurant);
         singleOrder.setDeliveryTime(deliveryDateTime.toLocalTime());
         singleOrder.setPlacedTime(LocalTime.now());
-        singleOrder.setStatus(OrderStatus.PLACED);
+        singleOrder.placeOrder();
     }
 
     @Then("^the order status is placed")
     public void the_order_status_is_placed() {
-        assertEquals(OrderStatus.PLACED, singleOrder.getStatus());
+        assertTrue(singleOrder.getStatus() instanceof PlacedIState);
     }
 
 

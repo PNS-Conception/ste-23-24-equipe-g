@@ -21,7 +21,7 @@ public class DeliverySystem {
         return this.deliveryPeople.remove(deliveryPerson);
     }
 
-    public Optional<DeliveryPerson> assignOrderToDeliveryPerson(SingleOrder singleOrder) {
+    public Optional<DeliveryPerson> assignOrderToDeliveryPerson(SingleOrder singleOrder) throws Exception {
         for (DeliveryPerson deliveryPerson : this.deliveryPeople) {
             if (deliveryPerson.isAvailable()) {
                 boolean assigned = deliveryPerson.assignOrder(singleOrder);

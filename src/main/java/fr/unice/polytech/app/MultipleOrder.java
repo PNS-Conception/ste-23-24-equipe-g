@@ -1,5 +1,7 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.State.*;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +15,15 @@ public class MultipleOrder implements Order{
     private LocalTime pickupTime;
     private String deliveryLocation;
     private String deliveryAddress;
-    private OrderStatus status;
+    private IState status;
     private CampusUser owner;
-    private List<Restaurant> restaurants;
+    //private List<Restaurant> restaurants;
 
 
-    public MultipleOrder(CampusUser owner) {
+    public MultipleOrder(CampusUser owner) throws Exception {
 
         this.owner = owner;
-        this.status = OrderStatus.PLACED;
+        placeOrder();
         this.subOrders = new ArrayList<>();
     }
 
@@ -35,6 +37,10 @@ public class MultipleOrder implements Order{
     }
     @Override
     public List<Restaurant> getRestaurants() {
+        List<Restaurant> restaurants = new ArrayList<>();
+        for (Order order : subOrders) {
+            restaurants.add(order.getRestaurant());
+        }
         return restaurants;
     }
     @Override
@@ -42,13 +48,13 @@ public class MultipleOrder implements Order{
         return deliveryLocation;
     }
     @Override
-    public void setStatus(OrderStatus orderStatus) {
+    public void setStatus(IState orderStatus) {
         this.status = orderStatus;
     }
 
     @Override
     public Restaurant getRestaurant() {
-        return restaurants.get(0);
+        return getRestaurants().get(0);
     }
 
     @Override
@@ -57,7 +63,7 @@ public class MultipleOrder implements Order{
     }
 
     @Override
-    public OrderStatus getStatus() {
+    public IState getStatus() {
         return status;
     }
 
@@ -84,6 +90,60 @@ public class MultipleOrder implements Order{
     @Override
     public void setRestaurant(Restaurant restaurant) {
 
+    }
+
+    @Override
+    public void pay() throws Exception {
+        status.pay(this);
+    }
+
+    @Override
+    public void accept() throws Exception {
+        status.acceptOrder(this);
+    }
+
+    @Override
+    public void reject() throws Exception {
+        status.rejectOrder(this);
+    }
+
+    @Override
+    public void ready() throws Exception {
+        int count = 0;
+        for (Order order : subOrders) {
+            if ((order.getStatus() instanceof AcceptedIState)) {
+                count++;
+            }
+        }
+        if (count == subOrders.size()) {
+            status.readyOrder(this);
+        }
+    }
+
+
+    @Override
+    public void assign() throws Exception {
+        status.assign(this);
+    }
+
+    @Override
+    public void deliver() throws Exception {
+        status.delivery(this);
+    }
+
+    @Override
+    public void cancel() throws Exception {
+        status.cancelOrder(this);
+    }
+
+    @Override
+    public void pickUp() throws Exception {
+        status.validate(this);
+    }
+
+    @Override
+    public void placeOrder() throws Exception {
+        status=new PlacedIState();
     }
 
     public void addSubOrder(Order order){
@@ -114,7 +174,7 @@ public class MultipleOrder implements Order{
 
     public boolean isOrdersPaid() {
         for (Order order : subOrders) {
-            if (order.getStatus() != OrderStatus.PAID) {
+            if (!(order.getStatus() instanceof PaidIState)) {
                 return false;
             }
         }
@@ -123,7 +183,7 @@ public class MultipleOrder implements Order{
 
     public boolean isOrderCancelled() {
         for (Order order : subOrders) {
-            if (order.getStatus() == OrderStatus.CANCELLED) {
+            if (!(order.getStatus() instanceof CancelledIState)) {
                 return false;
             }
         }
@@ -132,19 +192,28 @@ public class MultipleOrder implements Order{
 
 
     public void delete() {
-        this.status = OrderStatus.CANCELLED;
+        owner = null;
     }
 
     public boolean isOrderReady() {
         for (Order order : subOrders) {
-            if (order.getStatus() != OrderStatus.READY) {
+            if (!(order.getStatus() instanceof ReadyIState)) {
                 return false;
             }
         }
         return true;
     }
 
-    public void validateForDelivery() {
-        this.status = OrderStatus.PICKED_UP;
+    public boolean isOrderPickedUp() {
+        for (Order order : subOrders) {
+            if (!(order.getStatus() instanceof ValidatedIState)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void validateForDelivery() throws Exception {
+        pickUp();
     }
 }

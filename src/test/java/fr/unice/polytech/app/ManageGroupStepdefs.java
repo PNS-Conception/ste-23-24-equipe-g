@@ -1,5 +1,7 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.State.PaidIState;
+import fr.unice.polytech.app.State.PlacedIState;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -18,7 +20,7 @@ public class ManageGroupStepdefs {
 
 
     @When("{string} create a group order")
-    public void createAGroupOrder(String arg0) {
+    public void createAGroupOrder(String arg0) throws Exception {
         alice = new CampusUser(arg0, null, null);
         groupOrder = new GroupOrder(alice);
 
@@ -46,9 +48,10 @@ public class ManageGroupStepdefs {
     }
 
     @Given("a group is created")
-    public void a_group_is_created() {
+    public void a_group_is_created() throws Exception {
         alice = new CampusUser("Alice", null, null);
         groupOrder = new GroupOrder(alice);
+        groupOrder.setStatus(new PlacedIState()) ;
 
     }
 
@@ -117,8 +120,8 @@ public class ManageGroupStepdefs {
     }
 
     @When("the group order is Accepted")
-    public void theGroupOrderIsAccepted() {
-        groupOrder.setStatus(OrderStatus.ACCEPTED);
+    public void theGroupOrderIsAccepted() throws Exception {
+        groupOrder.accept();
     }
 
     @Then("Alice can not delete the group order")
@@ -128,12 +131,13 @@ public class ManageGroupStepdefs {
     }
 
     @When("the group order is Rejected")
-    public void theGroupOrderIsRejected() {
-        groupOrder.setStatus(OrderStatus.REJECTED);
+    public void theGroupOrderIsRejected() throws Exception {
+
+        groupOrder.reject();
     }
 
     @Then("Alice can delete the group order")
-    public void aliceCanDeleteTheGroupOrder() {
+    public void aliceCanDeleteTheGroupOrder() throws Exception {
         groupOrder = new GroupOrder(alice);
 
         boolean b = groupOrder.deleteGroup(alice);
@@ -147,18 +151,20 @@ public class ManageGroupStepdefs {
     }
 
     @And("the group order is placed")
-    public void theGroupOrderIsPlaced() {
-        groupOrder.setStatus(OrderStatus.PLACED);
+    public void theGroupOrderIsPlaced() throws Exception {
+        groupOrder.placeOrder();
+
     }
 
     @When("Alice leave the group order")
-    public void aliceLeaveTheGroupOrder() {
+    public void aliceLeaveTheGroupOrder() throws Exception {
         alice.createItem(new Dish("pizza",10,0), 2);
         aliceSingleOrder = new SingleOrder(alice.getCart(), alice,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
         groupOrder.addOrder(aliceSingleOrder);
         groupOrder.quit(alice);
         groupOrder.setOwner(groupOrder.getMembers().get(0));
-        groupOrder.cancelOrder(aliceSingleOrder, alice, 2);
+        aliceSingleOrder.getPaid();
+        groupOrder.cancelOrder(aliceSingleOrder, alice,2);
     }
 
     @Then("Alice order should be deleted from the group order")
@@ -178,6 +184,10 @@ public class ManageGroupStepdefs {
     }
 
 
+    @And("the group order is paid")
+    public void theGroupOrderIsPaid() {
+        groupOrder.setStatus(new PaidIState());
+    }
 }
 
 

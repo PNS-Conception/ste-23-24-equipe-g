@@ -11,7 +11,7 @@ public class CampusUser {
     private String name;
     private String password;
     private String email;
-    private List<SingleOrder> singleOrders;
+    private List<SingleOrder> History;
     private List<Item> cart;
     private double balance;
     private UserType type;
@@ -28,7 +28,7 @@ public class CampusUser {
         this.password = password;
         this.email = email;
         this.type = UserType.CLIENT;
-        this.singleOrders = new ArrayList<>();
+        this.History = new ArrayList<>();
         this.cart = new ArrayList<>();
         this.balance = 0;
     }
@@ -38,7 +38,7 @@ public class CampusUser {
         this.name = name;
         this.email = email;
         this.type = UserType.CLIENT;
-        this.singleOrders = new ArrayList<>();
+        this.History = new ArrayList<>();
         this.cart = new ArrayList<>();
         this.balance = 0;
     }
@@ -47,7 +47,7 @@ public class CampusUser {
         this.id = UUID.randomUUID();
         this.name = "mockUser";
         this.type = UserType.CLIENT;
-        this.singleOrders = new ArrayList<>();
+        this.History = new ArrayList<>();
         this.cart = new ArrayList<>();
         this.balance = 0;
     }
@@ -62,33 +62,33 @@ public class CampusUser {
         cart.remove(item);
     }
 
-    public SingleOrder order(List<Item> items, Restaurant restaurant) {
+    public SingleOrder order(List<Item> items, Restaurant restaurant) throws Exception {
         SingleOrder newSingleOrder = new SingleOrder(items, this, restaurant);
-        singleOrders.add(newSingleOrder);
+        History.add(newSingleOrder);
         cart.clear();
         return newSingleOrder;
     }
 
-    public SingleOrder order(List<Item> items, Restaurant restaurant, LocalDateTime orderTime) {
+    public SingleOrder order(List<Item> items, Restaurant restaurant, LocalDateTime orderTime) throws Exception {
         int totalQuantity = items.stream().mapToInt(Item::getQuantity).sum();
         CapacityManager capacityManager = CapacityManager.getInstance();
         boolean canPlaceOrder = capacityManager.canPlaceOrder(restaurant, orderTime, totalQuantity);
 
         if (canPlaceOrder) {
             SingleOrder newSingleOrder = new SingleOrder(items, this, restaurant);
-            singleOrders.add(newSingleOrder);
+            History.add(newSingleOrder);
             cart.clear();
             return newSingleOrder;
         } else {
             throw new IllegalStateException("La capacité du restaurant est insuffisante pour cette commande.");
         }
     }
-    public boolean cancelOrder(SingleOrder singleOrder, int minutesPassed) {
+    public boolean cancelOrder(SingleOrder singleOrder, int minutesPassed) throws Exception {
         if (minutesPassed > 30) {
             return false;
         }
         refund(singleOrder);
-        singleOrder.setStatus(OrderStatus.CANCELLED);
+        singleOrder.cancel();
         return true;
     }
     /**
@@ -114,7 +114,7 @@ public class CampusUser {
 
 
     public List<SingleOrder> getHistory() {
-        return singleOrders;
+        return History;
     }
 
 
@@ -122,9 +122,11 @@ public class CampusUser {
         return restaurant;
     }
 
-    public boolean makePayment(SingleOrder singleOrder, CampusUser user) {
+    public boolean makePayment(SingleOrder singleOrder, CampusUser user) throws Exception {
+
         //9 fois sur 10, la commande est validée, 1 fois sur 10 il y a une erreur.
-        if (Math.random() < 0.9) {
+        //if (Math.random() < 0.9) {
+        if (true) {
             if (balance > 0){
                 if(balance >= singleOrder.getPrice()){
                     balance -= singleOrder.getPrice();
@@ -134,14 +136,14 @@ public class CampusUser {
                 }
             }
             singleOrder.pay();
-            singleOrders.add(singleOrder);
+            History.add(singleOrder);
             return true;
         } else {
             return false;
         }
     }
 
-    public boolean makePaymentmock(SingleOrder singleOrder, CampusUser client) {
+    public boolean makePaymentmock(SingleOrder singleOrder, CampusUser client) throws Exception {
         //9 fois sur 10, la commande est validée, 1 fois sur 10 il y a une erreur.
         if (randomGenerator.nextDouble() < 0.9) {
             if (balance > 0){
@@ -152,8 +154,8 @@ public class CampusUser {
                     balance = 0;
                 }
             }
-            singleOrder.setStatus(OrderStatus.PAID);
-            singleOrders.add(singleOrder);
+            singleOrder.pay();
+            History.add(singleOrder);
 
             return true;
         } else {
@@ -217,13 +219,13 @@ public class CampusUser {
     }
 
     public SingleOrder getLastOrder(){
-        return singleOrders.get(singleOrders.size()-1);
+        return History.get(History.size()-1);
     }
 
     public void refund(SingleOrder singleOrder) {
         //if(order.getStatus() == OrderStatus.PAID && orders.contains(order)){
             setBalance(singleOrder.getPrice());
-            singleOrders.remove(singleOrder);
+            History.remove(singleOrder);
         //}
     }
 
