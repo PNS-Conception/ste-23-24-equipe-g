@@ -1,5 +1,6 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.State.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -15,9 +16,46 @@ public class ValidateStepdefs {
     private Restaurant restaurant;
 
     @Given("I have an order with status {string}")
-    public void i_have_an_order_with_status(String status) {
-        singleOrder = new SingleOrder(new ArrayList<>() );
-        singleOrder.setStatus(OrderStatus.valueOf(status));
+    public void i_have_an_order_with_status(String status) throws Exception {
+        singleOrder = new SingleOrder(new ArrayList<>());
+        switch (status.toLowerCase()) {
+            case "placed":
+                singleOrder.placeOrder();
+            case "paid":
+                singleOrder.setStatus(new PlacedIState());
+                singleOrder.pay();
+                break;
+            case "accepted":
+                singleOrder.setStatus(new PaidIState());
+                singleOrder.accept();
+                break;
+            case "rejected":
+                singleOrder.setStatus(new PaidIState());
+                singleOrder.reject();
+                break;
+            case "ready":
+                singleOrder.setStatus(new AcceptedIState());
+                singleOrder.ready();
+                break;
+            case "assigned":
+                singleOrder.setStatus(new ReadyIState());
+                singleOrder.assign();
+                break;
+            case "canceled":
+                singleOrder.setStatus(new PaidIState());
+                singleOrder.cancel();
+                break;
+            case "pickedup":
+                singleOrder.setStatus(new AssignedIState());
+                singleOrder.pickUp();
+                break;
+            case "delivered":
+                singleOrder.setStatus(new ValidatedIState());
+                singleOrder.deliver();
+                break;
+            default:
+                break;
+        }
     }
 
     @Given("the restaurant is full")
@@ -27,40 +65,70 @@ public class ValidateStepdefs {
     }
 
     @When("the staff accepts the order")
-    public void the_staff_accepts_the_order() {
+    public void the_staff_accepts_the_order() throws Exception {
         singleOrder.accept();
-        assertEquals(OrderStatus.ACCEPTED, singleOrder.getStatus());
+        assertTrue(singleOrder.getStatus() instanceof AcceptedIState);
     }
 
     @When("the cashier rejects the order")
-    public void the_cashier_rejects_the_order() {
+    public void the_cashier_rejects_the_order() throws Exception {
         if (restaurant.isFull()) {
             singleOrder.reject();
-            assertEquals(OrderStatus.REJECTED, singleOrder.getStatus());
+            assertTrue(singleOrder.getStatus() instanceof RejectedIState);
         }
     }
 
     @When("the cashier validates the order")
-    public void the_cashier_validates_the_order() {
-        singleOrder.validate();
-        assertEquals(OrderStatus.READY, singleOrder.getStatus());
+    public void the_cashier_validates_the_order() throws Exception {
+        singleOrder.ready();
+        assertTrue(singleOrder.getStatus() instanceof ReadyIState);
     }
 
     @When("the delivery person validates the pick up")
-    public void the_delivery_person_validates_the_pick_up() {
+    public void the_delivery_person_validates_the_pick_up() throws Exception {
         singleOrder.pickUp();
-        assertEquals(OrderStatus.PICKED_UP, singleOrder.getStatus());
+        assertTrue(singleOrder.getStatus() instanceof ValidatedIState);
     }
 
     @When("the delivery person validates the delivery")
-    public void the_delivery_person_validates_the_delivery() {
+    public void the_delivery_person_validates_the_delivery() throws Exception {
         singleOrder.deliver();
-        assertEquals(OrderStatus.DELIVERED, singleOrder.getStatus());
+        assertTrue(singleOrder.getStatus() instanceof DelivredIState);
+
     }
 
     @Then("the status of the order should be {string}")
-    public void the_status_of_the_order_should_be(String expectedStatus) {
-        assertEquals(OrderStatus.valueOf(expectedStatus), singleOrder.getStatus());
+    public void the_status_of_the_order_should_be(String status) throws Exception {
+        switch (status.toLowerCase()) {
+            case "placed":
+                assertTrue( singleOrder.getStatus() instanceof PlacedIState);
+            case "paid":
+                assertTrue( singleOrder.getStatus() instanceof PaidIState);
+                break;
+            case "accepted":
+                assertTrue( singleOrder.getStatus() instanceof AcceptedIState);
+                break;
+            case "rejected":
+                assertTrue( singleOrder.getStatus() instanceof RejectedIState);
+                break;
+            case "ready":
+                assertTrue( singleOrder.getStatus() instanceof ReadyIState);
+                break;
+            case "Assigned":
+                assertTrue( singleOrder.getStatus() instanceof AssignedIState);
+                break;
+            case "canceled":
+                assertTrue( singleOrder.getStatus() instanceof CancelledIState);
+                break;
+            case "pickedup":
+                assertTrue( singleOrder.getStatus() instanceof ValidatedIState);
+                break;
+            case "delivered":
+                assertTrue( singleOrder.getStatus() instanceof DelivredIState);
+                break;
+            default:
+                break;
+        }
     }
 
     @Then("the order should be closed")
@@ -68,4 +136,10 @@ public class ValidateStepdefs {
         assertTrue(singleOrder.isClosed());
     }
 
+    @When("the staff validates the pick up")
+    public void theStaffValidatesThePickUp() throws Exception {
+        singleOrder.assign();
+        assertTrue(singleOrder.getStatus() instanceof AssignedIState);
+
+    }
 }

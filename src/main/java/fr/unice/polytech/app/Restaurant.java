@@ -1,5 +1,8 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.State.AcceptedIState;
+import fr.unice.polytech.app.State.CancelledIState;
+
 import java.time.LocalTime;
 import java.util.*;
 
@@ -7,6 +10,8 @@ public class Restaurant {
     private UUID id;
     private String name;
     private Menu menu;
+    private Menu afterWorkMenu;
+    private List<Menu> menus = new ArrayList<>();
     private String address;
     private CampusUser owner;
     private List<Shift> schedule;
@@ -42,11 +47,11 @@ public class Restaurant {
         this.menu = menu;
     }
 
-    public void setMenu(Menu menu, RestaurantManager manager) {
-        if (manager == owner) {
-            this.menu = menu;
-        }
-    }
+//    public void setMenu(Menu menu, RestaurantManager manager) {
+//        if (manager == owner) {
+//            this.menu = menu;
+//        }
+//    }
 
     public Menu getMenu() {
         return menu;
@@ -54,10 +59,10 @@ public class Restaurant {
 
 
     public boolean cancel(SingleOrder singleOrder, long minutesPassed) {
-        if (singleOrderList.contains(singleOrder)) {
+        if (singleOrderList.contains(singleOrder) && minutesPassed <= 30) {
             userRefund(singleOrder);
-            singleOrder.setStatus(OrderStatus.CANCELLED);
-            return minutesPassed <= 30;
+            singleOrder.setStatus(new CancelledIState());
+            return true;
         }
 
         return false;
@@ -65,7 +70,7 @@ public class Restaurant {
 
     public void acceptOrder(SingleOrder singleOrder) {
         if (singleOrderList.contains(singleOrder)) {
-            singleOrder.setStatus(OrderStatus.ACCEPTED);
+            singleOrder.setStatus(new AcceptedIState());
             singleOrder.setAcceptedTime(LocalTime.now());
         }
     }
@@ -161,8 +166,7 @@ public class Restaurant {
 
     public boolean isEligibleForDiscountByNbOfDishes(CampusUser user){
         if(numberOfDishesPerUser.containsKey(user)){
-            int currentOrders = numberOfDishesPerUser.get(user);
-            return currentOrders > numberOfDishesForDiscount;
+            return  numberOfDishesPerUser.get(user) == numberOfDishesForDiscount;
         }
         return false;
     }
@@ -287,4 +291,27 @@ public class Restaurant {
     public void setOwner(RestaurantManager manager) {
         this.owner= manager;
     }
+    public boolean offersAfterworkMenus() {
+//        if (menu == null) {
+//            return false;
+//        }
+//        return menus.stream().anyMatch(menu -> menu != null && menu.isAfterworkMenu());
+//        if (menu==afterWorkMenu)
+//            return true;
+//        return false;
+            return menu != null && menu.isAfterworkMenu();
+        }
+
+
+
+    public boolean setAfterworkMenu(boolean b) {
+        return b;
+    }
+    public void setMenu(Menu menu, RestaurantManager manager) {
+        if (manager == owner) {
+            this.menu = menu;
+            menus.add(menu); // Ajoutez le menu à la liste menus
+        }
+    }
+
 }

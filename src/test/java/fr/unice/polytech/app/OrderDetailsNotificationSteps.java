@@ -80,6 +80,7 @@
 //}
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.State.ReadyIState;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -94,23 +95,26 @@ public class OrderDetailsNotificationSteps {
     private DeliverySystem deliverySystem;
     private DeliveryPerson deliveryPerson;
     private SingleOrder singleOrder;
+
+    private Restaurant restaurant;
     private CampusUser user;
 
     @Given("an order has been assigned to a delivery person")
-    public void an_order_has_been_assigned_to_a_delivery_person() {
+    public void an_order_has_been_assigned_to_a_delivery_person() throws Exception {
         deliverySystem = new DeliverySystem();
         deliveryPerson = new DeliveryPerson( "Delivery Guy", null, "+334567890");
         Dish dish = new Dish("Pizza", 10,0);
         Item item = new Item(dish, 2);
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
-
-        singleOrder = new SingleOrder(items);
-        singleOrder.setStatus(OrderStatus.ASSIGNED);
+        restaurant = new Restaurant("test", new RestaurantManager("test", "test", "test"), "test");
+        user = new CampusUser("user123","null", "User123");
+        singleOrder = new SingleOrder(items,user,restaurant);
+        singleOrder.setStatus(new ReadyIState());
+        singleOrder.assign();
         singleOrder.setRouteDetails("Some route");
         singleOrder.setPickupTime(LocalTime.now());
         singleOrder.setDeliveryLocation("Some delivery location");
-
         deliveryPerson.setCurrentOrder(singleOrder);
         deliverySystem.addDeliveryPerson(deliveryPerson);
     }
@@ -124,15 +128,16 @@ public class OrderDetailsNotificationSteps {
     public void the_delivery_person_should_have_details_including_route_pickup_time_restaurants_and_delivery_location() {
         assertEquals(singleOrder.getRouteDetails(), deliveryPerson.getRouteDetails());
         assertEquals(singleOrder.getPickupTime(), deliveryPerson.getPickupTime());
-        assertEquals(singleOrder.getRestaurant(), deliveryPerson.getRestaurants());
+        assertEquals(singleOrder.getRestaurants(), deliveryPerson.getRestaurants());
         assertEquals(singleOrder.getDeliveryLocation(), deliveryPerson.getDeliveryLocation());
     }
 
     @Given("an order is assigned to a delivery person")
     public void an_order_is_assigned_to_a_delivery_person() {
-        an_order_has_been_assigned_to_a_delivery_person();
+        //an_order_has_been_assigned_to_a_delivery_person();
         user = new CampusUser("user123","null", "User123"); // Assume User is a defined class
-
+        deliverySystem= new DeliverySystem();
+        deliveryPerson = new DeliveryPerson( "Delivery Guy", null,"+334567890");
     }
 
     @When("the system sends the delivery details to the user")

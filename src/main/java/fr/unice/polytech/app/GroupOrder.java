@@ -1,5 +1,9 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.State.PlacedIState;
+import fr.unice.polytech.app.State.IState;
+import fr.unice.polytech.app.State.ReadyIState;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +15,7 @@ public class GroupOrder implements Order{
     private UUID groupID;
     private CampusUser owner;
     private List<CampusUser> members;
-    private OrderStatus status;
+    private IState status;
 
     private String routeDetails;
     private LocalTime pickupTime;
@@ -19,12 +23,13 @@ public class GroupOrder implements Order{
     private String deliveryLocation;
     private String deliveryAddress;
 
-    GroupOrder(CampusUser owner) {
+    GroupOrder(CampusUser owner) throws Exception {
         super();
         this.groupID = UUID.randomUUID();
         this.subSingleOrders =new ArrayList<>();
         this.members=new ArrayList<>();
         addMember(owner);
+        placeOrder();
         this.owner = owner;
 
     }
@@ -64,11 +69,11 @@ public class GroupOrder implements Order{
         subSingleOrders.add(singleOrder);
     }
 
-    public void setStatus(OrderStatus orderStatus) {
+    public void setStatus(IState orderStatus) {
         this.status = orderStatus;
     }
 
-    public OrderStatus getStatus() {
+    public IState getStatus() {
         return status;
     }
 
@@ -97,8 +102,67 @@ public class GroupOrder implements Order{
 
     }
 
+    @Override
+    public void pay() throws Exception {
+        status.pay(this);
+        for (Order singleOrder : subSingleOrders) {
+            singleOrder.pay();
+        }
+    }
+
+    @Override
+    public void accept() throws Exception {
+        status.acceptOrder(this);
+    }
+
+    @Override
+    public void reject() throws Exception {
+        status.rejectOrder(this);
+    }
+
+    @Override
+    public void ready() throws Exception {
+        int count = 0;
+        for (Order singleOrder : subSingleOrders) {
+            if (singleOrder.getStatus() instanceof ReadyIState) {
+                System.out.println(singleOrder.getStatus());
+                count++;
+            }
+        }
+        if (count == subSingleOrders.size()) {
+            status.readyOrder(this);
+        }
+    }
+
+    @Override
+    public void assign() throws Exception {
+        status.assign(this);
+    }
+
+    @Override
+    public void deliver() throws Exception {
+        status.delivery(this);
+    }
+
+    @Override
+    public void cancel() throws Exception {
+        status.cancelOrder(this);
+    }
+
+    @Override
+    public void pickUp() throws Exception {
+        status.validate(this);
+    }
+
+    @Override
+    public void placeOrder() throws Exception {
+        status= new PlacedIState();
+    }
+
     public Boolean deleteGroup(CampusUser owner) {
-        if (owner.equals(this.owner) && ((status ==OrderStatus.PLACED)||(status ==null))) {
+        System.out.println(status);
+        System.out.println(status instanceof PlacedIState);
+        if (owner.equals(this.owner) && ((status instanceof PlacedIState)||(status ==null))) {
             members.clear();
             subSingleOrders.clear();
             return true;
@@ -106,9 +170,15 @@ public class GroupOrder implements Order{
         return false;
     }
 
-    public void cancelOrder(SingleOrder singleOrder, CampusUser user, int minutesPassed) {
+    public void cancelOrder(SingleOrder singleOrder, CampusUser user, int minutesPassed) throws Exception {
         user.cancelOrder(singleOrder,minutesPassed);
         subSingleOrders.remove(singleOrder);
+    }
+
+    public void cancelOrder(SingleOrder singleOrder, CampusUser user) throws Exception {
+        if (user==singleOrder.user && singleOrder.getStatus() instanceof PlacedIState) {
+            subSingleOrders.remove(singleOrder);
+        }
     }
 
     public boolean ismember(CampusUser user) {

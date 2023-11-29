@@ -43,6 +43,7 @@ Feature: Group Management
     Given a group is created
     And Alice is the owner of the group order
     And Bob is a member of the group order
+    And the group order is paid
     When the group order is Accepted
     Then Alice can not delete the group order
 
@@ -50,6 +51,7 @@ Feature: Group Management
     Given a group is created
     And Alice is the owner of the group order
     And Bob is a member of the group order
+    And the group order is paid
     When the group order is Rejected
     Then Alice can delete the group order
 

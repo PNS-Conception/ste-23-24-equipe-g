@@ -6,6 +6,7 @@ import java.util.List;
 public class Menu {
 
     private List<Dish> menu;
+    private boolean isAfterworkMenu;
 
     public Menu() {
         menu = new ArrayList<>();
@@ -52,5 +53,11 @@ public class Menu {
         }
         return false;
     }
+    public boolean isAfterworkMenu() {
+        return isAfterworkMenu;
+    }
 
+    public void setAfterworkMenu(boolean isAfterworkMenu) {
+        this.isAfterworkMenu = isAfterworkMenu;
+    }
 }
