@@ -1,5 +1,7 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.State.*;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +13,11 @@ public class SingleOrder implements Order  {
     private List<Item> items;
     private String clientAddress;
     private LocalTime placedTime;
-
     CampusUser user;
     private UUID id;
-    private OrderStatus status;
+    //private OrderStatus status;
+
+    private IState status ;
     private LocalTime acceptedTime;
     private LocalTime deliveryTime;
     private double price;
@@ -25,20 +28,20 @@ public class SingleOrder implements Order  {
     private String deliveryLocation;
 
 
-    public SingleOrder(List<Item> items, CampusUser user, Restaurant restaurant) {
+    public SingleOrder(List<Item> items, CampusUser user, Restaurant restaurant) throws Exception {
         this.id = UUID.randomUUID();
         this.restaurant = restaurant;
-        this.items = items;
+        this.items = new ArrayList<>(items);
         this.user = user;
-        this.status = OrderStatus.PLACED;
+        placeOrder();
         price = calculatePrice();
         this.requiresSignatureAndVerification = false;
     }
-    public SingleOrder(List<Item> items) {
+    public SingleOrder(List<Item> items) throws Exception {
         this.id = UUID.randomUUID();
         this.items = items;
-        //price= calculatePrice();
-        this.status = OrderStatus.PLACED; // La commande est initialisée avec le statut PLACED
+        placeOrder();
+        price= calculatePrice();
         this.requiresSignatureAndVerification = false; // Initialement, pas besoin de signature ni de vérification
     }
 
@@ -50,6 +53,7 @@ public class SingleOrder implements Order  {
     }
 
     public double getPrice() {
+        setPrice(calculatePrice());
         return price;
     }
 
@@ -65,9 +69,6 @@ public class SingleOrder implements Order  {
         return clientAddress;
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
-    }
 
     @Override
     public Restaurant getRestaurant() {
@@ -87,7 +88,7 @@ public class SingleOrder implements Order  {
         return placedTime;
     }
 
-    public OrderStatus getStatus() {
+    public IState getStatus() {
         return status;
     }
 
@@ -105,12 +106,12 @@ public class SingleOrder implements Order  {
         return deliveryTime;
     }
 
-    public void pay() {
-        status = OrderStatus.PAID;
+    public void pay() throws Exception {
+        status.pay(this);
     }
 
-    public void accept() {
-        status = OrderStatus.ACCEPTED;
+    public void accept() throws Exception {
+        status.acceptOrder(this);
         acceptedTime = LocalTime.now();
     }
     public String getRouteDetails() {
@@ -141,30 +142,43 @@ public class SingleOrder implements Order  {
         return deliveryLocation;
     }
 
+    @Override
+    public void setStatus(IState orderStatus) {
+        this.status = orderStatus;
+    }
+
     public void setDeliveryLocation(String deliveryLocation) {
         this.deliveryLocation = deliveryLocation;
     }
 
-    public void pickUp() {
-        status = OrderStatus.PICKED_UP;
+    public void pickUp() throws Exception {
+        status.validate(this);
     }
-    public void deliver() {
-        status = OrderStatus.DELIVERED;
+    public void deliver() throws Exception {
+        status.delivery(this);
     }
-    public void validate() {
-        status = OrderStatus.READY;
+    public void cancel() throws Exception {
+        status.cancelOrder(this);
     }
-    public boolean isAccepted() {
+    public void ready() throws Exception {
+        status.readyOrder(this);
+    }
+
+    public void assign() throws Exception {
+        status.assign(this);
+    }
+
+    /*public boolean isAccepted() {
         return status == OrderStatus.ACCEPTED;
-    }
+    }*/
     public boolean isPlaced() {
-        return status == OrderStatus.PLACED;
+        return status instanceof PlacedIState;
     }
     public boolean isClosed() {
-        return status == OrderStatus.CANCELLED || status == OrderStatus.DELIVERED;
+        return (status instanceof CancelledIState || status instanceof DelivredIState || status instanceof RejectedIState);
     }
-    public void reject() {
-        status = OrderStatus.REJECTED;
+    public void reject() throws Exception {
+        status.rejectOrder(this);
     }
 
     public CampusUser getClient() {
@@ -176,22 +190,22 @@ public class SingleOrder implements Order  {
     public boolean canUserConfirmReceipt() {
         return userConfirmationPossible;
     }
-    public void confirmReceipt() {
-        if (this.canUserConfirmReceipt() && this.status == OrderStatus.PICKED_UP) {
-            this.status = OrderStatus.DELIVERED;
+    public void confirmReceipt() throws Exception {
+        if (this.canUserConfirmReceipt() && this.status instanceof ValidatedIState) {
+            deliver();
             this.deliveryTime = LocalTime.now();
         }
     }
-    public void deliverWithoutConfirmation() {
-        if (!this.canUserConfirmReceipt() && this.status == OrderStatus.PICKED_UP) {
-            this.status = OrderStatus.DELIVERED;
+    public void deliverWithoutConfirmation() throws Exception {
+        if (!this.canUserConfirmReceipt() && this.status instanceof ValidatedIState) {
+            deliver();
             this.deliveryTime = LocalTime.now();
             this.requiresSignatureAndVerification = true;
         }
     }
 
     public boolean requiresSignatureAndVerification() {
-        return !this.canUserConfirmReceipt() && this.status == OrderStatus.DELIVERED;
+        return !(this.canUserConfirmReceipt() && this.status instanceof ValidatedIState);
     }
 
 
@@ -203,15 +217,18 @@ public class SingleOrder implements Order  {
         double price = 0;
 
         for (Item item : items) {
+
             double itemPrice = (user.getType() == UserType.CLIENT) ? item.getPrice() : item.getNotRegularPrice();
 
             if (restaurant.isEligibleForDiscountByNbOfDishes(user)) {
+                System.out.println("Discount by nb of dishes");
                 itemPrice *= 1 - ((double) restaurant.getPercentageDiscountByNbOfDishes() / 100);
             }
 
             if (restaurant.isEligibleForDiscountByNbOfOrders(user)) {
                 itemPrice *= 1 - (restaurant.getPercentageDiscountByNbOfOrders() / 100);
             }
+
 
             price += itemPrice;
         }
@@ -235,7 +252,7 @@ public class SingleOrder implements Order  {
     }
 
 
-    public void getPaid() {
+    public void getPaid() throws Exception {
         restaurant.addNbDishesToUser(user,this);
         restaurant.addNbOrderToUser(user);
         if (!user.makePayment(this,user)) {
@@ -246,5 +263,9 @@ public class SingleOrder implements Order  {
             restaurant.getExtensionDiscount(user).setIsDiscountValid(true);
             restaurant.getExtensionDiscount(user).setNumberOfOrders(0);
         }
+    }
+
+    public void placeOrder() throws Exception {
+        status= new PlacedIState();
     }
 }

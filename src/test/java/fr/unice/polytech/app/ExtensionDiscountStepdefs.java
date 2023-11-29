@@ -45,7 +45,7 @@ public class ExtensionDiscountStepdefs {
     }
 
     @When("{string} orders {int} dish from the restaurant for {int} and pays")
-    public void ordersItemsFromRestaurantFor(String arg0, int arg1, int arg2) {
+    public void ordersItemsFromRestaurantFor(String arg0, int arg1, int arg2) throws Exception {
         Dish dish = new Dish("test", arg2);
         user.selectRestaurant(restaurant);
         user.createItem(dish, arg1);
@@ -106,7 +106,7 @@ public class ExtensionDiscountStepdefs {
     }
 
     @And("{string} has ordered {int} items from the restaurant")
-    public void hasOrderedItemsFromTheRestaurant(String arg0, int arg1) {
+    public void hasOrderedItemsFromTheRestaurant(String arg0, int arg1) throws Exception {
         //user = new CampusUser(arg0, "password", "email");
         //restaurant = new Restaurant("test", new RestaurantManager("test", "test", "test"), "test");
         //order=user.order(List.of(new Item(new Dish("test", 10, 10), 1)), restaurant);

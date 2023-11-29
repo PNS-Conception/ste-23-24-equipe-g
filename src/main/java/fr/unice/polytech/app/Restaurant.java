@@ -1,5 +1,8 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.State.AcceptedIState;
+import fr.unice.polytech.app.State.CancelledIState;
+
 import java.time.LocalTime;
 import java.util.*;
 
@@ -54,10 +57,10 @@ public class Restaurant {
 
 
     public boolean cancel(SingleOrder singleOrder, long minutesPassed) {
-        if (singleOrderList.contains(singleOrder)) {
+        if (singleOrderList.contains(singleOrder) && minutesPassed <= 30) {
             userRefund(singleOrder);
-            singleOrder.setStatus(OrderStatus.CANCELLED);
-            return minutesPassed <= 30;
+            singleOrder.setStatus(new CancelledIState());
+            return true;
         }
 
         return false;
@@ -65,7 +68,7 @@ public class Restaurant {
 
     public void acceptOrder(SingleOrder singleOrder) {
         if (singleOrderList.contains(singleOrder)) {
-            singleOrder.setStatus(OrderStatus.ACCEPTED);
+            singleOrder.setStatus(new AcceptedIState());
             singleOrder.setAcceptedTime(LocalTime.now());
         }
     }
@@ -144,6 +147,8 @@ public class Restaurant {
 
     public void addNbDishesToUser(CampusUser user, SingleOrder singleOrder){
         if(numberOfDishesPerUser.containsKey(user)){
+            System.out.println(numberOfDishesPerUser.get(user));
+            System.out.println(singleOrder.getNumberOfDishes());
             int currentOrders = numberOfDishesPerUser.get(user)+ singleOrder.getNumberOfDishes() ;
             if (currentOrders > numberOfDishesForDiscount) {
                 numberOfDishesPerUser.put(user, 0);
@@ -161,8 +166,7 @@ public class Restaurant {
 
     public boolean isEligibleForDiscountByNbOfDishes(CampusUser user){
         if(numberOfDishesPerUser.containsKey(user)){
-            int currentOrders = numberOfDishesPerUser.get(user);
-            return currentOrders > numberOfDishesForDiscount;
+            return  numberOfDishesPerUser.get(user) == numberOfDishesForDiscount;
         }
         return false;
     }
@@ -283,5 +287,8 @@ public class Restaurant {
     public void removeDish(Dish dish, RestaurantManager manager) {
             menu.removeDish(dish, manager);
     }
+
+
+
 
 }

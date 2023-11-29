@@ -43,7 +43,7 @@ public class ApplyingDiscountBasedOnRoleMyStepdefs {
     }
 
     @When("the customer validates the cart")
-    public void theCustomerValidatesTheCart() {
+    public void theCustomerValidatesTheCart() throws Exception {
         user = new CampusUser("regular", "password", "email");
         singleOrder = user.order( new ArrayList<>(Arrays.asList(item, item2)), restaurant);
     }
@@ -70,17 +70,17 @@ public class ApplyingDiscountBasedOnRoleMyStepdefs {
     }
 
     @When("the staff validates the cart")
-    public void theStaffValidatesTheCart() {
+    public void theStaffValidatesTheCart() throws Exception {
         singleOrder = staff.order(new ArrayList<>(Arrays.asList(item, item2)), restaurant);
     }
 
     @When("the manager validates the cart")
-    public void theManagerValidatesTheCart() {
+    public void theManagerValidatesTheCart() throws Exception {
         singleOrder = manager.order(new ArrayList<>(Arrays.asList(item, item2)), restaurant);
     }
 
     @When("the delivery person validates the cart")
-    public void theDeliveryPersonValidatesTheCart() {
+    public void theDeliveryPersonValidatesTheCart() throws Exception {
         singleOrder = deliveryPerson.order(new ArrayList<>(Arrays.asList(item, item2)), restaurant);
     }
 

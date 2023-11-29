@@ -16,13 +16,18 @@ Feature: Validate an order
     When the cashier validates the order
     Then the status of the order should be "READY"
 
-  Scenario: Order is picked up
+  Scenario: Order is assigned to a delivery person
     Given I have an order with status "READY"
+    When the staff validates the pick up
+    Then the status of the order should be "ASSIGNED"
+
+  Scenario: Order is picked up
+    Given I have an order with status "ASSIGNED"
     When the delivery person validates the pick up
-    Then the status of the order should be "PICKED_UP"
+    Then the status of the order should be "PICKEDUP"
 
   Scenario: Order is delivered
-    Given I have an order with status "PICKED_UP"
+    Given I have an order with status "PICKEDUP"
     When the delivery person validates the delivery
     Then the status of the order should be "DELIVERED"
     And the order should be closed

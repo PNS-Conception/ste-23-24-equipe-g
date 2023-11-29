@@ -3,7 +3,6 @@ package fr.unice.polytech.app;
 import java.time.LocalTime;
 import java.util.List;
 
-import static fr.unice.polytech.app.OrderStatus.ASSIGNED;
 import static fr.unice.polytech.app.OrderStatus.DELIVERED;
 
 public class DeliveryPerson extends CampusUser {
@@ -30,24 +29,24 @@ public class DeliveryPerson extends CampusUser {
 
     }
 
-    public boolean assignOrder(SingleOrder singleOrder) {
+    public boolean assignOrder(SingleOrder singleOrder) throws Exception {
         if (this.isAvailable && this.currentSingleOrder == null) {
             this.currentSingleOrder = singleOrder;
             this.isAvailable = false; // Le livreur n'est plus disponible après avoir accepté une commande
-            singleOrder.setStatus(ASSIGNED);
+            singleOrder.assign();
             return true;
         }
         return false;
     }
 
-    public void markOrderAsDelivered() {
+    public void markOrderAsDelivered() throws Exception {
         if (this.currentSingleOrder != null) {
-            this.currentSingleOrder.setStatus(DELIVERED);
+            this.currentSingleOrder.deliver();
             this.currentSingleOrder = null;
             this.isAvailable = true;
         }
     }
-    public void finalizeDeliveryWithoutUserConfirmation(SingleOrder singleOrder) {
+    public void finalizeDeliveryWithoutUserConfirmation(SingleOrder singleOrder) throws Exception {
         if (!singleOrder.canUserConfirmReceipt() && this.currentSingleOrder.equals(singleOrder)) {
             this.markOrderAsDelivered();
         }
@@ -55,7 +54,7 @@ public class DeliveryPerson extends CampusUser {
     public void receiveOrderDetails(Order singleOrder) {
         this.routeDetails = singleOrder.getRouteDetails();
         this.pickupTime = singleOrder.getPickupTime();
-        this.restaurant = singleOrder.getRestaurant();
+        this.restaurants = singleOrder.getRestaurants();
         this.deliveryLocation = singleOrder.getDeliveryLocation();
     }
 
@@ -103,20 +102,14 @@ public class DeliveryPerson extends CampusUser {
     }
 
 
-    public void validateOrder(Order order) {
+    public void validateOrder(Order order) throws Exception {
         setCurrentOrder(order);
-        order.setStatus(OrderStatus.PICKED_UP);
+        order.pickUp();
     }
 
-    public void validateOrder(SingleOrder groupSingleOrder) {
 
-        setCurrentOrder(groupSingleOrder);
-        groupSingleOrder.setStatus(OrderStatus.PICKED_UP);
-    }
-
-    public void deliverOrder(Order groupOrder) {
-
-        groupOrder.setStatus(DELIVERED);
+    public void deliverOrder(Order groupOrder) throws Exception {
+        groupOrder.deliver();
         setCurrentOrder(null);
     }
 

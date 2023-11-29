@@ -1,5 +1,6 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.State.*;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -18,8 +19,11 @@ public class MultipleOrderStepdefs {
 
     DeliveryPerson deliveryPerson = new DeliveryPerson( "Nom du livreur", null,"Numéro de téléphone");
 
+    public MultipleOrderStepdefs() throws Exception {
+    }
+
     @When("{string} create a multiple order")
-    public void createAMultipleOrder(String arg0) {
+    public void createAMultipleOrder(String arg0) throws Exception {
         alice= new CampusUser(arg0,null,null);
         multipleOrder = new MultipleOrder(alice);
     }
@@ -32,7 +36,7 @@ public class MultipleOrderStepdefs {
     @Then("the multiple order should be created")
     public void theMultipleOrderShouldBeCreated() {
         assertNotEquals(multipleOrder,null);
-        assertEquals(multipleOrder.getStatus(), OrderStatus.PLACED);
+        assertTrue(multipleOrder.getStatus() instanceof PlacedIState);
     }
 
     @And("Alice should be the owner of the multiple order")
@@ -41,7 +45,7 @@ public class MultipleOrderStepdefs {
     }
 
     @Given("alice create a order from restaurant {string}")
-    public void aliceCreateAOrderFromRestaurant(String arg0) {
+    public void aliceCreateAOrderFromRestaurant(String arg0) throws Exception {
         restaurant=new Restaurant(arg0, new Menu());
         multipleOrder = new MultipleOrder(alice);
         alice = new CampusUser("alice",null,null);
@@ -52,7 +56,7 @@ public class MultipleOrderStepdefs {
     }
 
     @When("she add a order to the multiple order")
-    public void sheAddAOrderToTheMultipleOrder() {
+    public void sheAddAOrderToTheMultipleOrder() throws Exception {
         alice.createItem(new Dish("pasta",11), 1);
         aliceSingleOrder2 = new SingleOrder(alice.getCart(),alice,restaurant );
         multipleOrder.addOrder(aliceSingleOrder2);
@@ -64,7 +68,7 @@ public class MultipleOrderStepdefs {
     }
 
     @Given("the order is paid")
-    public void theOrderIsPaid() {
+    public void theOrderIsPaid() throws Exception {
         alice = new CampusUser("alice",null,null);
         aliceSingleOrder = new SingleOrder(alice.getCart(),alice,restaurant );
         multipleOrder = new MultipleOrder(alice);
@@ -73,13 +77,13 @@ public class MultipleOrderStepdefs {
     }
 
     @When("Alice cancel the order")
-    public void aliceCancelTheOrder() {
+    public void aliceCancelTheOrder() throws Exception {
         alice.cancelOrder(aliceSingleOrder,12);
     }
 
     @Then("the order should be canceled")
     public void theOrderShouldBeCanceled() {
-        assertEquals(aliceSingleOrder.getStatus(),OrderStatus.CANCELLED);
+        assertTrue(aliceSingleOrder.getStatus() instanceof CancelledIState);
     }
 
     @And("the order should be removed from the multiple order")
@@ -94,7 +98,7 @@ public class MultipleOrderStepdefs {
     }
 
     @When("Alice has placed order from the restaurant {string} and paid for it and added to multiple order")
-    public void aliceHasPlacedOrderFromTheRestaurantAndPaidForItAndAddedToMultipleOrder(String arg0) {
+    public void aliceHasPlacedOrderFromTheRestaurantAndPaidForItAndAddedToMultipleOrder(String arg0) throws Exception {
         multipleOrder = new MultipleOrder(alice);
         alice.createItem(new Dish("pizza",10), 2);
         restaurant=new Restaurant(arg0, new Menu());
@@ -105,7 +109,7 @@ public class MultipleOrderStepdefs {
     }
 
     @And("Alice has placed another order form {string} and paid for it and added to multiple order")
-    public void aliceHasPlacedAnotherOrderFormAndPaidForItAndAddedToMultipleOrder(String arg0) {
+    public void aliceHasPlacedAnotherOrderFormAndPaidForItAndAddedToMultipleOrder(String arg0) throws Exception {
         alice.createItem(new Dish("pasta",11), 1);
         restaurant2=new Restaurant(arg0, new Menu());
         aliceSingleOrder2 = new SingleOrder(alice.getCart(),alice,restaurant );
@@ -134,7 +138,7 @@ public class MultipleOrderStepdefs {
 
 
     @And("the other order from {string} is not paid yet")
-    public void theOtherOrderFromIsNotPaidYet(String arg0) {
+    public void theOtherOrderFromIsNotPaidYet(String arg0) throws Exception {
         restaurant2=new Restaurant(arg0, new Menu());
         alice.createItem(new Dish("pasta",11), 1);
         aliceSingleOrder2 = new SingleOrder(alice.getCart(),alice,restaurant );
@@ -158,7 +162,7 @@ public class MultipleOrderStepdefs {
     }
 
     @Given("all sub orders paid")
-    public void allSubOrdersPaid() {
+    public void allSubOrdersPaid() throws Exception {
         aliceSingleOrder = new SingleOrder(alice.getCart(),alice,restaurant );
         aliceSingleOrder2 = new SingleOrder(alice.getCart(),alice,restaurant );
 
@@ -167,7 +171,7 @@ public class MultipleOrderStepdefs {
     }
 
     @When("the owner cancels all orders")
-    public void theOwnerCancelsAllOrders() {
+    public void theOwnerCancelsAllOrders() throws Exception {
         alice.cancelOrder(aliceSingleOrder,12);
         alice.cancelOrder(aliceSingleOrder2,12);
     }
@@ -183,44 +187,48 @@ public class MultipleOrderStepdefs {
     }
 
     @And("the multiple order should be deleted")
-    public void theMultipleOrderShouldBeDeleted() {
+    public void theMultipleOrderShouldBeDeleted() throws Exception {
         multipleOrder.delete();
-        assertEquals(multipleOrder.getStatus(),OrderStatus.CANCELLED);
-
+        assertNull(multipleOrder.getOwner());
     }
 
     @Given("multiple order is ready")
-    public void multipleOrderIsReady() {
+    public void multipleOrderIsReady() throws Exception {
         aliceSingleOrder = new SingleOrder(alice.getCart(),alice,restaurant );
         aliceSingleOrder2 = new SingleOrder(alice.getCart(),alice,restaurant );
-        aliceSingleOrder.setStatus(OrderStatus.READY);
-        aliceSingleOrder2.setStatus(OrderStatus.READY);
+        aliceSingleOrder.setStatus(new ReadyIState());
+        aliceSingleOrder2.setStatus(new ReadyIState());
+        multipleOrder.addOrder(aliceSingleOrder);
+        multipleOrder.addOrder(aliceSingleOrder2);
+        multipleOrder.ready();
     }
 
     @When("the delivery person validates multiple order")
-    public void theDeliveryPersonValidatesMultipleOrder() {
+    public void theDeliveryPersonValidatesMultipleOrder() throws Exception {
+        multipleOrder.setStatus(new AssignedIState());
         deliveryPerson.validateOrder(multipleOrder);
 
     }
 
     @Then("the multiple order status should be Picked up")
     public void theMultipleOrderStatusShouldBePickedUp() {
-        assertEquals(multipleOrder.getStatus(),OrderStatus.PICKED_UP);
+        assertTrue(multipleOrder.getStatus() instanceof ValidatedIState);
 
     }
 
     @Given("multiple order is picked up")
     public void multipleOrderIsPickedUp() {
+        multipleOrder.setStatus(new ValidatedIState());
 
     }
 
     @When("the delivery person delivers the multiple order")
-    public void theDeliveryPersonDeliversTheMultipleOrder() {
+    public void theDeliveryPersonDeliversTheMultipleOrder() throws Exception {
         deliveryPerson.deliverOrder(multipleOrder);
     }
 
     @Then("the multiple order status should be Delivered")
     public void theMultipleOrderStatusShouldBeDelivered() {
-        assertEquals(multipleOrder.getStatus(),OrderStatus.DELIVERED);
+        assertTrue(multipleOrder.getStatus() instanceof DelivredIState);
     }
 }

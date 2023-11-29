@@ -1,5 +1,7 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.State.AcceptedIState;
+import fr.unice.polytech.app.State.AssignedIState;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -14,7 +16,7 @@ public class OrderAssignmentSteps {
     private DeliveryPerson deliveryPerson;
     private DeliverySystem deliverySystem;
         @Given("there is an order ready for delivery")
-        public void there_is_an_order_ready_for_delivery() {
+        public void there_is_an_order_ready_for_delivery() throws Exception {
 
             Dish dish = new Dish("Pizza", 10,0); // Name and price
             Item item = new Item(dish, 2); // Dish and quantity
@@ -29,8 +31,9 @@ public class OrderAssignmentSteps {
             CampusUser user = new CampusUser("John Doe", "password", "johndoe@example.com");
 
 
-            singleOrder = new SingleOrder(items);
-            singleOrder.setStatus(OrderStatus.READY);
+            singleOrder = new SingleOrder(items, user, restaurant);
+            singleOrder.setStatus(new AcceptedIState());
+            singleOrder.ready();
         }
 
     @Given("a delivery person is available")
@@ -44,7 +47,7 @@ public class OrderAssignmentSteps {
     }
 
     @When("the system assigns the order to the delivery person")
-    public void the_system_assigns_the_order_to_the_delivery_person() {
+    public void the_system_assigns_the_order_to_the_delivery_person() throws Exception {
         Optional<DeliveryPerson> assignedDeliveryPerson = deliverySystem.assignOrderToDeliveryPerson(singleOrder);
         assertTrue("A delivery person should have been assigned", assignedDeliveryPerson.isPresent());
         deliveryPerson = assignedDeliveryPerson.get();
@@ -53,7 +56,7 @@ public class OrderAssignmentSteps {
 
     @Then("the order status should be ASSIGNED")
     public void the_order_status_should_be_assigned() {
-        assertEquals(OrderStatus.ASSIGNED, singleOrder.getStatus());
+            assertTrue(singleOrder.getStatus() instanceof AssignedIState);
     }
 
     @Then("the delivery person should be unavailable")

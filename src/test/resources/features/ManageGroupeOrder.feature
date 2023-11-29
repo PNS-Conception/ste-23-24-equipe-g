@@ -45,7 +45,7 @@ Feature: Place Order Management
     And all members should be notified
 
   Scenario: group order is picked up
-    Given group order is ready
+    Given group order is assigned
     When the delivery person validates group order
     Then the order group status should be Picked up
     And all members should be notified
