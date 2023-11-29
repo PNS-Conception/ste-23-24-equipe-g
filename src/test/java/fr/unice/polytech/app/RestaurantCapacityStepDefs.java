@@ -74,6 +74,8 @@ public class RestaurantCapacityStepDefs {
             singleOrder = user.order(Collections.singletonList(newItem), restaurant, dateTime);
         } catch (IllegalStateException e) {
             singleOrder = null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -129,6 +131,8 @@ public class RestaurantCapacityStepDefs {
             singleOrder = user.order(Collections.singletonList(newItem), restaurant, dateTime);
         } catch (IllegalStateException e) {
             singleOrder = null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         remainingCapacity = capacityManager.getCapacity(restaurant, dateTime);
         remainingCapacity+=5;

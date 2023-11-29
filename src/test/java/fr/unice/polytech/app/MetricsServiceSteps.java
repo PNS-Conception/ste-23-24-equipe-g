@@ -21,7 +21,7 @@ public class MetricsServiceSteps {
 
 
     @Given("order volume data has been collected")
-    public void order_volume_data_has_been_collected() {
+    public void order_volume_data_has_been_collected() throws Exception {
         DataCollector dataCollector = new DataCollector();
         metricsService = new MetricsService(dataCollector);
         Dish dish1 = new Dish("Pizza", 10.0);
@@ -34,11 +34,11 @@ public class MetricsServiceSteps {
 
         LocalTime deliveryTime = LocalTime.now(); // Définir un temps de livraison pour les commandes
 
-        SingleOrder order1 = new SingleOrder(items);
+        SingleOrder order1 = new SingleOrder(items, new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
         order1.setDeliveryTime(deliveryTime); // Définir le temps de livraison
         dataCollector.collectOrderData(order1);
 
-        SingleOrder order2 = new SingleOrder(items);
+        SingleOrder order2 = new SingleOrder(items, new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
         order2.setDeliveryTime(deliveryTime); // Définir le temps de livraison
         dataCollector.collectOrderData(order2);
     }
@@ -58,14 +58,14 @@ public class MetricsServiceSteps {
 
 
     @Given("restaurant-specific data has been collected")
-    public void restaurant_specific_data_has_been_collected() {
+    public void restaurant_specific_data_has_been_collected() throws Exception {
         Dish dish = new Dish("Pizza", 10.0);
         Item item = new Item(dish, 2);
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
         Menu menu = new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99)));
         Restaurant testRestaurant =RestaurantService.getInstance().createRestaurant("TestRestaurant", menu);
-        SingleOrder testOrder = new SingleOrder(items);
+        SingleOrder testOrder = new SingleOrder(items, new CampusUser("user123","null", "User123"), testRestaurant);
         testRestaurant.addOrder(testOrder);
         DataCollector dataCollector = new DataCollector();
         dataCollector.collectOrderData(testOrder);
@@ -73,7 +73,7 @@ public class MetricsServiceSteps {
     }
 
     @Given("I am logged in as a restaurant manager")
-    public void managerOfRestaurantLoggedIn() {
+    public void managerOfRestaurantLoggedIn() throws Exception {
         // Créer un nouveau manager
         manager = new RestaurantManager("testManager", "testPass",  "testEmail");
 
@@ -95,7 +95,7 @@ public class MetricsServiceSteps {
         DataCollector dataCollector = new DataCollector();
         Dish dish = new Dish("Pizza", 10.0);
         Item item = new Item(dish, 2);
-        SingleOrder order = new SingleOrder(Arrays.asList(item));
+        SingleOrder order = new SingleOrder(Arrays.asList(item), new CampusUser("user123","null", "User123"), restaurant);
         order.setRestaurant(restaurant);
         dataCollector.collectOrderData(order);
 
@@ -119,7 +119,7 @@ public class MetricsServiceSteps {
     }
 
         @Given("delivery location data has been collected")
-        public void delivery_location_data_has_been_collected() {
+        public void delivery_location_data_has_been_collected() throws Exception {
             DataCollector dataCollector = new DataCollector();
             metricsService = new MetricsService(dataCollector);
 
@@ -131,14 +131,14 @@ public class MetricsServiceSteps {
             // Première commande avec 'Location A'
             ArrayList<Item> items1 = new ArrayList<>();
             items1.add(item1);
-            SingleOrder order1 = new SingleOrder(items1);
+            SingleOrder order1 = new SingleOrder(items1, new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
             order1.setDeliveryLocation("Location A");
             dataCollector.collectOrderData(order1);
 
             // Deuxième commande avec 'Location B'
             ArrayList<Item> items2 = new ArrayList<>();
             items2.add(item2);
-            SingleOrder order2 = new SingleOrder(items2);
+            SingleOrder order2 = new SingleOrder(items2, new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
             order2.setDeliveryLocation("Location B");
             dataCollector.collectOrderData(order2);
         }
@@ -164,7 +164,7 @@ public class MetricsServiceSteps {
     }
 
     @Given("user behavior data has been collected")
-    public void user_behavior_data_has_been_collected() {
+    public void user_behavior_data_has_been_collected() throws Exception {
         DataCollector dataCollector = new DataCollector();
         metricsService = new MetricsService(dataCollector);
 
@@ -174,7 +174,7 @@ public class MetricsServiceSteps {
         Item item = new Item(dish, 1);
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
-        SingleOrder order = new SingleOrder(items);
+        SingleOrder order = new SingleOrder(items, user, new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
 
         // Collecter des données de comportement utilisateur
         dataCollector.collectUserBehaviorData(user, order);

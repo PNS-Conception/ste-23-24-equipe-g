@@ -18,13 +18,13 @@ public class OperationalDataCollectionSteps {
     private CampusUser testUser;
 
     @Given("the system is interfacing with the point of sale")
-    public void the_system_is_interfacing_with_the_point_of_sale() {
+    public void the_system_is_interfacing_with_the_point_of_sale() throws Exception {
         dataCollector = new DataCollector();
         Dish dish = new Dish("Pizza", 10.0);
         Item item = new Item(dish, 2);
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
-        testOrder = new SingleOrder(items);
+        testOrder = new SingleOrder(items, new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
     }
 
     @When("an order is placed")
@@ -73,14 +73,14 @@ public class OperationalDataCollectionSteps {
     }
 
     @Given("the system is interfacing with the user ordering platform")
-    public void the_system_is_interfacing_with_the_user_ordering_platform() {
+    public void the_system_is_interfacing_with_the_user_ordering_platform() throws Exception {
         dataCollector = new DataCollector();
         testUser = new CampusUser();
         Dish dish = new Dish("Pizza", 10.0);
         Item item = new Item(dish, 2);
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
-        testOrder = new SingleOrder(items);
+        testOrder = new SingleOrder(items, testUser, new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
     }
 
     @When("a user places an order")

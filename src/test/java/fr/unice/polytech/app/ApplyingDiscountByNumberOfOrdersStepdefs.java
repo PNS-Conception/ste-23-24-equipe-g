@@ -32,7 +32,7 @@ public class ApplyingDiscountByNumberOfOrdersStepdefs {
     }
 
     @When("{string} orders {int} dish from {string} for {int} and pays")
-    public void ordersItemsFromRestaurantFor(String arg0, int arg1, String arg2, int arg3) {
+    public void ordersItemsFromRestaurantFor(String arg0, int arg1, String arg2, int arg3) throws Exception {
         Dish dish = new Dish(arg2, arg3);
         user.selectRestaurant(restaurant);
         user.createItem(dish, arg1);
@@ -52,5 +52,6 @@ public class ApplyingDiscountByNumberOfOrdersStepdefs {
     @Then("the order total should be {string}")
     public void theOrderTotalShouldBe(String arg0) {
         double numericValue = Double.parseDouble(arg0.replace(",", "."));
+        assertEquals(numericValue, singleOrder.getPrice(), 0.01);
     }
 }

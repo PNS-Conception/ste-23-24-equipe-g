@@ -59,7 +59,7 @@ public class CartManagementStepdefs {
     }
 
     @When("I validate my cart of {int} {string}")
-    public void iValidateMyCartOf(int quantity, String itemName) {
+    public void iValidateMyCartOf(int quantity, String itemName) throws Exception {
         List<Item> items = List.of(new Item(new Dish(itemName, 0, 0), quantity));
         SingleOrder singleOrder = user.order(items,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
     }

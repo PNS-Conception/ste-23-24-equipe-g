@@ -1,6 +1,8 @@
 package fr.unice.polytech.app;
 
 
+import fr.unice.polytech.app.State.AcceptedIState;
+import fr.unice.polytech.app.State.CancelledIState;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -21,14 +23,14 @@ public class CancelOrderStepsdefs {
     private LocalTime currentTime;
 
     @Given("^a client \"([^\"]*)\" with order$")
-    public void aClientWithOrder(String clientName) {
+    public void aClientWithOrder(String clientName) throws Exception {
         client = new CampusUser( clientName, "password", "email@example.com");
         singleOrder = new SingleOrder(new ArrayList<>(), client,restaurant);
     }
 
 
     @Given("^having (\\d+) \"([^\"]*)\" and (\\d+) \"([^\"]*)\" price (\\d+) delivery$")
-    public void havingItems(int quantity1, String dish1, int quantity2, String dish2, int price) {
+    public void havingItems(int quantity1, String dish1, int quantity2, String dish2, int price) throws Exception {
         Dish pizza = new Dish(dish1, price);
         Dish pasta = new Dish(dish2, price);
 
@@ -40,7 +42,7 @@ public class CancelOrderStepsdefs {
 
         singleOrder = client.order(client.getCart(),restaurant);
 
-        singleOrder.setStatus(OrderStatus.PLACED);
+        singleOrder.placeOrder();
     }
 
     @Given("^a restaurant \"([^\"]*)\"$")
@@ -57,10 +59,10 @@ public class CancelOrderStepsdefs {
     }
 
     @When("^the order is placed, paid, and accepted at (\\d+):(\\d+)$")
-    public void order_is_placed_paid_and_accepted_at(int hours, int minutes) {
+    public void order_is_placed_paid_and_accepted_at(int hours, int minutes) throws Exception {
         singleOrder.setPlacedTime(LocalTime.of(hours, minutes));
-        singleOrder.setStatus(OrderStatus.PAID);
-        singleOrder.setStatus(OrderStatus.ACCEPTED);
+        singleOrder.getPaid();
+        singleOrder.accept();
     }
 
 
@@ -72,7 +74,9 @@ public class CancelOrderStepsdefs {
 
     @When("^it is still accepted$")
     public void itIsStillAccepted() {
+
         // The order is still accepted
+        singleOrder.setStatus(new AcceptedIState());
     }
 
     @When("^the current time is (\\d+:\\d+)$")
@@ -81,18 +85,18 @@ public class CancelOrderStepsdefs {
     }
 
     @Then("^client can cancel order$")
-    public void clientCanCancelOrder() {
+    public void clientCanCancelOrder() throws Exception {
         assertTrue(client.cancelOrder(singleOrder,0));
     }
 
     @Then("^the status of the order is cancelled$")
-    public void orderStatusIsCancelled() {
-        singleOrder.setStatus(OrderStatus.CANCELLED);
-        assertEquals(OrderStatus.CANCELLED, singleOrder.getStatus());
+    public void orderStatusIsCancelled() throws Exception {
+
+        assertTrue(singleOrder.getStatus() instanceof CancelledIState);
     }
 
     @Then("^the client cannot cancel the order$")
-    public void clientCannotCancelOrder() {
+    public void clientCannotCancelOrder() throws Exception {
         assertFalse(client.cancelOrder(singleOrder,31));
     }
 
@@ -107,9 +111,9 @@ public class CancelOrderStepsdefs {
     }
 
     @Then("^the status of the order is still accepted$")
-    public void orderStatusIsStillAccepted() {
-        singleOrder.setStatus(OrderStatus.ACCEPTED);
-        assertEquals(OrderStatus.ACCEPTED, singleOrder.getStatus());
+    public void orderStatusIsStillAccepted() throws Exception {
+        System.out.println(singleOrder.getStatus());
+        assertTrue(singleOrder.getStatus() instanceof AcceptedIState);
     }
 
     private LocalTime parseTime(String time) {
