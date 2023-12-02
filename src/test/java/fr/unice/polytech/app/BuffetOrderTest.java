@@ -1,5 +1,8 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.Restaurant.*;
+import fr.unice.polytech.app.Orders.*;
+import fr.unice.polytech.app.Users.*;
 import fr.unice.polytech.app.State.IState;
 import fr.unice.polytech.app.State.PaidIState;
 import org.junit.jupiter.api.Test;

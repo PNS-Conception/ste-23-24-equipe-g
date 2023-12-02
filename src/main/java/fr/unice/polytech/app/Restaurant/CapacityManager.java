@@ -1,6 +1,4 @@
-package fr.unice.polytech.app;
-
-import fr.unice.polytech.app.Restaurant;
+package fr.unice.polytech.app.Restaurant;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

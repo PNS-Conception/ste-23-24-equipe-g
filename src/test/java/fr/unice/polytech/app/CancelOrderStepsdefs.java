@@ -1,8 +1,13 @@
 package fr.unice.polytech.app;
 
 
+import fr.unice.polytech.app.Orders.SingleOrder;
+import fr.unice.polytech.app.Restaurant.Day;
+import fr.unice.polytech.app.Restaurant.*;
+import fr.unice.polytech.app.Restaurant.RestaurantManager;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
+import fr.unice.polytech.app.Users.CampusUser;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -55,7 +60,7 @@ public class CancelOrderStepsdefs {
     public void restaurantIsOpenAndCloseAt(String restaurantName, int openHour, int openMinute, int closeHour, int closeMinute) {
         assertNotNull("Restaurant is not initialized", restaurant);
         assertEquals("Restaurant name does not match", restaurantName, restaurant.getName());
-        restaurant.addShift(LocalTime.of( openHour, openMinute), LocalTime.of( closeHour, closeMinute),Day.Friday, new RestaurantManager("test", "test", "test"));
+        restaurant.addShift(LocalTime.of( openHour, openMinute), LocalTime.of( closeHour, closeMinute), Day.Friday, new RestaurantManager("test", "test", "test"));
     }
 
     @When("^the order is placed, paid, and accepted at (\\d+):(\\d+)$")

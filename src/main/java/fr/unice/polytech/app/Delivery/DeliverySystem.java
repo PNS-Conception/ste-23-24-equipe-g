@@ -1,5 +1,8 @@
 
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Delivery;
+
+import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Orders.SingleOrder;
 
 import java.util.ArrayList;
 import java.util.List;

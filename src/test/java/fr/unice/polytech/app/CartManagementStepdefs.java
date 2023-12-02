@@ -1,9 +1,15 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.Orders.SingleOrder;
+import fr.unice.polytech.app.Restaurant.Restaurant;
+import fr.unice.polytech.app.Restaurant.RestaurantManager;
+import fr.unice.polytech.app.Users.CampusUser;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import static org.junit.Assert.*;
+import fr.unice.polytech.app.Restaurant.Dish;
+import fr.unice.polytech.app.Restaurant.Item;
 
 
 

@@ -11,6 +11,8 @@ Feature: Afterwork Orders
     Given user "John" is logged in as an organizer
     When he creates an afterwork order for 5 expected participants at "The Gourmet" restaurant
     Then the afterWork order should be created
+    And John should be the organizer of the afterwork order
+    And the afterwork order should be created for 5 participants
 
 
   Scenario: Viewing available afterwork menu

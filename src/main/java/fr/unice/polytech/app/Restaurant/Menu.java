@@ -1,4 +1,7 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Restaurant;
+
+
+import fr.unice.polytech.app.Users.UserType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +19,7 @@ public class Menu {
         this.menu = asList;
     }
 
-    public boolean addDish(Dish dish,RestaurantManager manager) {
+    public boolean addDish(Dish dish, RestaurantManager manager) {
         if (manager.getType() == UserType.MANAGER) {
             menu.add(dish);
             return true;
@@ -24,7 +27,7 @@ public class Menu {
         return false;
     }
 
-    public boolean removeDish(Dish dish,RestaurantManager manager) {
+    public boolean removeDish(Dish dish, RestaurantManager manager) {
         if (manager.getType() == UserType.MANAGER){
             menu.remove(dish);
             return true;
@@ -37,7 +40,7 @@ public class Menu {
         return menu;
     }
 
-    public boolean setMenu(List<Dish> menu,RestaurantManager manager) {
+    public boolean setMenu(List<Dish> menu, RestaurantManager manager) {
         if (manager.getType() == UserType.MANAGER) {
             this.menu = menu;
             return true;

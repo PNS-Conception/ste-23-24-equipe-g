@@ -1,6 +1,13 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Orders;
 
+import fr.unice.polytech.app.Users.CampusUser;
+
+
+
+import fr.unice.polytech.app.Restaurant.Restaurant;
+import fr.unice.polytech.app.Restaurant.Item;
 import fr.unice.polytech.app.State.*;
+import fr.unice.polytech.app.Users.UserType;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -8,12 +15,12 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class SingleOrder implements Order  {
+public class SingleOrder implements Order {
     private boolean requiresSignatureAndVerification;
     private List<Item> items;
     private String clientAddress;
     private LocalTime placedTime;
-    CampusUser user;
+    public CampusUser user;
     private UUID id;
     //private OrderStatus status;
 

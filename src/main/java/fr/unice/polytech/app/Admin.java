@@ -1,5 +1,10 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.Delivery.DeliveryPerson;
+import fr.unice.polytech.app.Restaurant.Restaurant;
+import fr.unice.polytech.app.Restaurant.RestaurantManager;
+import fr.unice.polytech.app.Users.CampusUser;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +23,7 @@ public class Admin {
         restaurants= new ArrayList<>();
         deliveryPersons= new ArrayList<>();
         campusUsers= new ArrayList<>();
+
     }
     public static void addRestaurant(String name, String address, RestaurantManager owner) {
         Restaurant restaurant = new Restaurant(name,owner,address );

@@ -1,8 +1,11 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Restaurant;
+
+import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Users.UserType;
 
 import java.time.LocalTime;
 
-public class RestaurantManager extends CampusUser{
+public class RestaurantManager extends CampusUser {
 
 
     Restaurant restaurant;
@@ -20,7 +23,7 @@ public class RestaurantManager extends CampusUser{
             restaurant.addShift(openingTime,closingTime,day,this);
     }
 
-    public void removeShift(Shift shift) {
+    public void removeShift(Day.Shift shift) {
             restaurant.removeShift(shift);
     }
 
@@ -36,5 +39,9 @@ public class RestaurantManager extends CampusUser{
         this.restaurant = restaurant;
     }
 
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
 
 }

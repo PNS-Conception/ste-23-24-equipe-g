@@ -1,9 +1,15 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.Orders.AfterWorkOrder;
+import fr.unice.polytech.app.Restaurant.*;
+import fr.unice.polytech.app.Restaurant.RestaurantManager;
+import fr.unice.polytech.app.Restaurant.RestaurantService;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
 import fr.unice.polytech.app.State.PlacedIState;
+import fr.unice.polytech.app.Users.CampusUser;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -11,7 +17,6 @@ import io.cucumber.java.en.Then;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -167,6 +172,7 @@ public void setup() {
     }
     @When("{string} adds {int} more participants to the order")
     public void addsMoreParticipantsToTheOrder(String name, int additionalParticipants) {
+        order.setNumberOfParticipants(order.getNumberOfParticipants() + additionalParticipants);
         for (int i = 0; i < additionalParticipants; i++) {
             CampusUser newParticipant = new CampusUser("participant" + i, "password", "Participant");
             order.addParticipant(newParticipant);
@@ -176,6 +182,16 @@ public void setup() {
     @Then("the total number of participants for the afterwork order is now {int}")
     public void the_total_number_of_participants_for_the_afterwork_order_is_now(int expectedTotal) {
         assertEquals(expectedTotal, order.getNumberOfParticipants());
+    }
+
+    @And("John should be the organizer of the afterwork order")
+    public void johnShouldBeTheOrganizerOfTheAfterworkOrder() {
+        assertEquals(organizer, order.getOrganizer());
+    }
+
+    @And("the afterwork order should be created for {int} participants")
+    public void theAfterworkOrderShouldBeCreatedForParticipants(int arg0) {
+        assertEquals(arg0, order.getNumberOfParticipants());
     }
 }
 

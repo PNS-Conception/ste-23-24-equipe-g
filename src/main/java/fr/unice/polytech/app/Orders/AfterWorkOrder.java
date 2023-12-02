@@ -1,5 +1,8 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Orders;
 
+import fr.unice.polytech.app.Users.CampusUser;
+
+import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.State.IState;
 import fr.unice.polytech.app.State.PlacedIState;
 
@@ -11,8 +14,8 @@ import java.util.UUID;
 public class AfterWorkOrder implements Order {
     private UUID id;
 
-    private static CampusUser organizer;
-    private Restaurant restaurant;
+    private CampusUser organizer;
+    private final Restaurant restaurant;
     private LocalTime placedTime;
     private List<Item> items;
     private List<CampusUser> participants;
@@ -24,7 +27,9 @@ public class AfterWorkOrder implements Order {
         this.restaurant = restaurant;
         this.items = new ArrayList<>(items);
         this.participants = new ArrayList<>(numberOfParticipants);
+        this.numberOfParticipants = numberOfParticipants;
         this.placedTime = LocalTime.now();
+        placeOrder();
 
     }
 
@@ -40,7 +45,7 @@ public class AfterWorkOrder implements Order {
     }
 
     public int getNumberOfParticipants() {
-        return participants.size();
+        return numberOfParticipants;
     }
 
     // Méthode pour vérifier si le restaurant offre des menus afterwork
@@ -66,7 +71,11 @@ public class AfterWorkOrder implements Order {
 
     @Override
     public double getPrice() {
-        return 0;
+        double price = 0;
+        for (Item item : items) {
+            price += item.getPrice();
+        }
+        return price;
     }
 
     @Override
@@ -90,13 +99,13 @@ public class AfterWorkOrder implements Order {
 
     @Override
     public void pickUp() throws Exception {
-
+        throw new UnsupportedOperationException("Les commandes afterwork ne peuvent pas être récupérées.");
     }
 
     @Override
-    public void deliver() {
+    public void deliver() throws Exception {
         // Étant donné qu'il n'y a pas de livraison pour les commandes afterwork,
-        throw new UnsupportedOperationException("La livraison n'est pas disponible pour les commandes afterwork.");
+        throw new UnsupportedOperationException("Les commandes afterwork ne se livrent pas.");
     }
 
     @Override
@@ -122,7 +131,7 @@ public class AfterWorkOrder implements Order {
 
     @Override
     public Restaurant getRestaurant() {
-        return null;
+        return restaurant;
     }
 
     @Override
@@ -143,25 +152,26 @@ public class AfterWorkOrder implements Order {
 
     @Override
     public void accept() throws Exception {
+        status.acceptOrder(this);
 
     }
 
     @Override
     public void reject() throws Exception {
-
+        status.rejectOrder(this);
     }
 
     @Override
     public void ready() throws Exception {
-
+         throw new UnsupportedOperationException("Les commandes afterwork ne peuvent pas être prêtes.");
     }
 
     @Override
     public void assign() throws Exception {
-
+        throw new UnsupportedOperationException("Les commandes afterwork ne peuvent pas être assignées.");
     }
 
-    public static CampusUser getOrganizer() {
+    public CampusUser getOrganizer() {
         return organizer;
     }
 
@@ -171,6 +181,12 @@ public class AfterWorkOrder implements Order {
 
     public void setNumberOfParticipants(int i) {
         this.numberOfParticipants=i;
+    }
+
+    public void addItems(Item item) {
+        if (item.getIsForAfterWork()){
+            this.items.add(item);
+        }
     }
 
 }

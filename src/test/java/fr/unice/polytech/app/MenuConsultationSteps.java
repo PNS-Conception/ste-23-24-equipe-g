@@ -1,5 +1,9 @@
 package fr.unice.polytech.app;
 
+
+import fr.unice.polytech.app.Restaurant.*;
+import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Users.UserType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;

@@ -2,6 +2,10 @@ package fr.unice.polytech.app;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import fr.unice.polytech.app.Orders.Buffet;
+import fr.unice.polytech.app.Orders.Formule;
+import fr.unice.polytech.app.Restaurant.Dish;
+import fr.unice.polytech.app.Restaurant.Item;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

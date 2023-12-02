@@ -1,8 +1,12 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Restaurant;
+
+
+
 public class Item {
     private Dish dish;
     private int quantity;
     private double price;
+    private Boolean isForAfterWork;
 
     private double notRegularPrice;
 
@@ -11,6 +15,15 @@ public class Item {
         this.quantity = quantity;
         this.price = calculatePrice();
         this.notRegularPrice = calculateNotRegularPrice();
+        this.isForAfterWork = false;
+    }
+
+    public Item(Dish dish, int quantity, Boolean isForAfterWork) {
+        this.dish = dish;
+        this.quantity = quantity;
+        this.price = calculatePrice();
+        this.notRegularPrice = calculateNotRegularPrice();
+        this.isForAfterWork = isForAfterWork;
     }
 
     public Dish getDish() {
@@ -40,6 +53,9 @@ public class Item {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+    public Boolean getIsForAfterWork() {
+        return isForAfterWork;
     }
 
 }
