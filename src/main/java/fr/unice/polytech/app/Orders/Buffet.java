@@ -10,11 +10,11 @@ public class Buffet {
 
     private List<Formule> FormuleList;
 
-    public Buffet(Formule formule, int nombreDeFormules) {
+    public Buffet(Formule formule, int nombreDeFormules) throws Exception {
         this.formule = formule;
         this.FormuleList = new ArrayList<>();
         for (int i = 0; i < nombreDeFormules; i++) {
-            this.FormuleList.add(formule);
+            this.FormuleList.add(new Formule(formule.getName(), formule.getPrix(), formule.getItems()));
         }
     }
 
@@ -29,6 +29,11 @@ public class Buffet {
             }
         }
         return true;
+    }
+    public void makeready() throws Exception {
+        for (Formule formule : FormuleList) {
+            formule.setStatus(new ReadyIState());
+        }
     }
 
     public Formule getFormule() {
