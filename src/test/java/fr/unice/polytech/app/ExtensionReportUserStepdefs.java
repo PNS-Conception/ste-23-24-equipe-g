@@ -3,6 +3,10 @@ package fr.unice.polytech.app;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import fr.unice.polytech.app.Users.CampusUser;
+
+import fr.unice.polytech.app.Delivery.DeliveryPerson;
+import fr.unice.polytech.app.Orders.*;
 
 import static org.junit.Assert.*;
 

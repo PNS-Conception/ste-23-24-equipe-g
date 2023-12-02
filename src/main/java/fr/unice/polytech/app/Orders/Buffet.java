@@ -1,10 +1,9 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Orders;
 
 import fr.unice.polytech.app.State.ReadyIState;
-
+import fr.unice.polytech.app.Orders.Formule;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class Buffet {
     private Formule formule;

@@ -1,14 +1,15 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Orders;
 
 import javax.swing.plaf.nimbus.State;
 
 import fr.unice.polytech.app.State.IState;
 import fr.unice.polytech.app.State.PlacedIState;
 import fr.unice.polytech.app.State.ReadyIState;
+import fr.unice.polytech.app.Restaurant.Item;
 
 import java.util.List;
 
-class Formule {
+public class Formule {
     private String name;
     private double prix;
     private List<Item> items;
