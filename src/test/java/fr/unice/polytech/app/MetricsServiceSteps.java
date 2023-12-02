@@ -1,5 +1,15 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.Orders.Order;
+import fr.unice.polytech.app.Orders.SingleOrder;
+import fr.unice.polytech.app.Restaurant.Restaurant;
+
+import fr.unice.polytech.app.Restaurant.*;
+import fr.unice.polytech.app.Restaurant.RestaurantManager;
+import fr.unice.polytech.app.Restaurant.RestaurantService;
+import fr.unice.polytech.app.Statistic.DataCollector;
+import fr.unice.polytech.app.Statistic.MetricsService;
+import fr.unice.polytech.app.Users.CampusUser;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -64,7 +74,7 @@ public class MetricsServiceSteps {
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
         Menu menu = new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99)));
-        Restaurant testRestaurant =RestaurantService.getInstance().createRestaurant("TestRestaurant", menu);
+        Restaurant testRestaurant = RestaurantService.getInstance().createRestaurant("TestRestaurant", menu);
         SingleOrder testOrder = new SingleOrder(items, new CampusUser("user123","null", "User123"), testRestaurant);
         testRestaurant.addOrder(testOrder);
         DataCollector dataCollector = new DataCollector();

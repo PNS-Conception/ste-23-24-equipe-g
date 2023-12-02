@@ -1,5 +1,6 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Orders;
 
+import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.State.IState;
 
 import java.time.LocalTime;

@@ -2,7 +2,7 @@ package fr.unice.polytech.app;
 
 public enum OrderStatus {
     PLACED,
-    PAID,
+    PAD,
     ACCEPTED,
     READY,
     ASSIGNED,

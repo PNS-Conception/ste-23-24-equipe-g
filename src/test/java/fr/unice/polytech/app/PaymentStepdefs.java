@@ -1,6 +1,9 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.Orders.SingleOrder;
+import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.State.*;
+import fr.unice.polytech.app.Users.CampusUser;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -103,7 +106,7 @@ public class PaymentStepdefs {
 
     @Then("the payment should fail")
     public void the_payment_should_fail() {
-        assertNotEquals(OrderStatus.PAID, singleOrder.getStatus());
+        assertNotEquals( singleOrder.getStatus() instanceof PaidIState, true);
     }
 
     @Then("Alice's cart should still have {int} pizza and {int} pasta")
@@ -139,7 +142,7 @@ public class PaymentStepdefs {
 
     @And("the order's status should not be {string}")
     public void theOrderSStatusShouldNotBe(String state) {
-        assertNotEquals(OrderStatus.valueOf(state), singleOrder.getStatus());
+        assertNotEquals(state, singleOrder.getStatus().toString());
     }
 }
 

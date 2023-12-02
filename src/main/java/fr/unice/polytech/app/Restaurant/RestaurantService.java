@@ -1,4 +1,4 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Restaurant;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-import static fr.unice.polytech.app.Day.getAllDayOfWeeks;
+import static fr.unice.polytech.app.Restaurant.Day.getAllDayOfWeeks;
+
 
 public class RestaurantService {
 
@@ -35,17 +36,17 @@ public class RestaurantService {
         initializeDefaultCapacity(newRestaurant); // Supposons que cette méthode existe pour initialiser la capacité
         return newRestaurant;
     }
-    private List<Shift> getDefaultShifts() {
-        List<Shift> defaultShifts = new ArrayList<>();
+    private List<Day.Shift> getDefaultShifts() {
+        List<Day.Shift> defaultShifts = new ArrayList<>();
         for (Day day : getAllDayOfWeeks()) {
-            defaultShifts.add(new Shift(LocalTime.of(9, 0), LocalTime.of(17, 0),day));
+            defaultShifts.add(new Day.Shift(LocalTime.of(9, 0), LocalTime.of(17, 0),day));
         }
         return defaultShifts;
     }
 
 
     private void initializeDefaultCapacity(Restaurant restaurant) {
-        List<Shift> shifts = restaurant.getSchedule().isEmpty() ? getDefaultShifts() : restaurant.getSchedule();
+        List<Day.Shift> shifts = restaurant.getSchedule().isEmpty() ? getDefaultShifts() : restaurant.getSchedule();
 
         LocalDate startDate = LocalDate.now().withDayOfMonth(1); // Début du mois
         LocalDate endDate = startDate.plusMonths(1).minusDays(1); // Fin du mois
@@ -53,7 +54,7 @@ public class RestaurantService {
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             DayOfWeek dayOfWeek = date.getDayOfWeek();
 
-            for (Shift shift : shifts) {
+            for (Day.Shift shift : shifts) {
                 if (shift.getDay().toDayOfWeek().equals(dayOfWeek)) {
                     LocalTime startTime = shift.getOpeningTime();
                     LocalTime endTime = shift.getClosingTime();

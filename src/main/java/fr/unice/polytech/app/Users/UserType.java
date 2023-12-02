@@ -1,4 +1,4 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Users;
 
 public enum UserType {
     CLIENT,

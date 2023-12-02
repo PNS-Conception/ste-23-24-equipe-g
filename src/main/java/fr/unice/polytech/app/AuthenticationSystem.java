@@ -1,8 +1,9 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.Users.CampusUser;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class AuthenticationSystem {
     private Map<String, String> userCredentials;

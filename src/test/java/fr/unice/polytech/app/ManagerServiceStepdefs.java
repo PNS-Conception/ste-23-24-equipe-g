@@ -1,14 +1,13 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.Restaurant.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import java.time.LocalTime;
-import java.util.Arrays;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ManagerServiceStepdefs {
 
@@ -23,7 +22,8 @@ public class ManagerServiceStepdefs {
     public void managerOfRestaurantLoggedIn() {
         manager = new RestaurantManager("test", "test", "test");
         restaurant = new Restaurant("test",manager,null);
-
+        manager.setRestaurant(restaurant);
+        restaurant.setOwner(manager);
     }
 
     @Given("a empty menu")
@@ -34,8 +34,10 @@ public class ManagerServiceStepdefs {
 
     @Then("the dish should be in the menu of Restaurant")
     public void shouldBeInTheMenuOfRestaurant() {
-        boolean b = restaurant.getMenu().getMenu().contains(dish);
+        boolean b = manager.getRestaurant().getMenu().getMenu().contains(dish);
+        boolean b2 = restaurant.getMenu().getMenu().contains(dish);
         assertTrue(b);
+        assertTrue(b2);
     }
 
     @Given("a menu that contain dish with name {string} and price {int} and not regular price {int}")
@@ -46,14 +48,18 @@ public class ManagerServiceStepdefs {
 
     @Then("the {string} should be in the menu of Restaurant")
     public void theShouldBeInTheMenuOfRestaurant(String dishName) {
-        boolean b = restaurant.getMenu().contains(dishName);
+        boolean b = manager.getRestaurant().getMenu().contains(dishName);
+        boolean b2 = restaurant.getMenu().getMenu().contains(dish);
+        assertEquals(2, manager.getRestaurant().getMenu().getMenu().size());
         assertTrue(b);
+        assertTrue(b2);
+
     }
 
-    @When("the admin remove dish with name {string}")
+    @When("the manager remove dish with name {string}")
     public void theAdminRemoveDishWithName(String arg0) {
         dish = new Dish(arg0, 10,0);
-        boolean b=restaurant.getMenu().removeDish(dish, manager);
+        boolean b=manager.getRestaurant().getMenu().removeDish(dish, manager);
         assertTrue(b);
     }
 
@@ -68,13 +74,12 @@ public class ManagerServiceStepdefs {
         assertTrue(restaurant.getSchedule().isEmpty());
     }
 
-    @When("the admin add oping hours with day {string} from {string} to {string}")
+    @When("the manager add oping hours with day {string} from {string} to {string}")
     public void the_admin_add_oping_hours_with_day_from_to(String day, String open, String close) {
         Day dayEnum = Day.valueOf(day);
         LocalTime openingTime = LocalTime.parse(open);
         LocalTime closingTime = LocalTime.parse(close);
-        boolean b=restaurant.addShift(openingTime, closingTime, dayEnum, manager);
-        assertTrue(b);
+        manager.addShift(openingTime, closingTime, dayEnum);
 
     }
 
@@ -82,7 +87,7 @@ public class ManagerServiceStepdefs {
     public void fromToShouldBeInTheOpingHoursOfRestaurant(String day, String startTime, String endTime) {
         LocalTime openingTime = LocalTime.parse(startTime);
         LocalTime closingTime = LocalTime.parse(endTime);
-        boolean isInOpeningHours = restaurant.scheduleContains(new Shift(openingTime, closingTime, Day.valueOf(day)));
+        boolean isInOpeningHours = restaurant.scheduleContains(new Day.Shift(openingTime, closingTime, Day.valueOf(day)));
         assertTrue(isInOpeningHours);
     }
 
@@ -96,10 +101,10 @@ public class ManagerServiceStepdefs {
     }
 
 
-    @When("the admin add dish with name {string} and price {int}, not regular price {int}")
+    @When("the manager add dish with name {string} and price {int}, not regular price {int}")
     public void the_admin_add_dish_with_name_and_price(String dishName, double price, double notRegularPrice) {
         dish = new Dish(dishName, price,notRegularPrice);
-        restaurant.getMenu().addDish(dish, manager);
+        manager.addDish(dish);
     }
 }
 

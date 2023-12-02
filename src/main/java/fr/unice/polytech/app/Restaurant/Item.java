@@ -1,4 +1,7 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Restaurant;
+
+
+
 public class Item {
     private Dish dish;
     private int quantity;

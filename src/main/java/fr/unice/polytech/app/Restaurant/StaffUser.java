@@ -1,4 +1,8 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Restaurant;
+
+import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Orders.SingleOrder;
+import fr.unice.polytech.app.Users.UserType;
 
 import java.time.LocalTime;
 

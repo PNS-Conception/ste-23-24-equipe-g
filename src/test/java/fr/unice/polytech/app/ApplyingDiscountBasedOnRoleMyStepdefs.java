@@ -1,5 +1,11 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.Delivery.DeliveryPerson;
+import fr.unice.polytech.app.Orders.SingleOrder;
+import fr.unice.polytech.app.Restaurant.*;
+import fr.unice.polytech.app.Restaurant.RestaurantManager;
+import fr.unice.polytech.app.Restaurant.StaffUser;
+import fr.unice.polytech.app.Users.CampusUser;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

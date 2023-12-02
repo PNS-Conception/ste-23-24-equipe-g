@@ -1,9 +1,10 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Orders;
 
-import fr.unice.polytech.app.State.CancelledIState;
+import fr.unice.polytech.app.Users.CampusUser;
+
+import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.State.IState;
 import fr.unice.polytech.app.State.PlacedIState;
-import net.bytebuddy.implementation.bytecode.Throw;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class AfterWorkOrder implements Order {
     private UUID id;
 
     private CampusUser organizer;
-    private Restaurant restaurant;
+    private final Restaurant restaurant;
     private LocalTime placedTime;
     private List<Item> items;
     private List<CampusUser> participants;

@@ -1,8 +1,13 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.Orders.AfterWorkOrder;
+import fr.unice.polytech.app.Restaurant.*;
+import fr.unice.polytech.app.Restaurant.RestaurantManager;
+import fr.unice.polytech.app.Restaurant.RestaurantService;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
 import fr.unice.polytech.app.State.PlacedIState;
+import fr.unice.polytech.app.Users.CampusUser;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -12,7 +17,6 @@ import io.cucumber.java.en.Then;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 

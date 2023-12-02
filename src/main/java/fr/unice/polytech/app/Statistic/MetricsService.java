@@ -1,7 +1,10 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Statistic;
 
-import fr.unice.polytech.app.*;
-import fr.unice.polytech.app.DataCollector;
+import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Orders.Order;
+import fr.unice.polytech.app.Restaurant.Restaurant;
+import fr.unice.polytech.app.Restaurant.Item;
+import fr.unice.polytech.app.Restaurant.RestaurantService;
 
 import java.time.Duration;
 import java.time.LocalTime;

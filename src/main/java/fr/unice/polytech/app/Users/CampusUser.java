@@ -1,4 +1,11 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Users;
+
+import fr.unice.polytech.app.Orders.SingleOrder;
+import fr.unice.polytech.app.RandomGenerator;
+import fr.unice.polytech.app.Restaurant.CapacityManager;
+import fr.unice.polytech.app.Restaurant.Dish;
+import fr.unice.polytech.app.Restaurant.Item;
+import fr.unice.polytech.app.Restaurant.Restaurant;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -104,7 +111,7 @@ public class CampusUser {
 
     }
 
-    void setBalance(double price) {
+    public void setBalance(double price) {
         this.balance += price;
     }
 

@@ -1,14 +1,17 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Orders;
 
+import fr.unice.polytech.app.Users.CampusUser;
+
+import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.State.*;
+
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
-public class MultipleOrder implements Order{
+public class MultipleOrder implements Order {
 
     private List<Order> subOrders;
     private String routeDetails;

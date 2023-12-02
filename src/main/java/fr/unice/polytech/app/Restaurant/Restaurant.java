@@ -1,7 +1,9 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Restaurant;
 
+import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
+import fr.unice.polytech.app.Users.CampusUser;
 
 import java.time.LocalTime;
 import java.util.*;
@@ -14,7 +16,7 @@ public class Restaurant {
     private List<Menu> menus = new ArrayList<>();
     private String address;
     private CampusUser owner;
-    private List<Shift> schedule;
+    private List<Day.Shift> schedule;
     private List<SingleOrder> singleOrderList;
     private boolean full;
     private Map<CampusUser,Integer> numberOfDishesPerUser = new HashMap<>();
@@ -27,7 +29,7 @@ public class Restaurant {
     private int percentageDiscountByNbOfOrders;
     private int numberOfDishesForDiscount;
 
-    public Restaurant(String name, RestaurantManager manager,String address){
+    public Restaurant(String name, RestaurantManager manager, String address){
         this.id = UUID.randomUUID();
         this.name = name;
         this.singleOrderList = new ArrayList<>();
@@ -80,9 +82,9 @@ public class Restaurant {
         singleOrder.getClient().refund(singleOrder);
     }
 
-    public boolean addShift(LocalTime openingTime, LocalTime closingTime, Day day,RestaurantManager manager) {
+    public boolean addShift(LocalTime openingTime, LocalTime closingTime, Day day, RestaurantManager manager) {
         if (manager == owner) {
-            Shift shift = new Shift(openingTime, closingTime,day);
+            Day.Shift shift = new Day.Shift(openingTime, closingTime,day);
             schedule.add(shift);
             return true;
         }
@@ -91,12 +93,12 @@ public class Restaurant {
 
 
 
-    public List<Shift> getSchedule() {
+    public List<Day.Shift> getSchedule() {
         return schedule;
     }
 
-    public boolean scheduleContains( Shift shift) {
-        for (Shift s : schedule) {
+    public boolean scheduleContains( Day.Shift shift) {
+        for (Day.Shift s : schedule) {
             if (s.getDay() == shift.getDay() && s.getOpeningTime() == shift.getOpeningTime() && s.getClosingTime() == shift.getClosingTime()) {
                 return true;
             }
@@ -276,7 +278,7 @@ public class Restaurant {
         this.percentageDiscountByNbOfOrders = percentageDiscountByNbOfOrders;
     }
 
-    public void removeShift(Shift shift) {
+    public void removeShift(Day.Shift shift) {
         schedule.remove(shift);
     }
 

@@ -1,6 +1,6 @@
 package fr.unice.polytech.app.State;
 
-import fr.unice.polytech.app.Order;
+import fr.unice.polytech.app.Orders.Order;
 
 public class PlacedIState implements IState {
 

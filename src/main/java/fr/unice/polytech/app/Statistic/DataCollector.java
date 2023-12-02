@@ -1,16 +1,13 @@
 
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Statistic;
 
-import fr.unice.polytech.app.*;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Delivery.DeliveryPerson;
+import fr.unice.polytech.app.Orders.Order;
+import fr.unice.polytech.app.Restaurant.*;
+
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class DataCollector {

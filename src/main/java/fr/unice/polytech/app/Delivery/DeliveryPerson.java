@@ -1,10 +1,13 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Delivery;
+
+import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Orders.Order;
+import fr.unice.polytech.app.Orders.SingleOrder;
+import fr.unice.polytech.app.Restaurant.Restaurant;
+import fr.unice.polytech.app.Users.UserType;
 
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
-
-import static fr.unice.polytech.app.OrderStatus.DELIVERED;
 
 public class DeliveryPerson extends CampusUser {
 

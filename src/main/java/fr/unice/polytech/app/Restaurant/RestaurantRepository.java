@@ -1,4 +1,6 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.Restaurant;
+
+import fr.unice.polytech.app.Restaurant.Restaurant;
 
 import java.util.List;
 
