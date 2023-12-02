@@ -89,12 +89,12 @@ public class BuffetOrder implements Order{
 
     @Override
     public UUID getId() {
-        return getId();
+        return this.orderId;
     }
 
     @Override
     public void setRestaurant(Restaurant restaurant) {
-
+        this.restaurant = restaurant;
     }
 
     @Override
@@ -115,7 +115,6 @@ public class BuffetOrder implements Order{
     @Override
     public void ready() throws Exception {
          status=  buffet.ready()?new ReadyIState() :new PlacedIState();
-
     }
 
 
@@ -126,17 +125,17 @@ public class BuffetOrder implements Order{
 
     @Override
     public void deliver() throws Exception {
-        status.delivery(this);
+        status=new DelivredIState();
     }
 
     @Override
     public void cancel() throws Exception {
-        status.cancelOrder(this);
+        status=new CancelledIState();
     }
 
     @Override
     public void pickUp() throws Exception {
-        status.validate(this);
+        status=new DelivredIState();
     }
 
     @Override
