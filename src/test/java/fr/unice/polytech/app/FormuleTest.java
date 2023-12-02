@@ -1,6 +1,9 @@
 package fr.unice.polytech.app;
 
 import fr.unice.polytech.app.State.ReadyIState;
+import fr.unice.polytech.app.Orders.Formule;
+import fr.unice.polytech.app.Restaurant.Item;
+import fr.unice.polytech.app.Restaurant.Dish;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

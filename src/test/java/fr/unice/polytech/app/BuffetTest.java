@@ -1,8 +1,11 @@
 package fr.unice.polytech.app;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import fr.unice.polytech.app.Restaurant.*;
+import fr.unice.polytech.app.Orders.Buffet;
+import fr.unice.polytech.app.Orders.Formule;
 import org.junit.jupiter.api.Test;
+
 
 import java.util.ArrayList;
 import java.util.List;
