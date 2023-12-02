@@ -121,6 +121,14 @@ public class DeliveryPerson extends CampusUser {
         setCurrentOrder(null);
     }
 
+    public void rateUser(CampusUser user, int rate) throws Exception {
+        if (rate >= 0 && rate <= 5) {
+            user.addRate(rate);
+        } else {
+            throw new Exception("Rate must be between 0 and 5");
+        }
+    }
+
 
 
 }

@@ -10,8 +10,10 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 public class MultipleOrderStepdefs {
 
@@ -21,6 +23,8 @@ public class MultipleOrderStepdefs {
     Restaurant restaurant2;
     SingleOrder aliceSingleOrder;
     SingleOrder aliceSingleOrder2;
+
+    RandomGenerator mockRandomGenerator = Mockito.mock(RandomGenerator.class);
 
     DeliveryPerson deliveryPerson = new DeliveryPerson( "Nom du livreur", null,"Numéro de téléphone");
 
@@ -78,7 +82,9 @@ public class MultipleOrderStepdefs {
         aliceSingleOrder = new SingleOrder(alice.getCart(),alice,restaurant );
         multipleOrder = new MultipleOrder(alice);
         multipleOrder.addOrder(aliceSingleOrder);
-        alice.makePayment(aliceSingleOrder, alice);
+        when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
+        alice.setRandomGenerator(mockRandomGenerator);
+        alice.makePaymentmock(aliceSingleOrder, alice);
     }
 
     @When("Alice cancel the order")
@@ -108,7 +114,9 @@ public class MultipleOrderStepdefs {
         alice.createItem(new Dish("pizza",10), 2);
         restaurant=new Restaurant(arg0, new Menu());
         aliceSingleOrder = new SingleOrder(alice.getCart(),alice,restaurant );
-        alice.makePayment(aliceSingleOrder, alice);
+        when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
+        alice.setRandomGenerator(mockRandomGenerator);
+        alice.makePaymentmock(aliceSingleOrder, alice);
         multipleOrder.addOrder(aliceSingleOrder);
 
     }
@@ -118,7 +126,9 @@ public class MultipleOrderStepdefs {
         alice.createItem(new Dish("pasta",11), 1);
         restaurant2=new Restaurant(arg0, new Menu());
         aliceSingleOrder2 = new SingleOrder(alice.getCart(),alice,restaurant );
-        alice.makePayment(aliceSingleOrder2, alice);
+        when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
+        alice.setRandomGenerator(mockRandomGenerator);
+        alice.makePaymentmock(aliceSingleOrder2, alice);
         multipleOrder.addOrder(aliceSingleOrder2);
     }
 
@@ -170,9 +180,10 @@ public class MultipleOrderStepdefs {
     public void allSubOrdersPaid() throws Exception {
         aliceSingleOrder = new SingleOrder(alice.getCart(),alice,restaurant );
         aliceSingleOrder2 = new SingleOrder(alice.getCart(),alice,restaurant );
-
-        alice.makePayment(aliceSingleOrder, alice);
-        alice.makePayment(aliceSingleOrder2, alice);
+        when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
+        alice.setRandomGenerator(mockRandomGenerator);
+        alice.makePaymentmock(aliceSingleOrder, alice);
+        alice.makePaymentmock(aliceSingleOrder2, alice);
     }
 
     @When("the owner cancels all orders")

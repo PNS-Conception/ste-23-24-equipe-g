@@ -10,12 +10,14 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 public class ExtensionDiscountStepdefs {
 
@@ -23,6 +25,8 @@ public class ExtensionDiscountStepdefs {
     private LocalDate currentDate = LocalDate.now();
     CampusUser user;
     SingleOrder singleOrder;
+
+    RandomGenerator mockRandomGenerator = Mockito.mock(RandomGenerator.class);
 
     private void simulateTimePassage(int days) {
         currentDate = currentDate.plusDays(days);
@@ -117,7 +121,9 @@ public class ExtensionDiscountStepdefs {
         //order=user.order(List.of(new Item(new Dish("test", 10, 10), 1)), restaurant);
         user = new CampusUser("test", "password", "email");
         singleOrder =user.order(List.of(new Item(new Dish("test", 10, 10), 1)), restaurant);
-        user.makePayment(singleOrder,user);
+        when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
+        user.setRandomGenerator(mockRandomGenerator);
+        user.makePaymentmock(singleOrder,user);
         restaurant.addNbOrderToUser(user);
         restaurant.getExtensionDiscount(user).setNumberOfOrders(arg1);
     }
