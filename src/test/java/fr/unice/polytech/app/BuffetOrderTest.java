@@ -1,12 +1,10 @@
 package fr.unice.polytech.app;
 
-import fr.unice.polytech.app.Orders.Buffet;
-import fr.unice.polytech.app.Orders.BuffetOrder;
-import fr.unice.polytech.app.Orders.Formule;
 import fr.unice.polytech.app.Restaurant.*;
+import fr.unice.polytech.app.Orders.*;
+import fr.unice.polytech.app.Users.*;
 import fr.unice.polytech.app.State.IState;
 import fr.unice.polytech.app.State.PaidIState;
-import fr.unice.polytech.app.Users.CampusUser;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
