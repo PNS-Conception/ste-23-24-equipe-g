@@ -20,6 +20,8 @@ public class CampusUser {
     private String deliveryPersonPhoneNumberReceived;
     private String notifiedDeliveryPersonId;
     private String notifiedDeliveryPersonPhoneNumber;
+    //Liste de notes des livreurs et float moyenne
+    private List<Integer> deliveryPersonRatings;
 
 
     public CampusUser( String name, String password, String email) {
@@ -31,6 +33,7 @@ public class CampusUser {
         this.History = new ArrayList<>();
         this.cart = new ArrayList<>();
         this.balance = 0;
+        this.deliveryPersonRatings = new ArrayList<>();
     }
 
     public CampusUser( String name, String email) {
@@ -41,6 +44,7 @@ public class CampusUser {
         this.History = new ArrayList<>();
         this.cart = new ArrayList<>();
         this.balance = 0;
+        this.deliveryPersonRatings = new ArrayList<>();
     }
 
     public CampusUser() {
@@ -50,6 +54,7 @@ public class CampusUser {
         this.History = new ArrayList<>();
         this.cart = new ArrayList<>();
         this.balance = 0;
+        this.deliveryPersonRatings = new ArrayList<>();
     }
 
 
@@ -237,6 +242,20 @@ public class CampusUser {
         return name;
     }
 
+    public void addRate(int rate){
+        deliveryPersonRatings.add(rate);
+    }
 
+    public int getNbOfRates(){
+        return deliveryPersonRatings.size();
+    }
+
+    public float getAverageRating(){
+        float sum = 0;
+        for (Integer rating : deliveryPersonRatings) {
+            sum += rating;
+        }
+        return sum / deliveryPersonRatings.size();
+    }
 }
 
