@@ -6,11 +6,15 @@ import fr.unice.polytech.app.Restaurant.CapacityManager;
 import fr.unice.polytech.app.Restaurant.Dish;
 import fr.unice.polytech.app.Restaurant.Item;
 import fr.unice.polytech.app.Restaurant.Restaurant;
+import fr.unice.polytech.app.State.AcceptedIState;
+import fr.unice.polytech.app.State.IState;
+import fr.unice.polytech.app.State.ReadyIState;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 
 
 public class CampusUser {
@@ -109,11 +113,8 @@ public class CampusUser {
      * @param deliveryPersonPhoneNumber Le numéro de téléphone du livreur.
      */
     public void receiveDeliveryDetails(String deliveryPersonId, String deliveryPersonPhoneNumber) {
-        // Traitez les détails de la livraison ici
-        // Par exemple, affichez-les à l'utilisateur ou enregistrez-les dans l'interface utilisateur
         System.out.println("Delivery Person ID: " + deliveryPersonId);
         System.out.println("Delivery Person Phone: " + deliveryPersonPhoneNumber);
-
     }
 
     public void setBalance(double price) {
@@ -223,7 +224,8 @@ public class CampusUser {
         return notifiedDeliveryPersonPhoneNumber;
     }
 
-    public void notifyUser() {
+    public void getNotified() {
+
     }
 
     public double getBalance() {
@@ -235,10 +237,9 @@ public class CampusUser {
     }
 
     public void refund(SingleOrder singleOrder) {
-        //if(order.getStatus() == OrderStatus.PAID && orders.contains(order)){
-            setBalance(singleOrder.getPrice());
-            History.remove(singleOrder);
-        //}
+        setBalance(singleOrder.getPrice());
+        History.remove(singleOrder);
+
     }
 
     public String getPassword(){
@@ -252,6 +253,7 @@ public class CampusUser {
     public void addRate(int rate){
         deliveryPersonRatings.add(rate);
     }
+
 
     public int getNbOfRates(){
         return deliveryPersonRatings.size();

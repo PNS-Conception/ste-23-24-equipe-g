@@ -1,55 +1,55 @@
 package fr.unice.polytech.app.Orders;
 
 import fr.unice.polytech.app.State.ReadyIState;
-import fr.unice.polytech.app.Orders.Formule;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Buffet {
-    private Formule formule;
+    private formula formula;
 
-    private List<Formule> FormuleList;
+    private List<formula> formulaList;
 
-    public Buffet(Formule formule, int nombreDeFormules) throws Exception {
-        this.formule = formule;
-        this.FormuleList = new ArrayList<>();
+    public Buffet(formula formula, int nombreDeFormules) throws Exception {
+        this.formula = formula;
+        this.formulaList = new ArrayList<>();
         for (int i = 0; i < nombreDeFormules; i++) {
-            this.FormuleList.add(new Formule(formule.getName(), formule.getPrix(), formule.getItems()));
+            this.formulaList.add(new formula(formula.getName(), formula.getPrix(), formula.getItems()));
         }
     }
 
     public double getPrice() {
-        return formule.getPrix() * FormuleList.size();
+        return formula.getPrix() * formulaList.size();
     }
 
     public boolean ready() throws Exception {
-        for (Formule formule : FormuleList) {
-            if (!formule.getStatus().equals(new ReadyIState())) {
+        for (formula formula : formulaList) {
+            if (!formula.getStatus().equals(new ReadyIState())) {
                 return false;
             }
         }
         return true;
     }
     public void makeready() throws Exception {
-        for (Formule formule : FormuleList) {
-            formule.setStatus(new ReadyIState());
+        for (formula formula : formulaList) {
+            formula.setStatus(new ReadyIState());
         }
     }
 
-    public Formule getFormule() {
-        return formule;
+    public formula getFormule() {
+        return formula;
     }
 
-    public void setFormule(Formule formule) {
-        this.formule = formule;
+    public void setFormule(formula formula) {
+        this.formula = formula;
     }
 
-    public List<Formule> getFormuleList() {
-        return FormuleList;
+    public List<formula> getFormuleList() {
+        return formulaList;
     }
 
-    public void setFormuleList(List<Formule> formuleList) {
-        FormuleList = formuleList;
+    public void setFormuleList(List<formula> formulaList) {
+        this.formulaList = formulaList;
     }
 
 }

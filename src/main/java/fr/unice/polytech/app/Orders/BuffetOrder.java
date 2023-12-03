@@ -232,8 +232,8 @@ public class BuffetOrder implements Order{
         status=new CancelledIState();
     }
 
-    public void changeOrder(Formule newFormule, int newNumberOfPeople) {
-        this.buffet.setFormule(newFormule);
+    public void changeOrder(formula newFormula, int newNumberOfPeople) {
+        this.buffet.setFormule(newFormula);
         this.numberOfPeople = newNumberOfPeople;
     }
 }

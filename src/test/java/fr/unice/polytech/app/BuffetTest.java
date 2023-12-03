@@ -3,29 +3,27 @@ package fr.unice.polytech.app;
 import static org.junit.jupiter.api.Assertions.*;
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.Orders.Buffet;
-import fr.unice.polytech.app.Orders.Formule;
+import fr.unice.polytech.app.Orders.formula;
 import org.junit.jupiter.api.Test;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class BuffetTest {
 
     @Test
     void testGetPrice() throws Exception {
-        Formule formule = new Formule("Formule1", 100.0, createItems());
-        Buffet buffet = new Buffet(formule, 5);
+        formula formula = new formula("Formule1", 100.0, createItems());
+        Buffet buffet = new Buffet(formula, 5);
         assertEquals(500.0, buffet.getPrice(), "Le prix du buffet doit être correctement calculé");
     }
 
     @Test
     void testReadyStatus() throws Exception {
-        Formule formule = new Formule("Formule1", 100.0,  createItems());
-        formule.ready();
-        Buffet buffet = new Buffet(formule, 5);
+        formula formula = new formula("Formule1", 100.0,  createItems());
+        formula.ready();
+        Buffet buffet = new Buffet(formula, 5);
         buffet.makeready();
         assertFalse(buffet.ready(), "Le buffet doit être prêt si toutes les formules sont prêtes");
     }

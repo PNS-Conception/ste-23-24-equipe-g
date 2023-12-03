@@ -28,6 +28,7 @@ public class MetricsServiceSteps {
     RestaurantManager manager;
     Restaurant restaurant;
     private Map<CampusUser, Map<String, Object>> userBehaviorMetrics;
+    Admin admin = new Admin();
 
 
     @Given("order volume data has been collected")
@@ -87,7 +88,7 @@ public class MetricsServiceSteps {
         // Créer un nouveau manager
         manager = new RestaurantManager("testManager", "testPass",  "testEmail");
 
-        Admin.addRestaurant("My Restaurant", "Some address", manager);
+        admin.addRestaurant("My Restaurant", "Some address", manager);
         restaurant = Admin.getRestaurants().stream()
                 .filter(r -> r.getName().equals("My Restaurant") && r.getAddress().equals("Some address"))
                 .findFirst()

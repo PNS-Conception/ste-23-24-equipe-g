@@ -25,14 +25,42 @@ public class Admin {
         campusUsers= new ArrayList<>();
 
     }
-    public static void addRestaurant(String name, String address, RestaurantManager owner) {
+    public void addRestaurant(String name, String address, RestaurantManager owner) {
         Restaurant restaurant = new Restaurant(name,owner,address );
         restaurants.add(restaurant);
+    }
+
+    public void removeRestaurant(String restaurant) {
+        restaurants.remove(getRestaurantByName(restaurant));
+    }
+
+    public Restaurant getRestaurantByName(String name) {
+        for (Restaurant restaurant : restaurants) {
+            if (Objects.equals(restaurant.getName(), name)) {
+                return restaurant;
+            }
+        }
+        return null;
     }
 
     public void addDeliveryPerson(String name, String ownerEmail,String phoneNumber) {
         DeliveryPerson deliveryPerson = new DeliveryPerson( name, ownerEmail,phoneNumber);
         deliveryPersons.add(deliveryPerson);
+    }
+
+    public void removeDeliveryPerson(String Email) {
+
+        deliveryPersons.remove(getDeliveryPersonByEmail(Email));
+    }
+
+
+    public DeliveryPerson getDeliveryPersonByEmail(String email) {
+        for (DeliveryPerson deliveryPerson : deliveryPersons) {
+            if (Objects.equals(deliveryPerson.getEmail(), email)) {
+                return deliveryPerson;
+            }
+        }
+        return null;
     }
 
     public void addCampusUser(String name, String password, String email) {
