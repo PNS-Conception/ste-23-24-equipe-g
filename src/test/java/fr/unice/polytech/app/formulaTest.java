@@ -1,5 +1,8 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.Orders.Formule;
+import fr.unice.polytech.app.Restaurant.Dish;
+import fr.unice.polytech.app.Restaurant.Item;
 import fr.unice.polytech.app.State.ReadyIState;
 import fr.unice.polytech.app.Orders.formula;
 import fr.unice.polytech.app.Restaurant.Item;
