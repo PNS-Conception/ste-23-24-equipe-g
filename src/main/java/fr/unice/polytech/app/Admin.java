@@ -34,7 +34,7 @@ public class Admin {
         restaurants.remove(getRestaurantByName(restaurant));
     }
 
-    public Restaurant getRestaurantByName(String name) {
+    public static Restaurant getRestaurantByName(String name) {
         for (Restaurant restaurant : restaurants) {
             if (Objects.equals(restaurant.getName(), name)) {
                 return restaurant;

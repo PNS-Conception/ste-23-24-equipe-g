@@ -17,7 +17,7 @@ import java.util.UUID;
 
 
 
-public class CampusUser {
+public class CampusUser extends User {
     private UUID id;
     private String name;
     private String password;
@@ -48,6 +48,7 @@ public class CampusUser {
     }
 
     public CampusUser( String name, String email) {
+
         this.id = UUID.randomUUID();
         this.name = name;
         this.email = email;
