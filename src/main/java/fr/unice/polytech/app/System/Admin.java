@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Admin {
 
     static List<Restaurant> restaurants;
-    List<DeliveryPerson> deliveryPersons;
+    static List<DeliveryPerson> deliveryPersons;
 
     List<CampusUser> campusUsers;
 
@@ -72,7 +72,7 @@ public class Admin {
         return restaurants;
     }
 
-    public List<DeliveryPerson> getDeliveryPersons() {
+    public static List<DeliveryPerson> getDeliveryPersons() {
         return deliveryPersons;
     }
 

@@ -1,6 +1,7 @@
 
 package fr.unice.polytech.app.Delivery;
 
+import fr.unice.polytech.app.System.Admin;
 import fr.unice.polytech.app.Users.CampusUser;
 import fr.unice.polytech.app.Orders.SingleOrder;
 
@@ -10,10 +11,12 @@ import java.util.Optional;
 
 public class DeliverySystem {
 
+    private List<DeliveryPerson> availableDeliveryPeople;
     private List<DeliveryPerson> deliveryPeople;
 
     public DeliverySystem() {
-        this.deliveryPeople = new ArrayList<>();
+        this.deliveryPeople = new ArrayList<>(Admin.getDeliveryPersons());
+        this.availableDeliveryPeople = new ArrayList<>();
     }
 
     public void addDeliveryPerson(DeliveryPerson deliveryPerson) {
@@ -25,25 +28,22 @@ public class DeliverySystem {
     }
 
     public Optional<DeliveryPerson> assignOrderToDeliveryPerson(SingleOrder singleOrder) throws Exception {
-        for (DeliveryPerson deliveryPerson : this.deliveryPeople) {
-            if (deliveryPerson.isAvailable()) {
+        getAvailableDeliveryPeople();
+        for (DeliveryPerson deliveryPerson : availableDeliveryPeople) {
                 boolean assigned = deliveryPerson.assignOrder(singleOrder);
                 if (assigned) {
                     return Optional.of(deliveryPerson);
                 }
             }
-        }
         return Optional.empty(); // Aucun livreur disponible
     }
 
-    public List<DeliveryPerson> getAvailableDeliveryPeople() {
-        List<DeliveryPerson> availableDeliveryPeople = new ArrayList<>();
+    public void getAvailableDeliveryPeople() {
         for (DeliveryPerson deliveryPerson : this.deliveryPeople) {
             if (deliveryPerson.isAvailable()) {
                 availableDeliveryPeople.add(deliveryPerson);
             }
         }
-        return availableDeliveryPeople;
     }
 //    /**
 //     * Notifie l'utilisateur avec les détails de la livraison.
