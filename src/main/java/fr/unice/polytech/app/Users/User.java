@@ -1,6 +1,6 @@
 package fr.unice.polytech.app.Users;
 
-import fr.unice.polytech.app.Admin;
+import fr.unice.polytech.app.System.Admin;
 import fr.unice.polytech.app.Restaurant.Menu;
 import fr.unice.polytech.app.Restaurant.Restaurant;
 

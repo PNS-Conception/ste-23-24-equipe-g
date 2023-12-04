@@ -9,6 +9,7 @@ import fr.unice.polytech.app.Restaurant.RestaurantManager;
 import fr.unice.polytech.app.Restaurant.RestaurantService;
 import fr.unice.polytech.app.Statistic.DataCollector;
 import fr.unice.polytech.app.Statistic.MetricsService;
+import fr.unice.polytech.app.System.Admin;
 import fr.unice.polytech.app.Users.CampusUser;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;

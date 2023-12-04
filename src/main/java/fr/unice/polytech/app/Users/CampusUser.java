@@ -1,14 +1,11 @@
 package fr.unice.polytech.app.Users;
 
 import fr.unice.polytech.app.Orders.SingleOrder;
-import fr.unice.polytech.app.RandomGenerator;
+import fr.unice.polytech.app.Util.RandomGenerator;
 import fr.unice.polytech.app.Restaurant.CapacityManager;
 import fr.unice.polytech.app.Restaurant.Dish;
 import fr.unice.polytech.app.Restaurant.Item;
 import fr.unice.polytech.app.Restaurant.Restaurant;
-import fr.unice.polytech.app.State.AcceptedIState;
-import fr.unice.polytech.app.State.IState;
-import fr.unice.polytech.app.State.ReadyIState;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -176,6 +173,7 @@ public class CampusUser extends User {
             return false;
         }
     }
+
 
 
     public List<Item> getCart() {

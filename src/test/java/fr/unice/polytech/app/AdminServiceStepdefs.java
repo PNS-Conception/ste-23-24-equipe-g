@@ -1,5 +1,6 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.System.Admin;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
