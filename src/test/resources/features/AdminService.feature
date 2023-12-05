@@ -12,3 +12,11 @@ Feature: Admin service
   Scenario: Add delivery person
     When the admin add delivery person with email "delivey@delivey.com" and phone number "0123456789"
     Then "delivey@delivey.com" and "0123456789" should be in the list of delivery persons
+
+  Scenario: remove delivery person
+    When the admin remove delivery person with email "delivey@delivey.com"
+    Then "delivey@delivey.com" should not be in the list of delivery persons
+
+  Scenario: remove restaurant
+    When the admin remove restaurant with name "Restaurant 1"
+    Then "Restaurant 1" should not be in the list of restaurants

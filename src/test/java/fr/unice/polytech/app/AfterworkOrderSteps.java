@@ -7,6 +7,7 @@ import fr.unice.polytech.app.Restaurant.RestaurantService;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
 import fr.unice.polytech.app.State.PlacedIState;
+import fr.unice.polytech.app.System.Admin;
 import fr.unice.polytech.app.Users.CampusUser;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;

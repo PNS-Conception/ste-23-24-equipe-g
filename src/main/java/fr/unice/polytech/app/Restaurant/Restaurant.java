@@ -74,6 +74,7 @@ public class Restaurant {
         if (singleOrderList.contains(singleOrder)) {
             singleOrder.setStatus(new AcceptedIState());
             singleOrder.setAcceptedTime(LocalTime.now());
+
         }
     }
 

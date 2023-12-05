@@ -30,24 +30,24 @@ public class BuffetOrderStepdefs {
     private BuffetOrder createBuffetIssaNissa() throws Exception {
         // Supposons que ces méthodes et constructeurs existent dans vos classes
         Restaurant restaurant = restaurantService.createRestaurant("Issa Nissa", createIssaNissaMenu());
-        Formule formuleIssaNissa = new Formule("Issa Nissa", 30,createIssaNissaItems());
+        formula formulaIssaNissa = new formula("Issa Nissa", 30,createIssaNissaItems());
         CampusUser universityStaff = new CampusUser("Alice","au pays des merveilles");
         String contactPerson = "Bob";
         int numberOfPeople = 30;
         int numberOfItems = 10;
-        Buffet buffet = new Buffet(formuleIssaNissa, numberOfItems);
+        Buffet buffet = new Buffet(formulaIssaNissa, numberOfItems);
         return new BuffetOrder(restaurant, universityStaff, contactPerson, numberOfPeople, buffet);
     }
 
     private BuffetOrder createBuffetOrder() throws Exception {
         // Supposons que ces méthodes et constructeurs existent dans vos classes
         Restaurant restaurant = restaurantService.createRestaurant("Simple Buffet", createMenu());
-        Formule formuleIssaNissa = new Formule("Issa Nissa", 30,createItems());
+        formula formulaIssaNissa = new formula("Issa Nissa", 30,createItems());
         CampusUser universityStaff = new CampusUser("Alice","au pays des merveilles");
         String contactPerson = "Bob";
         int numberOfPeople = 54;
         int numberOfItems = 15;
-        Buffet buffet = new Buffet(formuleIssaNissa, numberOfItems);
+        Buffet buffet = new Buffet(formulaIssaNissa, numberOfItems);
         return new BuffetOrder(restaurant, universityStaff, contactPerson, numberOfPeople, buffet);
     }
 
@@ -197,8 +197,8 @@ public class BuffetOrderStepdefs {
 
     @When("^she changes the order to \"([^\"]*)\" for \"([^\"]*)\" people$")
     public void she_changes_the_order_to_a_different_buffet_for_people(String newBuffetType, int newNumberOfPeople) throws Exception {
-        Formule newFormule = new Formule(newBuffetType,newNumberOfPeople,createItems()); /* autres paramètres pour la formule HotPizza */;
-        buffetOrder.changeOrder(newFormule, newNumberOfPeople);
+        formula newFormula = new formula(newBuffetType,newNumberOfPeople,createItems()); /* autres paramètres pour la formule HotPizza */;
+        buffetOrder.changeOrder(newFormula, newNumberOfPeople);
     }
 
     @Then("^the buffet order should be updated to the \"([^\"]*)\" formula for \"([^\"]*)\" people$")

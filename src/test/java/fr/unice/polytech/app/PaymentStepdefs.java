@@ -4,6 +4,7 @@ import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.State.*;
 import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Util.RandomGenerator;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -42,9 +43,10 @@ public class PaymentStepdefs {
     public void alice_pays(double amount) throws Exception {
         RandomGenerator mockRandomGenerator = Mockito.mock(RandomGenerator.class);
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
+        assertEquals(amount, singleOrder.getPrice()- client.getBalance(), 0.01);
         client.setRandomGenerator(mockRandomGenerator);
         assertTrue(client.makePaymentmock(singleOrder, client));
-        //assertEquals(amount, singleOrder.getPrice(), 0.01);
+
     }
 
     @When("Alice has a balance of {double}€")

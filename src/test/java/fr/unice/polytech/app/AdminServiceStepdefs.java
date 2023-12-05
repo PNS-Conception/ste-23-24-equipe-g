@@ -1,11 +1,12 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.System.Admin;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class AdminServiceStepdefs {
 
@@ -49,5 +50,25 @@ public class AdminServiceStepdefs {
     }
 
 
+    @When("the admin remove delivery person with email {string}")
+    public void theAdminRemoveDeliveryPersonWithEmail(String arg0) {
+        admin.removeDeliveryPerson(arg0);
+    }
 
+    @Then("{string} should not be in the list of delivery persons")
+    public void shouldNotBeInTheListOfDeliveryPersons(String arg0) {
+        admin.getDeliveryPersons().forEach(deliveryPerson -> {
+            assertNotEquals(deliveryPerson.getEmail(), arg0);
+        });
+    }
+
+    @When("the admin remove restaurant with name {string}")
+    public void theAdminRemoveRestaurantWithName(String arg0) {
+        admin.removeRestaurant(arg0);
+
+    }
+
+    @Then("{string} should not be in the list of restaurants")
+    public void shouldNotBeInTheListOfRestaurants(String arg0) {
+    }
 }

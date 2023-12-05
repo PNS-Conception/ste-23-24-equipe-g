@@ -20,8 +20,8 @@ class BuffetOrderTest {
     void testOrderInitialization() throws Exception {
         Restaurant restaurant = new Restaurant("Restaurant Test", createMenu());
         CampusUser staff = new CampusUser("Alice", "Université");
-        Formule formule = new Formule("Formule1", 100.0,createItems());
-        Buffet buffet = new Buffet(formule, 5);
+        formula formula = new formula("Formule1", 100.0,createItems());
+        Buffet buffet = new Buffet(formula, 5);
 
         BuffetOrder order = new BuffetOrder(restaurant, staff, "Bob", 30, buffet);
 
@@ -36,17 +36,17 @@ class BuffetOrderTest {
         // Initialiser BuffetOrder
         Restaurant restaurant = new Restaurant("Restaurant Test", createMenu());
         CampusUser staff = new CampusUser("Alice", "Université");
-        Formule formule = new Formule("Formule1", 100.0, createItems());
-        Buffet buffet = new Buffet(formule, 5);
+        formula formula = new formula("Formule1", 100.0, createItems());
+        Buffet buffet = new Buffet(formula, 5);
         BuffetOrder order = new BuffetOrder(restaurant, staff, "Bob", 30, buffet);
 
         // Modifier la commande
-        Formule newFormule = new Formule("Formule2", 200.0,createItems());
-        order.changeOrder(newFormule, 40);
+        formula newFormula = new formula("Formule2", 200.0,createItems());
+        order.changeOrder(newFormula, 40);
 
         // Vérifier les changements
         assertEquals(40, order.getNumberOfPeople(), "Le nombre de personnes doit être mis à jour à 40");
-        assertEquals(newFormule, order.getBuffet().getFormule(), "La formule du buffet doit être mise à jour");
+        assertEquals(newFormula, order.getBuffet().getFormule(), "La formule du buffet doit être mise à jour");
 
         // Autres tests ici pour les méthodes pay, accept, reject, etc.
     }
@@ -119,12 +119,12 @@ class BuffetOrderTest {
     private BuffetOrder createBuffetOrder() throws Exception {
         // Supposons que ces méthodes et constructeurs existent dans vos classes
         Restaurant restaurant = restaurantService.createRestaurant("Simple Buffet", createMenu());
-        Formule formuleIssaNissa = new Formule("Issa Nissa", 30,createItems());
+        formula formulaIssaNissa = new formula("Issa Nissa", 30,createItems());
         CampusUser universityStaff = new CampusUser("Alice","au pays des merveilles");
         String contactPerson = "Bob";
         int numberOfPeople = 54;
         int numberOfItems = 15;
-        Buffet buffet = new Buffet(formuleIssaNissa, numberOfItems);
+        Buffet buffet = new Buffet(formulaIssaNissa, numberOfItems);
         return new BuffetOrder(restaurant, universityStaff, contactPerson, numberOfPeople, buffet);
     }
     @Test

@@ -1,7 +1,7 @@
 package fr.unice.polytech.app.Users;
 
 import fr.unice.polytech.app.Orders.SingleOrder;
-import fr.unice.polytech.app.RandomGenerator;
+import fr.unice.polytech.app.Util.RandomGenerator;
 import fr.unice.polytech.app.Restaurant.CapacityManager;
 import fr.unice.polytech.app.Restaurant.Dish;
 import fr.unice.polytech.app.Restaurant.Item;
@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class CampusUser {
+
+public class CampusUser extends User {
     private UUID id;
     private String name;
     private String password;
@@ -44,6 +45,7 @@ public class CampusUser {
     }
 
     public CampusUser( String name, String email) {
+
         this.id = UUID.randomUUID();
         this.name = name;
         this.email = email;
@@ -109,11 +111,8 @@ public class CampusUser {
      * @param deliveryPersonPhoneNumber Le numéro de téléphone du livreur.
      */
     public void receiveDeliveryDetails(String deliveryPersonId, String deliveryPersonPhoneNumber) {
-        // Traitez les détails de la livraison ici
-        // Par exemple, affichez-les à l'utilisateur ou enregistrez-les dans l'interface utilisateur
         System.out.println("Delivery Person ID: " + deliveryPersonId);
         System.out.println("Delivery Person Phone: " + deliveryPersonPhoneNumber);
-
     }
 
     public void setBalance(double price) {
@@ -176,6 +175,7 @@ public class CampusUser {
     }
 
 
+
     public List<Item> getCart() {
         return cart;
 
@@ -223,7 +223,8 @@ public class CampusUser {
         return notifiedDeliveryPersonPhoneNumber;
     }
 
-    public void notifyUser() {
+    public void getNotified() {
+
     }
 
     public double getBalance() {
@@ -235,10 +236,9 @@ public class CampusUser {
     }
 
     public void refund(SingleOrder singleOrder) {
-        //if(order.getStatus() == OrderStatus.PAID && orders.contains(order)){
-            setBalance(singleOrder.getPrice());
-            History.remove(singleOrder);
-        //}
+        setBalance(singleOrder.getPrice());
+        History.remove(singleOrder);
+
     }
 
     public String getPassword(){
@@ -252,6 +252,7 @@ public class CampusUser {
     public void addRate(int rate){
         deliveryPersonRatings.add(rate);
     }
+
 
     public int getNbOfRates(){
         return deliveryPersonRatings.size();

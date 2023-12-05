@@ -1,10 +1,10 @@
 package fr.unice.polytech.app;
 
-import fr.unice.polytech.app.Orders.Formule;
+import fr.unice.polytech.app.Orders.*;
 import fr.unice.polytech.app.Restaurant.Dish;
 import fr.unice.polytech.app.Restaurant.Item;
 import fr.unice.polytech.app.State.ReadyIState;
-import fr.unice.polytech.app.Orders.Formule;
+import fr.unice.polytech.app.Orders.formula;
 import fr.unice.polytech.app.Restaurant.Item;
 import fr.unice.polytech.app.Restaurant.Dish;
 import org.junit.jupiter.api.Test;
@@ -14,21 +14,21 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FormuleTest {
+class formulaTest {
 
     @Test
     void testFormuleInitialization() throws Exception {
-        Formule formule = new Formule("Formule1", 100.0, createItems());
-        assertEquals("Formule1", formule.getName(), "Le nom de la formule doit être Formule1");
-        assertEquals(100.0, formule.getPrix(), "Le prix doit être de 100.0");
+        formula formula = new formula("Formule1", 100.0, createItems());
+        assertEquals("Formule1", formula.getName(), "Le nom de la formule doit être Formule1");
+        assertEquals(100.0, formula.getPrix(), "Le prix doit être de 100.0");
         // Testez les autres getters et setters si nécessaire
     }
 
     @Test
     void testReadyStatus() throws Exception {
-        Formule formule = new Formule("Formule1", 100.0, createItems());
-        formule.ready();
-        assertTrue(formule.getStatus() instanceof ReadyIState, "Le statut de la formule doit être Ready");
+        formula formula = new formula("Formule1", 100.0, createItems());
+        formula.ready();
+        assertTrue(formula.getStatus() instanceof ReadyIState, "Le statut de la formule doit être Ready");
     }
     private List<Item> createItems() {
         // Créer des items pour le buffet Issa Nissa

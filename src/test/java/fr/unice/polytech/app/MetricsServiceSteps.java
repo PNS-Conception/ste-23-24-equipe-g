@@ -9,6 +9,7 @@ import fr.unice.polytech.app.Restaurant.RestaurantManager;
 import fr.unice.polytech.app.Restaurant.RestaurantService;
 import fr.unice.polytech.app.Statistic.DataCollector;
 import fr.unice.polytech.app.Statistic.MetricsService;
+import fr.unice.polytech.app.System.Admin;
 import fr.unice.polytech.app.Users.CampusUser;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -28,6 +29,7 @@ public class MetricsServiceSteps {
     RestaurantManager manager;
     Restaurant restaurant;
     private Map<CampusUser, Map<String, Object>> userBehaviorMetrics;
+    Admin admin = new Admin();
 
 
     @Given("order volume data has been collected")
@@ -87,7 +89,7 @@ public class MetricsServiceSteps {
         // Créer un nouveau manager
         manager = new RestaurantManager("testManager", "testPass",  "testEmail");
 
-        Admin.addRestaurant("My Restaurant", "Some address", manager);
+        admin.addRestaurant("My Restaurant", "Some address", manager);
         restaurant = Admin.getRestaurants().stream()
                 .filter(r -> r.getName().equals("My Restaurant") && r.getAddress().equals("Some address"))
                 .findFirst()

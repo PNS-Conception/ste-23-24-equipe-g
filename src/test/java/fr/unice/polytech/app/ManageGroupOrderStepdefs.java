@@ -151,11 +151,11 @@ public class ManageGroupOrderStepdefs {
         restaurant2=new Restaurant("restaurant", new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
         restaurant1=new Restaurant("restaurant", new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
         alice.createItem(new Dish("pasta",11,0), 1);
-        aliceSingleOrder = new SingleOrder(alice.getCart(), alice, restaurant1);
+        aliceSingleOrder =alice.order(alice.getCart(),restaurant1);
         aliceSingleOrder.getPaid();
         aliceSingleOrder.accept();
         bob.createItem(new Dish("pasta",11,0), 1);
-        bobSingleOrder = new SingleOrder(bob.getCart(), bob , restaurant2);
+        bobSingleOrder = bob.order(bob.getCart(),restaurant2);
         bobSingleOrder.getPaid();
         bobSingleOrder.accept();
         groupOrder = new GroupOrder(alice);
@@ -176,8 +176,8 @@ public class ManageGroupOrderStepdefs {
 
     @And("all members should be notified")
     public void allMembersShouldBeNotified() {
-        alice.notifyUser();
-        bob.notifyUser();
+        alice.getNotified();
+        bob.getNotified();
     }
 
     @Given("group order is assigned")

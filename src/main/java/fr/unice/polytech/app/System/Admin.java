@@ -1,4 +1,4 @@
-package fr.unice.polytech.app;
+package fr.unice.polytech.app.System;
 
 import fr.unice.polytech.app.Delivery.DeliveryPerson;
 import fr.unice.polytech.app.Restaurant.Restaurant;
@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Admin {
 
     static List<Restaurant> restaurants;
-    List<DeliveryPerson> deliveryPersons;
+    static List<DeliveryPerson> deliveryPersons;
 
     List<CampusUser> campusUsers;
 
@@ -25,14 +25,42 @@ public class Admin {
         campusUsers= new ArrayList<>();
 
     }
-    public static void addRestaurant(String name, String address, RestaurantManager owner) {
+    public void addRestaurant(String name, String address, RestaurantManager owner) {
         Restaurant restaurant = new Restaurant(name,owner,address );
         restaurants.add(restaurant);
+    }
+
+    public void removeRestaurant(String restaurant) {
+        restaurants.remove(getRestaurantByName(restaurant));
+    }
+
+    public static Restaurant getRestaurantByName(String name) {
+        for (Restaurant restaurant : restaurants) {
+            if (Objects.equals(restaurant.getName(), name)) {
+                return restaurant;
+            }
+        }
+        return null;
     }
 
     public void addDeliveryPerson(String name, String ownerEmail,String phoneNumber) {
         DeliveryPerson deliveryPerson = new DeliveryPerson( name, ownerEmail,phoneNumber);
         deliveryPersons.add(deliveryPerson);
+    }
+
+    public void removeDeliveryPerson(String Email) {
+
+        deliveryPersons.remove(getDeliveryPersonByEmail(Email));
+    }
+
+
+    public DeliveryPerson getDeliveryPersonByEmail(String email) {
+        for (DeliveryPerson deliveryPerson : deliveryPersons) {
+            if (Objects.equals(deliveryPerson.getEmail(), email)) {
+                return deliveryPerson;
+            }
+        }
+        return null;
     }
 
     public void addCampusUser(String name, String password, String email) {
@@ -44,7 +72,7 @@ public class Admin {
         return restaurants;
     }
 
-    public List<DeliveryPerson> getDeliveryPersons() {
+    public static List<DeliveryPerson> getDeliveryPersons() {
         return deliveryPersons;
     }
 
