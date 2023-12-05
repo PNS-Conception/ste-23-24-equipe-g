@@ -8,16 +8,19 @@ import fr.unice.polytech.app.Restaurant.RestaurantManager;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
 import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Util.RandomGenerator;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
+import org.mockito.Mockito;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 public class CancelOrderStepsdefs {
 
@@ -26,6 +29,8 @@ public class CancelOrderStepsdefs {
     private SingleOrder singleOrder;
 
     private LocalTime currentTime;
+
+    RandomGenerator mockRandomGenerator = Mockito.mock(RandomGenerator.class);
 
     @Given("^a client \"([^\"]*)\" with order$")
     public void aClientWithOrder(String clientName) throws Exception {
@@ -66,7 +71,9 @@ public class CancelOrderStepsdefs {
     @When("^the order is placed, paid, and accepted at (\\d+):(\\d+)$")
     public void order_is_placed_paid_and_accepted_at(int hours, int minutes) throws Exception {
         singleOrder.setPlacedTime(LocalTime.of(hours, minutes));
-        singleOrder.getPaid();
+        when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
+        singleOrder.user.setRandomGenerator(mockRandomGenerator);
+        singleOrder.getPaidMock();
         singleOrder.accept();
     }
 

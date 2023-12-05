@@ -60,7 +60,9 @@ public class ExtensionDiscountStepdefs {
         user.selectRestaurant(restaurant);
         user.createItem(dish, arg1);
         singleOrder =user.order(user.getCart(), restaurant);
-        singleOrder.getPaid();
+        when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
+        singleOrder.user.setRandomGenerator(mockRandomGenerator);
+        singleOrder.getPaidMock();
     }
 
     @Then("the order total is {int}")

@@ -136,8 +136,7 @@ public class CampusUser extends User {
     public boolean makePayment(SingleOrder singleOrder, CampusUser user) throws Exception {
 
         //9 fois sur 10, la commande est validée, 1 fois sur 10 il y a une erreur.
-        //if (Math.random() < 0.9) {
-        if (true) {
+        if (Math.random() < 0.9) {
             if (balance > 0){
                 if(balance >= singleOrder.getPrice()){
                     balance -= singleOrder.getPrice();
