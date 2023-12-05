@@ -1,26 +1,24 @@
 package fr.unice.polytech.app.Orders;
-
 import fr.unice.polytech.app.Users.CampusUser;
-
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.State.IState;
 import fr.unice.polytech.app.State.PlacedIState;
-
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 public class AfterWorkOrder implements Order {
     private UUID id;
-
     private CampusUser organizer;
     private final Restaurant restaurant;
     private LocalTime placedTime;
     private List<Item> items;
     private List<CampusUser> participants;
     private int numberOfParticipants;
-    private IState status ;
+    private IState status;
+
     public AfterWorkOrder(CampusUser organizer, Restaurant restaurant, List<Item> items, int numberOfParticipants) {
         this.id = UUID.randomUUID();
         this.organizer = organizer;
@@ -40,23 +38,22 @@ public class AfterWorkOrder implements Order {
         }
     }
 
-    public void removeParticipant(CampusUser participant) {
+    /*public void removeParticipant(CampusUser participant) {
         participants.remove(participant);
-    }
+    }*/
 
     public int getNumberOfParticipants() {
         return numberOfParticipants;
     }
 
     // Méthode pour vérifier si le restaurant offre des menus afterwork
-    public boolean hasAfterWorkMenu() {
+    /*public boolean hasAfterWorkMenu() {
         return restaurant.offersAfterworkMenus();
-    }
-
+    }*/
 
     @Override
     public void placeOrder() {
-        status= new PlacedIState();
+        status = new PlacedIState();
     }
 
     @Override
@@ -87,6 +84,7 @@ public class AfterWorkOrder implements Order {
     public void setRestaurant(Restaurant restaurant) {
 
     }
+
     @Override
     public void setStatus(IState orderStatus) {
         this.status = orderStatus;
@@ -128,7 +126,6 @@ public class AfterWorkOrder implements Order {
         return null;
     }
 
-
     @Override
     public Restaurant getRestaurant() {
         return restaurant;
@@ -145,7 +142,8 @@ public class AfterWorkOrder implements Order {
 
     @Override
     public void pay() {
-        // De même, comme il n'y a pas de paiement immédiat pour les commandes afterwork,
+        // De même, comme il n'y a pas de paiement immédiat pour les commandes
+        // afterwork,
         // cette méthode peut être laissée vide ou lancer une exception.
         throw new UnsupportedOperationException("Le paiement n'est pas applicable pour les commandes afterwork.");
     }
@@ -163,7 +161,7 @@ public class AfterWorkOrder implements Order {
 
     @Override
     public void ready() throws Exception {
-         throw new UnsupportedOperationException("Les commandes afterwork ne peuvent pas être prêtes.");
+        throw new UnsupportedOperationException("Les commandes afterwork ne peuvent pas être prêtes.");
     }
 
     @Override
@@ -180,13 +178,13 @@ public class AfterWorkOrder implements Order {
     }
 
     public void setNumberOfParticipants(int i) {
-        this.numberOfParticipants=i;
+        this.numberOfParticipants = i;
     }
 
-    public void addItems(Item item) {
-        if (item.getIsForAfterWork()){
+    /*public void addItems(Item item) {
+        if (item.getIsForAfterWork()) {
             this.items.add(item);
         }
-    }
+    }*/
 
 }

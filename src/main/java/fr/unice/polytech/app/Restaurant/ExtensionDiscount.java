@@ -41,28 +41,29 @@ public class ExtensionDiscount {
         this.date = NDays;
     }
 
-
     public void addNDays(int NDays) {
         date = date.plusDays(NDays);
     }
+
     public LocalDate getDatePlusNDays() {
         return date;
     }
 
     public void setIsDiscountValid(boolean isDiscountvalid) {
-        this.isDiscountvalid= isDiscountvalid;
+        this.isDiscountvalid = isDiscountvalid;
     }
 
     public void setIsDiscountValid() {
-        isDiscountvalid= LocalDate.now().isBefore(date);
+        isDiscountvalid = LocalDate.now().isBefore(date);
     }
 
     public boolean getIsDiscountValid() {
         return isDiscountvalid;
     }
+
     public void extendDiscount() {
-        //date = date.plusDays(15);
-        date=LocalDate.now().plusDays(15);
+        // date = date.plusDays(15);
+        date = LocalDate.now().plusDays(15);
     }
 
     public boolean isValid() {
