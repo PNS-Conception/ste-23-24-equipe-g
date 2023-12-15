@@ -278,15 +278,15 @@ public class SingleOrder implements Order {
     }
 
     public void getPaidMock() throws Exception {
-        restaurant.addNbDishesToUser(user,this);
-        restaurant.addNbOrderToUser(user);
+        restaurant.getDiscountSystem().addNbDishesToUser(user,this);
+        restaurant.getDiscountSystem().addNbOrderToUser(user);
         if (!user.makePaymentmock(this,user)) {
-            restaurant.removeNbDishesToUser(user,this);
-            restaurant.removeNbOrderToUser(user);
+            restaurant.getDiscountSystem().removeNbDishesToUser(user,this);
+            restaurant.getDiscountSystem().removeNbOrderToUser(user);
         }
-        if (restaurant.getExtensionDiscount(user)!=null){
-            restaurant.getExtensionDiscount(user).setIsDiscountValid(true);
-            restaurant.getExtensionDiscount(user).setNumberOfOrders(0);
+        if (restaurant.getDiscountSystem().getExtensionDiscount(user)!=null){
+            restaurant.getDiscountSystem().getExtensionDiscount(user).setIsDiscountValid(true);
+            restaurant.getDiscountSystem().getExtensionDiscount(user).setNumberOfOrders(0);
         }
     }
 

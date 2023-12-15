@@ -19,7 +19,7 @@ class BuffetOrderTest {
     @Test
     void testOrderInitialization() throws Exception {
         Restaurant restaurant = new Restaurant("Restaurant Test", createMenu());
-        CampusUser staff = new CampusUser("Alice", "Université");
+        CampusUser staff = new CampusUser("Alice",null, "Université");
         formula formula = new formula("Formule1", 100.0,createItems());
         Buffet buffet = new Buffet(formula, 5);
 
@@ -35,7 +35,7 @@ class BuffetOrderTest {
     void testChangeOrder() throws Exception {
         // Initialiser BuffetOrder
         Restaurant restaurant = new Restaurant("Restaurant Test", createMenu());
-        CampusUser staff = new CampusUser("Alice", "Université");
+        CampusUser staff = new CampusUser("Alice",null, "Université");
         formula formula = new formula("Formule1", 100.0, createItems());
         Buffet buffet = new Buffet(formula, 5);
         BuffetOrder order = new BuffetOrder(restaurant, staff, "Bob", 30, buffet);
@@ -120,7 +120,7 @@ class BuffetOrderTest {
         // Supposons que ces méthodes et constructeurs existent dans vos classes
         Restaurant restaurant = restaurantService.createRestaurant("Simple Buffet", createMenu());
         formula formulaIssaNissa = new formula("Issa Nissa", 30,createItems());
-        CampusUser universityStaff = new CampusUser("Alice","au pays des merveilles");
+        CampusUser universityStaff = new CampusUser("Alice",null,"au pays des merveilles");
         String contactPerson = "Bob";
         int numberOfPeople = 54;
         int numberOfItems = 15;

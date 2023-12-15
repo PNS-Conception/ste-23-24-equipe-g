@@ -21,7 +21,6 @@ public class DeliveryPerson extends CampusUser {
     private String routeDetails;
     private LocalTime pickupTime;
     private List<Restaurant> restaurants;
-
     private Restaurant restaurant;
     private String deliveryLocation;
     private static List<DeliveryPerson> deliveryPeople;
@@ -34,7 +33,7 @@ public class DeliveryPerson extends CampusUser {
      * @param phoneNumber the phone number of the delivery person
      */
     public DeliveryPerson(String name, String email, String phoneNumber) {
-        super(name, email);
+        super(name,null, email);
         setType(UserType.DELIVERY_PERSON);
         this.phoneNumber = phoneNumber;
         this.currentSingleOrder = null;

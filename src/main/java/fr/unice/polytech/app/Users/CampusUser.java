@@ -28,7 +28,6 @@ public class CampusUser extends User {
     private String deliveryPersonPhoneNumberReceived;
     private String notifiedDeliveryPersonId;
     private String notifiedDeliveryPersonPhoneNumber;
-    //Liste de notes des livreurs et float moyenne
     private List<Integer> deliveryPersonRatings;
 
 
@@ -44,7 +43,7 @@ public class CampusUser extends User {
         this.deliveryPersonRatings = new ArrayList<>();
     }
 
-    public CampusUser( String name, String email) {
+    /*public CampusUser( String name, String email) {
 
         this.id = UUID.randomUUID();
         this.name = name;
@@ -54,7 +53,7 @@ public class CampusUser extends User {
         this.cart = new ArrayList<>();
         this.balance = 0;
         this.deliveryPersonRatings = new ArrayList<>();
-    }
+    }*/
 
     public CampusUser() {
         this.id = UUID.randomUUID();
