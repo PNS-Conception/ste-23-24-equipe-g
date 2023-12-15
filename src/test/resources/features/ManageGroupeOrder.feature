@@ -9,9 +9,8 @@ Feature: Place Order Management
   Scenario: place group order all orders are paid
     When Alice has placed order from the restaurant "Vapiano" and paid for it
     And Bob has placed order form "le déclice" and paid for it
-    Then the order group status should be Placed
+    Then the order group status should be Paid
     And the restaurants le déclice and Vapiano receive the order
-
 
 
   Scenario: place group order not all orders are paid
@@ -37,7 +36,6 @@ Feature: Place Order Management
     And the group should be deleted
 
 
-
   Scenario: group order is ready
     Given all sub orders are accepted
     When all sub orders are ready
@@ -49,7 +47,6 @@ Feature: Place Order Management
     When the delivery person validates group order
     Then the order group status should be Picked up
     And all members should be notified
-
 
   Scenario: group order is delivered
     Given group order is picked up

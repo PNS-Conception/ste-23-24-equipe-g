@@ -2,47 +2,96 @@ package fr.unice.polytech.app.State;
 
 import fr.unice.polytech.app.Orders.Order;
 
+/**
+ * Represents the "Ready" state of an order in the system.
+ * In this state, the order has been prepared and is ready for further actions.
+ */
 public class ReadyIState implements IState {
+    /**
+     * Throws an exception indicating that the order has already been placed.
+     * @param order The order to be placed.
+     * @throws Exception If the order has already been placed.
+     */
     @Override
     public void placeOrder(Order order) throws Exception {
         throw new Exception("Order already placed");
     }
+
+    /**
+     * Throws an exception indicating that the order has already been paid.
+     * @param order The order to be paid.
+     * @throws Exception If the order has already been paid.
+     */
     @Override
     public void pay(Order order)throws Exception {
         throw new Exception("Order already paid");
     }
-    @Override
 
+    /**
+     * Throws an exception indicating that the order has already been cancelled.
+     * @param order The order to be cancelled.
+     * @throws Exception If the order has already been cancelled.
+     */
+    @Override
     public void cancelOrder(Order order)throws Exception {
         throw new Exception("Order already cancelled");
     }
-    @Override
 
+    /**
+     * Throws an exception indicating that the order has already been accepted.
+     * @param order The order to be accepted.
+     * @throws Exception If the order has already been accepted.
+     */
+    @Override
     public void acceptOrder(Order order)throws Exception {
         throw new Exception("Order already accepted");
     }
-    @Override
 
+    /**
+     * Throws an exception indicating that the order has already been rejected.
+     * @param order The order to be rejected.
+     * @throws Exception If the order has already been rejected.
+     */
+    @Override
     public void rejectOrder(Order order)throws Exception {
         throw new Exception("Order already rejected");
     }
-    @Override
 
+    /**
+     * Throws an exception indicating that the order has already been marked as ready.
+     * @param order The order to be marked as ready.
+     * @throws Exception If the order has already been marked as ready.
+     */
+    @Override
     public void readyOrder(Order order)throws Exception {
         throw new Exception("Order already ready");
     }
-    @Override
 
+    /**
+     * Throws an exception indicating that the order cannot be validated in the current state.
+     * @param order The order to be validated.
+     * @throws Exception If the order cannot be validated.
+     */
+    @Override
     public void validate(Order order)throws Exception {
         throw new Exception("Order can't be validated");
     }
 
+    /**
+     * Throws an exception indicating that the order cannot be delivered in the current state.
+     * @param order The order to be delivered.
+     * @throws Exception If the order cannot be delivered.
+     */
     @Override
-
     public void delivery(Order order)throws Exception {
         throw new Exception("Order can't be delivered");
     }
 
+    /**
+     * Assigns the order to an assigned state.
+     * @param order The order to be assigned.
+     * @throws Exception If an error occurs while assigning the order.
+     */
     @Override
     public void assign(Order order) throws Exception {
         order.setStatus(new AssignedIState());

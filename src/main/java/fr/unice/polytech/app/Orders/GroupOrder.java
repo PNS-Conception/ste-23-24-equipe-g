@@ -1,5 +1,6 @@
 package fr.unice.polytech.app.Orders;
 
+import fr.unice.polytech.app.State.PaidIState;
 import fr.unice.polytech.app.Users.CampusUser;
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.State.PlacedIState;
@@ -10,6 +11,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 
 public class GroupOrder implements Order {
 
@@ -106,9 +108,14 @@ public class GroupOrder implements Order {
 
     @Override
     public void pay() throws Exception {
-        status.pay(this);
+        int count = 0;
         for (Order singleOrder : subSingleOrders) {
-            singleOrder.pay();
+            if(singleOrder.getStatus() instanceof PaidIState){
+                count++;
+            }
+        }
+        if (count == subSingleOrders.size()) {
+            status.pay(this);
         }
     }
 
@@ -229,7 +236,7 @@ public class GroupOrder implements Order {
     public List<Restaurant> getRestaurants() {
         for (Order singleOrder : subSingleOrders) {
             if (singleOrder.getRestaurant() != null) {
-                 restaurants.add( singleOrder.getRestaurant());
+                restaurants.add( singleOrder.getRestaurant());
             }
         }
         return restaurants;

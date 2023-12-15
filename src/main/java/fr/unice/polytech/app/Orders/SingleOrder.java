@@ -264,7 +264,6 @@ public class SingleOrder implements Order {
         return numberOfDishes;
     }
 
-
     public void getPaid() throws Exception {
         restaurant.getDiscountSystem().addNbDishesToUser(user,this);
         restaurant.getDiscountSystem().addNbOrderToUser(user);
@@ -275,6 +274,19 @@ public class SingleOrder implements Order {
         if (restaurant.getDiscountSystem().getExtensionDiscount(user)!=null){
             restaurant.getDiscountSystem().getExtensionDiscount(user).setIsDiscountValid(true);
             restaurant.getDiscountSystem().getExtensionDiscount(user).setNumberOfOrders(0);
+        }
+    }
+
+    public void getPaidMock() throws Exception {
+        restaurant.addNbDishesToUser(user,this);
+        restaurant.addNbOrderToUser(user);
+        if (!user.makePaymentmock(this,user)) {
+            restaurant.removeNbDishesToUser(user,this);
+            restaurant.removeNbOrderToUser(user);
+        }
+        if (restaurant.getExtensionDiscount(user)!=null){
+            restaurant.getExtensionDiscount(user).setIsDiscountValid(true);
+            restaurant.getExtensionDiscount(user).setNumberOfOrders(0);
         }
     }
 
