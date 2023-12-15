@@ -20,6 +20,8 @@ public class Admin {
 
     List<CampusUser> campusUsers;
 
+
+
     /**
      * Constructs a new Admin object.
      * Initializes the lists of restaurants, delivery persons, and campus users.
