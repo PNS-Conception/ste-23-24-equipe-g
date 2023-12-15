@@ -138,7 +138,6 @@ public class OrderDeliveryConfirmationSteps {
     @Given("the user cannot confirm receipt")
     public void the_user_cannot_confirm_receipt() throws Exception {
         // Simulez la situation où l'utilisateur ne peut pas confirmer la réception
-        //singleOrder= new SingleOrder(new ArrayList<>(), new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
         deliveryPerson = new DeliveryPerson( "Delivery Person",null, "123456789");
         singleOrder = new SingleOrder(new ArrayList<>(), new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
         singleOrder.setUserUnableToConfirm();

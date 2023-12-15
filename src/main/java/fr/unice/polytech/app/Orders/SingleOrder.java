@@ -234,13 +234,12 @@ public class SingleOrder implements Order {
 
             double itemPrice = (user.getType() == UserType.CLIENT) ? item.getPrice() : item.getNotRegularPrice();
 
-            if (restaurant.isEligibleForDiscountByNbOfDishes(user)) {
-                System.out.println("Discount by nb of dishes");
-                itemPrice *= 1 - ((double) restaurant.getPercentageDiscountByNbOfDishes() / 100);
+            if (restaurant.getDiscountSystem().isEligibleForDiscountByNbOfDishes(user)) {
+                itemPrice *= 1 - ((double) restaurant.getDiscountSystem().getPercentageDiscountByNbOfDishes() / 100);
             }
 
-            if (restaurant.isEligibleForDiscountByNbOfOrders(user)) {
-                itemPrice *= 1 - (restaurant.getPercentageDiscountByNbOfOrders() / 100);
+            if (restaurant.getDiscountSystem().isEligibleForDiscountByNbOfOrders(user)) {
+                itemPrice *= 1 - (restaurant.getDiscountSystem().getPercentageDiscountByNbOfOrders() / 100);
             }
 
 
@@ -267,15 +266,15 @@ public class SingleOrder implements Order {
 
 
     public void getPaid() throws Exception {
-        restaurant.addNbDishesToUser(user,this);
-        restaurant.addNbOrderToUser(user);
+        restaurant.getDiscountSystem().addNbDishesToUser(user,this);
+        restaurant.getDiscountSystem().addNbOrderToUser(user);
         if (!user.makePayment(this,user)) {
-            restaurant.removeNbDishesToUser(user,this);
-            restaurant.removeNbOrderToUser(user);
+            restaurant.getDiscountSystem().removeNbDishesToUser(user,this);
+            restaurant.getDiscountSystem().removeNbOrderToUser(user);
         }
-        if (restaurant.getExtensionDiscount(user)!=null){
-            restaurant.getExtensionDiscount(user).setIsDiscountValid(true);
-            restaurant.getExtensionDiscount(user).setNumberOfOrders(0);
+        if (restaurant.getDiscountSystem().getExtensionDiscount(user)!=null){
+            restaurant.getDiscountSystem().getExtensionDiscount(user).setIsDiscountValid(true);
+            restaurant.getDiscountSystem().getExtensionDiscount(user).setNumberOfOrders(0);
         }
     }
 

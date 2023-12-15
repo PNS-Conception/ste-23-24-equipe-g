@@ -127,7 +127,6 @@ public class GroupOrder implements Order {
         int count = 0;
         for (Order singleOrder : subSingleOrders) {
             if (singleOrder.getStatus() instanceof ReadyIState) {
-                System.out.println(singleOrder.getStatus());
                 count++;
             }
         }
@@ -162,8 +161,6 @@ public class GroupOrder implements Order {
     }
 
     public Boolean deleteGroup(CampusUser owner) {
-        System.out.println(status);
-        System.out.println(status instanceof PlacedIState);
         if (owner.equals(this.owner) && ((status instanceof PlacedIState)||(status ==null))) {
             members.clear();
             subSingleOrders.clear();
