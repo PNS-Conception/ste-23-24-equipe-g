@@ -2,7 +2,7 @@ package fr.unice.polytech.app;
 
 import fr.unice.polytech.app.Restaurant.Menu;
 import fr.unice.polytech.app.Restaurant.Restaurant;
-import fr.unice.polytech.app.Restaurant.RestaurantManager;
+import fr.unice.polytech.app.Users.RestaurantManager;
 import fr.unice.polytech.app.System.Admin;
 import fr.unice.polytech.app.Users.User;
 import io.cucumber.java.en.Given;

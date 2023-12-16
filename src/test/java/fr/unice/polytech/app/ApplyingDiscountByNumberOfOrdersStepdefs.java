@@ -3,6 +3,7 @@ package fr.unice.polytech.app;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Users.RestaurantManager;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -39,7 +40,7 @@ public class ApplyingDiscountByNumberOfOrdersStepdefs {
         Dish dish = new Dish(arg2, arg3);
         user.selectRestaurant(restaurant);
         user.createItem(dish, arg1);
-        singleOrder =user.order(user.getCart(), restaurant);
+        singleOrder =user.order( restaurant);
         restaurant.getDiscountSystem().addNbDishesToUser(user, singleOrder);
     }
 

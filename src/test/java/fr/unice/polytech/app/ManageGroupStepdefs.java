@@ -3,7 +3,7 @@ package fr.unice.polytech.app;
 import fr.unice.polytech.app.Orders.GroupOrder;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.*;
-import fr.unice.polytech.app.Restaurant.RestaurantManager;
+import fr.unice.polytech.app.Users.RestaurantManager;
 import fr.unice.polytech.app.State.PaidIState;
 import fr.unice.polytech.app.State.PlacedIState;
 import fr.unice.polytech.app.Users.CampusUser;
@@ -169,12 +169,12 @@ public class ManageGroupStepdefs {
     @When("Alice leave the group order")
     public void aliceLeaveTheGroupOrder() throws Exception {
         alice.createItem(new Dish("pizza",10,0), 2);
-        aliceSingleOrder = new SingleOrder(alice.getCart(), alice,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
+        aliceSingleOrder = new SingleOrder( alice,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
         groupOrder.addOrder(aliceSingleOrder);
         groupOrder.quit(alice);
         groupOrder.setOwner(groupOrder.getMembers().get(0));
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
-        aliceSingleOrder.user.setRandomGenerator(mockRandomGenerator);
+        aliceSingleOrder.getClient().getPaiementSystem().setRandomGenerator(mockRandomGenerator);
         aliceSingleOrder.getPaidMock();
         groupOrder.cancelOrder(aliceSingleOrder, alice,2);
     }

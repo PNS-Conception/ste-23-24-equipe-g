@@ -25,7 +25,7 @@ public class ExtensionReportUserStepdefs {
     @When("the delivery person rates the customer with a score of {int}")
     public void theDeliveryPersonRatesTheCustomerWithAScoreOf(int rate) throws Exception {
         deliveryPerson = new DeliveryPerson("Livreur", "test", "test");
-        deliveryPerson.rateUser(client, rate);
+        deliveryPerson.getDeliverySystem().rateUser(client, rate);
     }
 
     @Then("the customer's average rating becomes {double}")

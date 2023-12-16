@@ -4,7 +4,7 @@ package fr.unice.polytech.app;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.ExtensionDiscount;
 import fr.unice.polytech.app.Restaurant.*;
-import fr.unice.polytech.app.Restaurant.RestaurantManager;
+import fr.unice.polytech.app.Users.RestaurantManager;
 import fr.unice.polytech.app.Users.CampusUser;
 import fr.unice.polytech.app.Util.RandomGenerator;
 import io.cucumber.java.en.And;
@@ -15,7 +15,6 @@ import org.mockito.Mockito;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -59,9 +58,9 @@ public class ExtensionDiscountStepdefs {
         Dish dish = new Dish("test", arg2);
         user.selectRestaurant(restaurant);
         user.createItem(dish, arg1);
-        singleOrder =user.order(user.getCart(), restaurant);
+        singleOrder =user.order(restaurant);
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
-        singleOrder.user.setRandomGenerator(mockRandomGenerator);
+        singleOrder.getClient().getPaiementSystem().setRandomGenerator(mockRandomGenerator);
         singleOrder.getPaidMock();
     }
 
@@ -120,10 +119,11 @@ public class ExtensionDiscountStepdefs {
     @And("{string} has ordered {int} items from the restaurant")
     public void hasOrderedItemsFromTheRestaurant(String arg0, int arg1) throws Exception {
         user = new CampusUser("test", "password", "email");
-        singleOrder =user.order(List.of(new Item(new Dish("test", 10, 10), 1)), restaurant);
+        user.createItem(new Dish("test", 10), arg1);
+        singleOrder =user.order(restaurant);
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
-        user.setRandomGenerator(mockRandomGenerator);
-        user.makePaymentmock(singleOrder,user);
+        user.getPaiementSystem().setRandomGenerator(mockRandomGenerator);
+        user.getPaiementSystem().makePaymentmock(singleOrder);
         restaurant.getDiscountSystem().addNbOrderToUser(user);
         restaurant.getDiscountSystem().getExtensionDiscount(user).setNumberOfOrders(arg1);
     }

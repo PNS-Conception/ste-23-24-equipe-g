@@ -150,15 +150,14 @@ class BuffetOrderTest {
     @Test
     void testIsOrderCancelled() throws Exception {
         BuffetOrder order =createBuffetOrder();
-        order.cancelOrder();
-
+        order.cancel();
         assertTrue(order.isOrderCancelled(), "La commande doit être marquée comme annulée");
     }
 
     @Test
     void testDelete() throws Exception {
         BuffetOrder order = createBuffetOrder();
-        order.delete();
+        order.setOwner(null);
         assertNull(order.getOwner(), "Le propriétaire doit être supprimé");
     }
 

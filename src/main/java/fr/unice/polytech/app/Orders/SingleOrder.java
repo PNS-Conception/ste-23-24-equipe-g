@@ -7,6 +7,7 @@ import fr.unice.polytech.app.Users.CampusUser;
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.Restaurant.Item;
 import fr.unice.polytech.app.State.*;
+import fr.unice.polytech.app.Users.User;
 import fr.unice.polytech.app.Users.UserType;
 
 import java.time.LocalTime;
@@ -17,13 +18,12 @@ import java.util.UUID;
 
 public class SingleOrder implements Order {
     private boolean requiresSignatureAndVerification;
-    private List<Item> items;
+    private Cart cart;
     private String clientAddress;
     private LocalTime placedTime;
-    public CampusUser user;
-    private UUID id;
-    //private OrderStatus status;
 
+    private CampusUser user;
+    private UUID id;
     private IState status ;
     private LocalTime acceptedTime;
     private LocalTime deliveryTime;
@@ -35,32 +35,43 @@ public class SingleOrder implements Order {
     private String deliveryLocation;
 
 
-    public SingleOrder(List<Item> items, CampusUser user, Restaurant restaurant) throws Exception {
+    public SingleOrder(CampusUser user, Restaurant restaurant) throws Exception {
         this.id = UUID.randomUUID();
         this.restaurant = restaurant;
-        this.items = new ArrayList<>(items);
+        this.cart = new Cart(new ArrayList<>());
+        for (Item item: user.getCart().getItems()) {
+            cart.add(item);
+        }
+        cart.setSingleOrder(this);
         this.user = user;
         placeOrder();
-        price = calculatePrice();
+        price = cart.calculatePrice();
         this.requiresSignatureAndVerification = false;
     }
-    public SingleOrder(List<Item> items) throws Exception {
+
+    public SingleOrder(Cart cart,Restaurant restaurant) throws Exception {
         this.id = UUID.randomUUID();
-        this.items = items;
+        this.cart = new Cart(user.getCart().getItems());
+        this.restaurant = restaurant;
         placeOrder();
-        price= calculatePrice();
+        price = cart.calculatePrice();
+        this.requiresSignatureAndVerification = false;
+    }
+
+    public SingleOrder() throws Exception {
+        this.id = UUID.randomUUID();
+        //this.cart = user.getCart();
+        placeOrder();
+        //price= cart.calculatePrice();
         this.requiresSignatureAndVerification = false; // Initialement, pas besoin de signature ni de vérification
     }
 
-    public SingleOrder(){}
-
-
-    public List<Item> getItems() {
-        return items;
+    public Cart getCart() {
+        return cart;
     }
 
     public double getPrice() {
-        setPrice(calculatePrice());
+        setPrice(cart.calculatePrice());
         return price;
     }
 
@@ -106,6 +117,16 @@ public class SingleOrder implements Order {
     @Override
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    @Override
+    public CampusUser getOwner() {
+        return user;
+    }
+
+    @Override
+    public void setOwner(CampusUser owner) {
+        this.user = owner;
     }
 
     @Override
@@ -227,27 +248,6 @@ public class SingleOrder implements Order {
         return requiresSignatureAndVerification;
     }
 
-    public double calculatePrice() {
-        double price = 0;
-
-        for (Item item : items) {
-
-            double itemPrice = (user.getType() == UserType.CLIENT) ? item.getPrice() : item.getNotRegularPrice();
-
-            if (restaurant.getDiscountSystem().isEligibleForDiscountByNbOfDishes(user)) {
-                itemPrice *= 1 - ((double) restaurant.getDiscountSystem().getPercentageDiscountByNbOfDishes() / 100);
-            }
-
-            if (restaurant.getDiscountSystem().isEligibleForDiscountByNbOfOrders(user)) {
-                itemPrice *= 1 - (restaurant.getDiscountSystem().getPercentageDiscountByNbOfOrders() / 100);
-            }
-
-
-            price += itemPrice;
-        }
-
-        return price;
-    }
 
     public void getRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
@@ -256,18 +256,12 @@ public class SingleOrder implements Order {
 
 
 
-    public int getNumberOfDishes(){
-        int numberOfDishes = 0;
-        for(Item item : items){
-            numberOfDishes += item.getQuantity();
-        }
-        return numberOfDishes;
-    }
+
 
     public void getPaid() throws Exception {
         restaurant.getDiscountSystem().addNbDishesToUser(user,this);
         restaurant.getDiscountSystem().addNbOrderToUser(user);
-        if (!user.makePayment(this,user)) {
+        if (!user.getPaiementSystem().makePayment(this)) {
             restaurant.getDiscountSystem().removeNbDishesToUser(user,this);
             restaurant.getDiscountSystem().removeNbOrderToUser(user);
         }
@@ -280,7 +274,7 @@ public class SingleOrder implements Order {
     public void getPaidMock() throws Exception {
         restaurant.getDiscountSystem().addNbDishesToUser(user,this);
         restaurant.getDiscountSystem().addNbOrderToUser(user);
-        if (!user.makePaymentmock(this,user)) {
+        if (!user.getPaiementSystem().makePaymentmock(this)) {
             restaurant.getDiscountSystem().removeNbDishesToUser(user,this);
             restaurant.getDiscountSystem().removeNbOrderToUser(user);
         }
@@ -293,6 +287,7 @@ public class SingleOrder implements Order {
     public void placeOrder() throws Exception {
         status= new PlacedIState();
     }
+
 
 
 }

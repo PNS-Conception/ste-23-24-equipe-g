@@ -1,6 +1,7 @@
 package fr.unice.polytech.app;
 
 import fr.unice.polytech.app.Delivery.DeliveryPerson;
+import fr.unice.polytech.app.Orders.Cart;
 import fr.unice.polytech.app.Orders.GroupOrder;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.*;
@@ -33,7 +34,6 @@ public class ManageGroupOrderStepdefs {
 
     RandomGenerator mockRandomGenerator = Mockito.mock(RandomGenerator.class);
 
-    //DeliveryPerson deliveryPerson=new DeliveryPerson("deliveryPerson",null,null,null);
     DeliveryPerson deliveryPerson = new DeliveryPerson( "Nom du livreur", null,"Numéro de téléphone");
 
     @Given("a order group with {string} the owner")
@@ -53,24 +53,24 @@ public class ManageGroupOrderStepdefs {
     public void hasAPlaceOrderFromTheRestaurantAndPaidForIt( String restaurant) throws Exception {
         restaurant1=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita",  7.99), new Dish("Pepperoni",8.99))));
         alice.createItem(new Dish("pizza",10), 2);
-        aliceSingleOrder = new SingleOrder(alice.getCart(),alice,restaurant1 );
+        aliceSingleOrder = new SingleOrder(alice,restaurant1 );
         groupOrder.addOrder(aliceSingleOrder);
         aliceSingleOrder.placeOrder();
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
-        alice.setRandomGenerator(mockRandomGenerator);
-        alice.makePaymentmock(aliceSingleOrder, alice);
+        alice.getPaiementSystem().setRandomGenerator(mockRandomGenerator);
+        alice.getPaiementSystem().makePaymentmock(aliceSingleOrder);
     }
 
     @And("Bob has placed order form {string} and paid for it")
     public void bobHasPlacedOrderFormAndPaidForIt(String restaurant) throws Exception {
         restaurant2=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
         bob.createItem(new Dish("pasta",11), 1);
-        bobSingleOrder = new SingleOrder(bob.getCart(), bob,restaurant2);
+        bobSingleOrder = new SingleOrder(bob,restaurant2);
         groupOrder.addOrder(bobSingleOrder);
         bobSingleOrder.placeOrder();
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
-        bob.setRandomGenerator(mockRandomGenerator);
-        bob.makePaymentmock(bobSingleOrder, bob);
+        bob.getPaiementSystem().setRandomGenerator(mockRandomGenerator);
+        bob.getPaiementSystem().makePaymentmock(bobSingleOrder);
 
     }
 
@@ -92,7 +92,7 @@ public class ManageGroupOrderStepdefs {
     public void bobHasAPlaceOrderFormAndNotPaidForIt(String restaurant) throws Exception {
         restaurant3=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni", 8.99))));
         bob.createItem(new Dish("pasta",11), 1);
-        bobSingleOrder = new SingleOrder(bob.getCart(), bob,restaurant3 );
+        bobSingleOrder = new SingleOrder( bob,restaurant3 );
         groupOrder.addOrder(bobSingleOrder);
         bobSingleOrder.placeOrder();
     }
@@ -112,9 +112,9 @@ public class ManageGroupOrderStepdefs {
     @When("Bob cancels his order")
     public void bobCancelsHisOrder() throws Exception {
         bob.createItem(new Dish("pasta",11), 1);
-        bobSingleOrder = new SingleOrder(bob.getCart(), bob,restaurant3 );
+        bobSingleOrder = new SingleOrder(bob,restaurant3 );
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
-        bobSingleOrder.user.setRandomGenerator(mockRandomGenerator);
+        bobSingleOrder.getClient().getPaiementSystem().setRandomGenerator(mockRandomGenerator);
         bobSingleOrder.getPaidMock();
         groupOrder.cancelOrder(bobSingleOrder,bob,2);
         groupOrder.quit(bob);
@@ -134,13 +134,13 @@ public class ManageGroupOrderStepdefs {
     @When("all members cancels their order")
     public void allMembersCancelsTheirOrder() throws Exception {
         bob.createItem(new Dish("pasta",11,0), 1);
-        bobSingleOrder = new SingleOrder(bob.getCart(), bob, restaurant3);
+        bobSingleOrder = new SingleOrder( bob, restaurant3);
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
-        bobSingleOrder.user.setRandomGenerator(mockRandomGenerator);
+        bobSingleOrder.getClient().getPaiementSystem().setRandomGenerator(mockRandomGenerator);
         bobSingleOrder.getPaidMock();
         alice.createItem(new Dish("pasta",11,0), 1);
-        aliceSingleOrder = new SingleOrder(alice.getCart(), alice, restaurant1);
-        aliceSingleOrder.user.setRandomGenerator(mockRandomGenerator);
+        aliceSingleOrder = new SingleOrder( alice, restaurant1);
+        aliceSingleOrder.getClient().getPaiementSystem().setRandomGenerator(mockRandomGenerator);
         aliceSingleOrder.getPaidMock();
         groupOrder.cancelOrder(bobSingleOrder,bob,2);
         groupOrder.quit(bob);
@@ -165,14 +165,14 @@ public class ManageGroupOrderStepdefs {
         restaurant2=new Restaurant("restaurant", new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
         restaurant1=new Restaurant("restaurant", new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
         alice.createItem(new Dish("pasta",11,0), 1);
-        aliceSingleOrder =alice.order(alice.getCart(),restaurant1);
+        aliceSingleOrder =alice.order(restaurant1);
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
-        aliceSingleOrder.user.setRandomGenerator(mockRandomGenerator);
+        aliceSingleOrder.getClient().getPaiementSystem().setRandomGenerator(mockRandomGenerator);
         aliceSingleOrder.getPaidMock();
         aliceSingleOrder.accept();
         bob.createItem(new Dish("pasta",11,0), 1);
-        bobSingleOrder = bob.order(bob.getCart(),restaurant2);
-        bobSingleOrder.user.setRandomGenerator(mockRandomGenerator);
+        bobSingleOrder = bob.order(restaurant2);
+        bobSingleOrder.getClient().getPaiementSystem().setRandomGenerator(mockRandomGenerator);
         bobSingleOrder.getPaidMock();
         bobSingleOrder.accept();
         groupOrder = new GroupOrder(alice);

@@ -3,7 +3,9 @@ package fr.unice.polytech.app.Restaurant;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
+import fr.unice.polytech.app.System.DiscountSytem;
 import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Users.RestaurantManager;
 
 import java.time.LocalTime;
 import java.util.*;
@@ -30,7 +32,6 @@ public class Restaurant {
         this.owner = manager;
         this.address = address;
         discountSystem = new DiscountSytem();
-
     }
 
     public Restaurant(String name, Menu menu) {
@@ -141,83 +142,6 @@ public class Restaurant {
         return discountSystem;
     }
 
-
-    /*public void addNbDishesToUser(CampusUser user, SingleOrder singleOrder){
-        discountSytem.addNbDishesToUser(user, singleOrder);
-    }
-
-    public int getNumberOfDishesForUser(CampusUser user){
-        return discountSytem.getNumberOfDishesForUser(user);
-    }
-
-    public boolean isEligibleForDiscountByNbOfDishes(CampusUser user){
-        return discountSytem.isEligibleForDiscountByNbOfDishes(user);
-    }
-
-    public void setNumberOfDishesPerUser(Map<CampusUser,Integer> numberOfDishesPerUser){
-        discountSytem.setNumberOfDishesPerUser(numberOfDishesPerUser);
-    }
-
-    public void setPercentageDiscountByNbOfDishes(int percentageDiscount){
-        discountSytem.setPercentageDiscountByNbOfDishes(percentageDiscount);
-    }
-
-    public int getPercentageDiscountByNbOfDishes() {
-        return discountSytem.getPercentageDiscountByNbOfDishes();
-    }
-
-    public void setNumberOfDishesPerUser(int numberOfOrdersPerUser){
-        discountSytem.setNumberOfDishesPerUser(numberOfOrdersPerUser);
-    }
-
-    public int getNumberOfDishesPerUser(){
-        return discountSytem.getNumberOfDishesPerUser();
-    }
-
-    public int getNumberOfDishesForDiscount(){
-           return discountSytem.getNumberOfDishesForDiscount();
-    }
-
-    public void setNumberOfOrdersForDiscount(int numberOfOrdersForDiscount){
-        discountSytem.setNumberOfOrdersForDiscount(numberOfOrdersForDiscount);
-    }
-
-    public void setNumberOfDishesForDiscount(int numberOfDishesForDiscount){
-        discountSytem.setNumberOfDishesForDiscount(numberOfDishesForDiscount);
-    }
-
-
-    public void setNumberOfDaysForDiscount(int numberOfDaysForDiscount) {
-        discountSytem.setNumberOfDaysForDiscount(numberOfDaysForDiscount);
-    }
-
-    public void addNbOrderToUser(CampusUser user) {
-        discountSytem.addNbOrderToUser(user);
-    }
-
-    public ExtensionDiscount getExtensionDiscount(CampusUser user) {
-        return discountSytem.getExtensionDiscount(user);
-    }
-
-    public void removeNbDishesToUser(CampusUser user, SingleOrder singleOrder) {
-        discountSytem.removeNbDishesToUser(user, singleOrder);
-    }
-
-    public void removeNbOrderToUser(CampusUser user) {
-        discountSytem.removeNbOrderToUser(user);
-    }
-
-    public boolean isEligibleForDiscountByNbOfOrders(CampusUser user){
-        return discountSytem.isEligibleForDiscountByNbOfOrders(user);
-    }
-
-    public double getPercentageDiscountByNbOfOrders() {
-        return discountSytem.getPercentageDiscountByNbOfOrders();
-    }
-
-    public void setPercentageDiscountByNbOfOrders(int percentageDiscountByNbOfOrders) {
-        discountSytem.setPercentageDiscountByNbOfOrders(percentageDiscountByNbOfOrders);
-    }*/
 
     public void removeShift(Day.Shift shift) {
         schedule.remove(shift);

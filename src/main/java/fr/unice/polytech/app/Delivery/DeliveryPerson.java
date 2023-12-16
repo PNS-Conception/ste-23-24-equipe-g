@@ -23,7 +23,8 @@ public class DeliveryPerson extends CampusUser {
     private List<Restaurant> restaurants;
     private Restaurant restaurant;
     private String deliveryLocation;
-    private static List<DeliveryPerson> deliveryPeople;
+    private DeliverySystem deliverySystem;
+
 
     /**
      * Constructs a DeliveryPerson object with the specified name, email, and phone number.
@@ -38,16 +39,10 @@ public class DeliveryPerson extends CampusUser {
         this.phoneNumber = phoneNumber;
         this.currentSingleOrder = null;
         this.isAvailable = true;
+        deliverySystem = new DeliverySystem();
     }
 
-    /**
-     * Returns a list of all delivery people.
-     *
-     * @return a list of DeliveryPerson objects
-     */
-    public static List<DeliveryPerson> getDeliveryPeople() {
-        return deliveryPeople;
-    }
+
 
     /**
      * Assigns a single order to the delivery person.
@@ -215,18 +210,8 @@ public class DeliveryPerson extends CampusUser {
         setCurrentOrder(null);
     }
 
-    /**
-     * Rates a user by adding a rate to their profile.
-     *
-     * @param user the user to rate
-     * @param rate the rate to add (between 0 and 5)
-     * @throws Exception if the rate is not between 0 and 5
-     */
-    public void rateUser(CampusUser user, int rate) throws Exception {
-        if (rate >= 0 && rate <= 5) {
-            user.addRate(rate);
-        } else {
-            throw new Exception("Rate must be between 0 and 5");
-        }
+    public DeliverySystem getDeliverySystem() {
+        return deliverySystem;
     }
+
 }

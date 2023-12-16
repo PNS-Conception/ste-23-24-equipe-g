@@ -2,7 +2,7 @@ package fr.unice.polytech.app.System;
 
 import fr.unice.polytech.app.Delivery.DeliveryPerson;
 import fr.unice.polytech.app.Restaurant.Restaurant;
-import fr.unice.polytech.app.Restaurant.RestaurantManager;
+import fr.unice.polytech.app.Users.RestaurantManager;
 import fr.unice.polytech.app.Users.CampusUser;
 
 import java.util.ArrayList;

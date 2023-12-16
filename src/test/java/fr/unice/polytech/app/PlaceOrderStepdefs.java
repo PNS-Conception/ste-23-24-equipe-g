@@ -3,7 +3,7 @@ package fr.unice.polytech.app;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.Restaurant.Restaurant;
-import fr.unice.polytech.app.Restaurant.RestaurantManager;
+import fr.unice.polytech.app.Users.RestaurantManager;
 import fr.unice.polytech.app.State.PlacedIState;
 import fr.unice.polytech.app.Users.CampusUser;
 import io.cucumber.java.en.And;
@@ -13,7 +13,6 @@ import io.cucumber.java.en.Then;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -32,7 +31,7 @@ public class PlaceOrderStepdefs {
     @Given("a client {string} with a cart")
     public void aClientWithAOrder(String name) throws Exception {
         client = new CampusUser( name, "password", "email@example.com");
-        singleOrder = new SingleOrder(new ArrayList<>());
+        singleOrder = new SingleOrder(client, restaurant);
     }
 
     @And("having {int} {string} and {int} {string} price {int}")
@@ -72,7 +71,7 @@ public class PlaceOrderStepdefs {
     public void the_client_crate_the_order( int hour, int minute, int day, int month, int year) throws Exception {
         deliveryTime = LocalTime.of(hour, minute);
         deliveryDateTime = LocalDateTime.of(year, month, day, deliveryTime.getHour(), deliveryTime.getMinute());
-        singleOrder = client.order(client.getCart(), restaurant);
+        singleOrder = client.order(restaurant);
         singleOrder.setDeliveryTime(deliveryDateTime.toLocalTime());
         singleOrder.setPlacedTime(LocalTime.now());
         singleOrder.placeOrder();

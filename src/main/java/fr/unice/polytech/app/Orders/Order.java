@@ -2,6 +2,7 @@ package fr.unice.polytech.app.Orders;
 
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.State.IState;
+import fr.unice.polytech.app.Users.CampusUser;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -166,6 +167,8 @@ public interface Order {
      */
     void setRestaurant(Restaurant restaurant);
 
-    //void getPaid();
 
+    CampusUser getOwner();
+
+    void setOwner(CampusUser owner);
 }

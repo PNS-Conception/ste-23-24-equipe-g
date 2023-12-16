@@ -17,6 +17,7 @@ public class DeliverySystem {
     private List<DeliveryPerson> availableDeliveryPeople;
     private List<DeliveryPerson> deliveryPeople;
 
+
     /**
      * Constructs a new DeliverySystem object.
      * Initializes the list of delivery people with the ones obtained from the Admin class.
@@ -35,14 +36,6 @@ public class DeliverySystem {
         this.deliveryPeople.add(deliveryPerson);
     }
 
-    /**
-     * Removes a delivery person from the list of delivery people.
-     * @param deliveryPerson The delivery person to be removed.
-     * @return true if the delivery person was successfully removed, false otherwise.
-     */
-    public boolean removeDeliveryPerson(DeliveryPerson deliveryPerson) {
-        return this.deliveryPeople.remove(deliveryPerson);
-    }
 
     /**
      * Assigns an order to an available delivery person.
@@ -82,12 +75,22 @@ public class DeliverySystem {
         user.setNotifiedDeliveryPersonPhoneNumber(deliveryPerson.getPhoneNumber());
     }
 
+
+
     /**
-     * Retrieves a copy of the list of delivery people.
-     * @return A new ArrayList containing the delivery people.
+     * Rates a user by adding a rate to their profile.
+     *
+     * @param user the user to rate
+     * @param rate the rate to add (between 0 and 5)
+     * @throws Exception if the rate is not between 0 and 5
      */
-    public List<DeliveryPerson> getDeliveryPeople() {
-        return new ArrayList<>(this.deliveryPeople);
+    public void rateUser(CampusUser user, int rate) throws Exception {
+        if (rate >= 0 && rate <= 5) {
+            user.addRate(rate);
+        } else {
+            throw new Exception("Rate must be between 0 and 5");
+        }
     }
+
 }
 

@@ -1,5 +1,9 @@
-package fr.unice.polytech.app.Restaurant;
+package fr.unice.polytech.app.Users;
 
+import fr.unice.polytech.app.Restaurant.Day;
+import fr.unice.polytech.app.Restaurant.Dish;
+import fr.unice.polytech.app.Restaurant.Menu;
+import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.Users.CampusUser;
 import fr.unice.polytech.app.Users.UserType;
 

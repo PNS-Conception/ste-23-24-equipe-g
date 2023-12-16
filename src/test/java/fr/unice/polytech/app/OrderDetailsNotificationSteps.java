@@ -86,6 +86,7 @@ import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.State.ReadyIState;
 import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Users.RestaurantManager;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -114,7 +115,7 @@ public class OrderDetailsNotificationSteps {
         items.add(item);
         restaurant = new Restaurant("test", new RestaurantManager("test", "test", "test"), "test");
         user = new CampusUser("user123","null", "User123");
-        singleOrder = new SingleOrder(items,user,restaurant);
+        singleOrder = new SingleOrder(user,restaurant);
         singleOrder.setStatus(new ReadyIState());
         singleOrder.assign();
         singleOrder.setRouteDetails("Some route");

@@ -3,6 +3,7 @@ package fr.unice.polytech.app;
 
 import fr.unice.polytech.app.Orders.*;
 import fr.unice.polytech.app.Restaurant.*;
+import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
 import fr.unice.polytech.app.State.ReadyIState;
 import fr.unice.polytech.app.Users.CampusUser;
@@ -171,16 +172,16 @@ public class BuffetOrderStepdefs {
         assertEquals(contactPerson, buffetIssaNissa.getContactPerson());
     }
     @And("^the order is cancelled$")
-    public void the_order_is_cancelled() {
-        buffetIssaNissa.cancelOrder();
+    public void the_order_is_cancelled() throws Exception {
+        buffetIssaNissa.setStatus(new AcceptedIState());
+        buffetIssaNissa.cancel();
     }
 
     @Then("^the status of the order should be definitively \"([^\"]*)\"$")
     public void the_status_of_the_order_should_be(String status) {
         if (status.equals("cancelled"))
             assertTrue(buffetIssaNissa.getStatus() instanceof CancelledIState);
-            assertFalse(buffetIssaNissa.getStatus() instanceof ReadyIState);
-
+        assertFalse(buffetIssaNissa.getStatus() instanceof ReadyIState);
         assertEquals(status, "Cancelled");
     }
 

@@ -1,6 +1,7 @@
-package fr.unice.polytech.app.Restaurant;
+package fr.unice.polytech.app.System;
 
 import fr.unice.polytech.app.Orders.SingleOrder;
+import fr.unice.polytech.app.Restaurant.ExtensionDiscount;
 import fr.unice.polytech.app.Users.CampusUser;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class DiscountSytem {
 
     public void addNbDishesToUser(CampusUser user, SingleOrder singleOrder){
         if(numberOfDishesPerUser.containsKey(user)){
-            int currentOrders = numberOfDishesPerUser.get(user)+ singleOrder.getNumberOfDishes() ;
+            int currentOrders = numberOfDishesPerUser.get(user)+ singleOrder.getCart().getNumberOfDishes() ;
             if (currentOrders > numberOfDishesForDiscount) {
                 numberOfDishesPerUser.put(user, 0);
             } else {
@@ -112,7 +113,7 @@ public class DiscountSytem {
 
     public void removeNbDishesToUser(CampusUser user, SingleOrder singleOrder) {
         if(numberOfDishesPerUser.containsKey(user)){
-            int currentOrders = numberOfDishesPerUser.get(user)- singleOrder.getNumberOfDishes() ;
+            int currentOrders = numberOfDishesPerUser.get(user)- singleOrder.getCart().getNumberOfDishes() ;
             if (currentOrders > numberOfDishesForDiscount) {
                 numberOfDishesPerUser.put(user, 0);
             } else {

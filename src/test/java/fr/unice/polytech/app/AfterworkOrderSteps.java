@@ -2,7 +2,7 @@ package fr.unice.polytech.app;
 
 import fr.unice.polytech.app.Orders.AfterWorkOrder;
 import fr.unice.polytech.app.Restaurant.*;
-import fr.unice.polytech.app.Restaurant.RestaurantManager;
+import fr.unice.polytech.app.Users.RestaurantManager;
 import fr.unice.polytech.app.Restaurant.RestaurantService;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
@@ -65,17 +65,17 @@ public void setup() {
 
 
     @Given("user {string} is logged in as an organizer")
-    public void user_is_logged_in_as_an_organizer(String userName) {
+    public void user_is_logged_in_as_an_organizer(String userName) throws Exception {
         organizer = new CampusUser(userName, "password", "Organizer");
         Dish dish = new Dish("Pizza", 10.0);
         Item item = new Item(dish, 5);
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
         order = new AfterWorkOrder(organizer,restaurant, items, 5);
-        order.setOrganizer(organizer);
+        order.setOwner(organizer);
     }
     @When("he creates an afterwork order for {int} expected participants at {string} restaurant")
-    public void he_creates_an_afterwork_order_for_expected_participants_at_restaurant(int participants, String restaurantName) {
+    public void he_creates_an_afterwork_order_for_expected_participants_at_restaurant(int participants, String restaurantName) throws Exception {
         // Création de la commande afterwork
         Dish dish = new Dish("Pizza", 10.0);
         Item item = new Item(dish, 5);
@@ -92,7 +92,7 @@ public void setup() {
         assertTrue(order.getStatus() instanceof PlacedIState);
     }
     @Given("an afterwork order is already created")
-    public void anAfterworkOrderIsAlreadyCreated() {
+    public void anAfterworkOrderIsAlreadyCreated() throws Exception {
 
         // Création de la commande afterwork
         Dish dish = new Dish("Pizza", 10.0);
@@ -156,7 +156,7 @@ public void setup() {
 //        }
 //    }
     @Given("an afterwork order is already created for {int} participants")
-    public void an_afterwork_order_is_already_created_for_participants(Integer participants) {
+    public void an_afterwork_order_is_already_created_for_participants(Integer participants) throws Exception {
         // Créer une liste d'éléments pour ajouter à la commande, avec au moins un élément
         Dish dish = new Dish("Dish example", 9.99);
         Item item = new Item(dish, 1); // Suppose that each participant will have this item
@@ -187,7 +187,7 @@ public void setup() {
 
     @And("John should be the organizer of the afterwork order")
     public void johnShouldBeTheOrganizerOfTheAfterworkOrder() {
-        assertEquals(organizer, order.getOrganizer());
+        assertEquals(organizer, order.getOwner());
     }
 
     @And("the afterwork order should be created for {int} participants")

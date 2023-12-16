@@ -61,14 +61,14 @@ public class MultipleOrderStepdefs {
         alice = new CampusUser("alice",null,null);
         alice.selectRestaurant(restaurant);
         alice.createItem(new Dish("pizza",10), 2);
-        aliceSingleOrder = new SingleOrder(alice.getCart(),alice,restaurant );
+        aliceSingleOrder = new SingleOrder(alice,restaurant );
         multipleOrder.addOrder(aliceSingleOrder);
     }
 
     @When("she add a order to the multiple order")
     public void sheAddAOrderToTheMultipleOrder() throws Exception {
         alice.createItem(new Dish("pasta",11), 1);
-        aliceSingleOrder2 = new SingleOrder(alice.getCart(),alice,restaurant );
+        aliceSingleOrder2 = new SingleOrder(alice,restaurant );
         multipleOrder.addOrder(aliceSingleOrder2);
     }
 
@@ -80,12 +80,12 @@ public class MultipleOrderStepdefs {
     @Given("the order is paid")
     public void theOrderIsPaid() throws Exception {
         alice = new CampusUser("alice",null,null);
-        aliceSingleOrder = new SingleOrder(alice.getCart(),alice,restaurant );
+        aliceSingleOrder = new SingleOrder(alice,restaurant );
         multipleOrder = new MultipleOrder(alice);
         multipleOrder.addOrder(aliceSingleOrder);
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
-        alice.setRandomGenerator(mockRandomGenerator);
-        alice.makePaymentmock(aliceSingleOrder, alice);
+        alice.getPaiementSystem().setRandomGenerator(mockRandomGenerator);
+        alice.getPaiementSystem().makePaymentmock(aliceSingleOrder);
     }
 
     @When("Alice cancel the order")
@@ -114,10 +114,10 @@ public class MultipleOrderStepdefs {
         multipleOrder = new MultipleOrder(alice);
         alice.createItem(new Dish("pizza",10), 2);
         restaurant=new Restaurant(arg0, new Menu());
-        aliceSingleOrder = new SingleOrder(alice.getCart(),alice,restaurant );
+        aliceSingleOrder = new SingleOrder(alice,restaurant );
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
-        alice.setRandomGenerator(mockRandomGenerator);
-        alice.makePaymentmock(aliceSingleOrder, alice);
+        alice.getPaiementSystem().setRandomGenerator(mockRandomGenerator);
+        alice.getPaiementSystem().makePaymentmock(aliceSingleOrder);
         multipleOrder.addOrder(aliceSingleOrder);
 
     }
@@ -126,10 +126,10 @@ public class MultipleOrderStepdefs {
     public void aliceHasPlacedAnotherOrderFormAndPaidForItAndAddedToMultipleOrder(String arg0) throws Exception {
         alice.createItem(new Dish("pasta",11), 1);
         restaurant2=new Restaurant(arg0, new Menu());
-        aliceSingleOrder2 = new SingleOrder(alice.getCart(),alice,restaurant );
+        aliceSingleOrder2 = new SingleOrder(alice,restaurant );
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
-        alice.setRandomGenerator(mockRandomGenerator);
-        alice.makePaymentmock(aliceSingleOrder2, alice);
+        alice.getPaiementSystem().setRandomGenerator(mockRandomGenerator);
+        alice.getPaiementSystem().makePaymentmock(aliceSingleOrder2);
         multipleOrder.addOrder(aliceSingleOrder2);
     }
 
@@ -157,7 +157,7 @@ public class MultipleOrderStepdefs {
     public void theOtherOrderFromIsNotPaidYet(String arg0) throws Exception {
         restaurant2=new Restaurant(arg0, new Menu());
         alice.createItem(new Dish("pasta",11), 1);
-        aliceSingleOrder2 = new SingleOrder(alice.getCart(),alice,restaurant );
+        aliceSingleOrder2 = new SingleOrder(alice,restaurant );
         multipleOrder.addOrder(aliceSingleOrder2);
     }
 
@@ -179,12 +179,12 @@ public class MultipleOrderStepdefs {
 
     @Given("all sub orders paid")
     public void allSubOrdersPaid() throws Exception {
-        aliceSingleOrder = new SingleOrder(alice.getCart(),alice,restaurant );
-        aliceSingleOrder2 = new SingleOrder(alice.getCart(),alice,restaurant );
+        aliceSingleOrder = new SingleOrder(alice,restaurant );
+        aliceSingleOrder2 = new SingleOrder(alice,restaurant );
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
-        alice.setRandomGenerator(mockRandomGenerator);
-        alice.makePaymentmock(aliceSingleOrder, alice);
-        alice.makePaymentmock(aliceSingleOrder2, alice);
+        alice.getPaiementSystem().setRandomGenerator(mockRandomGenerator);
+        alice.getPaiementSystem().makePaymentmock(aliceSingleOrder);
+        alice.getPaiementSystem().makePaymentmock(aliceSingleOrder2);
     }
 
     @When("the owner cancels all orders")
@@ -205,14 +205,14 @@ public class MultipleOrderStepdefs {
 
     @And("the multiple order should be deleted")
     public void theMultipleOrderShouldBeDeleted() throws Exception {
-        multipleOrder.delete();
+        multipleOrder.setOwner(null);
         assertNull(multipleOrder.getOwner());
     }
 
     @Given("multiple order is ready")
     public void multipleOrderIsReady() throws Exception {
-        aliceSingleOrder = new SingleOrder(alice.getCart(),alice,restaurant );
-        aliceSingleOrder2 = new SingleOrder(alice.getCart(),alice,restaurant );
+        aliceSingleOrder = new SingleOrder(alice,restaurant );
+        aliceSingleOrder2 = new SingleOrder(alice,restaurant );
         aliceSingleOrder.setStatus(new ReadyIState());
         aliceSingleOrder2.setStatus(new ReadyIState());
         multipleOrder.addOrder(aliceSingleOrder);

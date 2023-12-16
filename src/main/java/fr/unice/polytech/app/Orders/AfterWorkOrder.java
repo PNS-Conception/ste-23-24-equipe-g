@@ -11,18 +11,22 @@ import java.util.UUID;
 
 public class AfterWorkOrder implements Order {
     private UUID id;
-    private CampusUser organizer;
-    private final Restaurant restaurant;
+    //private CampusUser organizer;
+    //private final Restaurant restaurant;
+    Order order;
     private LocalTime placedTime;
     private List<Item> items;
     private List<CampusUser> participants;
     private int numberOfParticipants;
-    private IState status;
+    //private IState status;
 
-    public AfterWorkOrder(CampusUser organizer, Restaurant restaurant, List<Item> items, int numberOfParticipants) {
+    public AfterWorkOrder(CampusUser organizer, Restaurant restaurant, List<Item> items, int numberOfParticipants) throws Exception {
         this.id = UUID.randomUUID();
-        this.organizer = organizer;
-        this.restaurant = restaurant;
+        //this.organizer = organizer;
+        //this.restaurant = restaurant;
+        order = new SingleOrder();
+        order.setOwner(organizer);
+        order.setRestaurant(restaurant);
         this.items = new ArrayList<>(items);
         this.participants = new ArrayList<>(numberOfParticipants);
         this.numberOfParticipants = numberOfParticipants;
@@ -53,7 +57,7 @@ public class AfterWorkOrder implements Order {
 
     @Override
     public void placeOrder() {
-        status = new PlacedIState();
+       order.setStatus(new PlacedIState());
     }
 
     @Override
@@ -86,13 +90,23 @@ public class AfterWorkOrder implements Order {
     }
 
     @Override
+    public CampusUser getOwner() {
+        return order.getOwner();
+    }
+
+    @Override
+    public void setOwner(CampusUser owner) {
+
+    }
+
+    @Override
     public void setStatus(IState orderStatus) {
-        this.status = orderStatus;
+        order.setStatus(orderStatus);
     }
 
     @Override
     public void cancel() throws Exception {
-        status.cancelOrder(this);
+        order.cancel();
     }
 
     @Override
@@ -128,7 +142,7 @@ public class AfterWorkOrder implements Order {
 
     @Override
     public Restaurant getRestaurant() {
-        return restaurant;
+        return order.getRestaurant();
     }
 
     @Override
@@ -137,7 +151,7 @@ public class AfterWorkOrder implements Order {
     }
 
     public IState getStatus() {
-        return status;
+        return order.getStatus();
     }
 
     @Override
@@ -150,13 +164,13 @@ public class AfterWorkOrder implements Order {
 
     @Override
     public void accept() throws Exception {
-        status.acceptOrder(this);
+        order.accept();
 
     }
 
     @Override
     public void reject() throws Exception {
-        status.rejectOrder(this);
+        order.reject();
     }
 
     @Override
@@ -169,22 +183,8 @@ public class AfterWorkOrder implements Order {
         throw new UnsupportedOperationException("Les commandes afterwork ne peuvent pas être assignées.");
     }
 
-    public CampusUser getOrganizer() {
-        return organizer;
-    }
-
-    public void setOrganizer(CampusUser organizer) {
-        this.organizer = organizer;
-    }
-
     public void setNumberOfParticipants(int i) {
         this.numberOfParticipants = i;
     }
-
-    /*public void addItems(Item item) {
-        if (item.getIsForAfterWork()) {
-            this.items.add(item);
-        }
-    }*/
 
 }

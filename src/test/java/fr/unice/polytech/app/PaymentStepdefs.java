@@ -4,14 +4,13 @@ import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.State.*;
 import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Users.RestaurantManager;
 import fr.unice.polytech.app.Util.RandomGenerator;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import org.mockito.Mockito;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,7 +24,6 @@ public class PaymentStepdefs {
     @Given("a client {string}")
     public void a_client_with_a_cart(String name) throws Exception {
         client = new CampusUser( name, "password", "email@example.com");
-        singleOrder = new SingleOrder(new ArrayList<>());
     }
 
     @Given("having a cart of {int} {string} and {int} {string} price {double}€ and {double}€")
@@ -36,7 +34,7 @@ public class PaymentStepdefs {
 
     @When("Alice orders a pizza and a pasta")
     public void alice_orders_items() throws Exception {
-        singleOrder = client.order(client.getCart(),new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
+        singleOrder = client.order(new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
     }
 
     @When("Alice pays {double}€")
@@ -44,9 +42,8 @@ public class PaymentStepdefs {
         RandomGenerator mockRandomGenerator = Mockito.mock(RandomGenerator.class);
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
         assertEquals(amount, singleOrder.getPrice()- client.getBalance(), 0.01);
-        client.setRandomGenerator(mockRandomGenerator);
-        assertTrue(client.makePaymentmock(singleOrder, client));
-
+        client.getPaiementSystem().setRandomGenerator(mockRandomGenerator);
+        assertTrue(client.getPaiementSystem().makePaymentmock(singleOrder));
     }
 
     @When("Alice has a balance of {double}€")
@@ -94,8 +91,10 @@ public class PaymentStepdefs {
         SingleOrder lastSingleOrder = client.getLastOrder();
         // Vérifiez la dernière commande d'Alice
         assertEquals(singleOrder, lastSingleOrder);
+
+
         // Vérifiez que la dernière commande d'Alice contient les bons plats
-        lastSingleOrder.getItems().forEach(item -> {
+        lastSingleOrder.getCart().getItems().forEach(item -> {
             if (item.getDish().getName().equals("pizza")) {
                 assertEquals(pizzaCount, item.getQuantity());
             } else if (item.getDish().getName().equals("pasta")) {
@@ -113,7 +112,7 @@ public class PaymentStepdefs {
 
     @Then("Alice's cart should still have {int} pizza and {int} pasta")
     public void check_alice_cart(int pizzaCount, int pastaCount) {
-        client.getCart().forEach(item -> {
+        client.getCart().getItems().forEach(item -> {
             if (item.getDish().getName().equals("pizza")) {
                 assertEquals(pizzaCount, item.getQuantity());
             } else if (item.getDish().getName().equals("pasta")) {
@@ -131,15 +130,15 @@ public class PaymentStepdefs {
     @Then("Alice's cart should be empty")
     public void check_alice_cart_empty() {
         // Vérifiez que le panier d'Alice est vide
-        assertEquals(0, client.getCart().size());
+        assertEquals(0, client.getCart().getItems().size());
     }
 
     @And("Alice attempts to pay")
     public void aliceAttemptsToPay() throws Exception {
         RandomGenerator mockRandomGenerator = Mockito.mock(RandomGenerator.class);
         when(mockRandomGenerator.nextDouble()).thenReturn(1.0); // Force l'échec
-        client.setRandomGenerator(mockRandomGenerator);
-        assertFalse(client.makePaymentmock(singleOrder, client));
+        client.getPaiementSystem().setRandomGenerator(mockRandomGenerator);
+        assertFalse(client.getPaiementSystem().makePaymentmock(singleOrder));
     }
 
     @And("the order's status should not be {string}")

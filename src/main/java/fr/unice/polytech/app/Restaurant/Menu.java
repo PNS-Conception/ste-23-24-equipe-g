@@ -1,6 +1,7 @@
 package fr.unice.polytech.app.Restaurant;
 
 
+import fr.unice.polytech.app.Users.RestaurantManager;
 import fr.unice.polytech.app.Users.UserType;
 
 import java.util.ArrayList;
