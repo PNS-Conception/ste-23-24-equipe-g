@@ -1,5 +1,6 @@
-package fr.unice.polytech.app.Delivery;
+package fr.unice.polytech.app.Users;
 
+import fr.unice.polytech.app.Delivery.DeliverySystem;
 import fr.unice.polytech.app.Users.CampusUser;
 import fr.unice.polytech.app.Orders.Order;
 import fr.unice.polytech.app.Orders.SingleOrder;

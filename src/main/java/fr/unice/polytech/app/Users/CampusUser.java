@@ -3,7 +3,6 @@ package fr.unice.polytech.app.Users;
 import fr.unice.polytech.app.Orders.Cart;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.System.PaiementSystem;
-import fr.unice.polytech.app.Util.RandomGenerator;
 import fr.unice.polytech.app.Restaurant.CapacityManager;
 import fr.unice.polytech.app.Restaurant.Dish;
 import fr.unice.polytech.app.Restaurant.Item;
@@ -16,7 +15,7 @@ import java.util.UUID;
 
 
 
-public class CampusUser extends User {
+public class CampusUser extends User implements PaiementProxy {
     private UUID id;
     private String name;
     private String password;
@@ -104,6 +103,11 @@ public class CampusUser extends User {
         singleOrder.cancel();
         return true;
     }
+
+    public void refund(SingleOrder singleOrder) {
+        paiementSystem.refund(singleOrder);
+    }
+
     /**
      * Reçoit les détails de la livraison et les traite d'une certaine manière.
      * @param deliveryPersonId L'ID du livreur.
@@ -190,12 +194,6 @@ public class CampusUser extends User {
         return History.get(History.size()-1);
     }
 
-    public void refund(SingleOrder singleOrder) {
-        setBalance(singleOrder.getPrice());
-        History.remove(singleOrder);
-
-    }
-
     public String getPassword(){
         return password;
     }
@@ -220,7 +218,6 @@ public class CampusUser extends User {
         }
         return sum / deliveryPersonRatings.size();
     }
-
 
     public PaiementSystem getPaiementSystem() {
         return paiementSystem;

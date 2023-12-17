@@ -2,9 +2,10 @@ package fr.unice.polytech.app.System;
 
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Users.PaiementProxy;
 import fr.unice.polytech.app.Util.RandomGenerator;
 
-public class PaiementSystem {
+public class PaiementSystem  implements PaiementProxy {
 
     CampusUser user;
     private RandomGenerator randomGenerator;
@@ -58,5 +59,10 @@ public class PaiementSystem {
     }
     public void setRandomGenerator(RandomGenerator randomGenerator) {
         this.randomGenerator = randomGenerator;
+    }
+
+    public void refund(SingleOrder singleOrder) {
+        user.setBalance(singleOrder.getPrice());
+        user.getHistory().remove(singleOrder);
     }
 }

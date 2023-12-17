@@ -3,6 +3,7 @@ package fr.unice.polytech.app.Delivery;
 import fr.unice.polytech.app.System.Admin;
 import fr.unice.polytech.app.Users.CampusUser;
 import fr.unice.polytech.app.Orders.SingleOrder;
+import fr.unice.polytech.app.Users.DeliveryPerson;
 
 import java.util.ArrayList;
 import java.util.List;

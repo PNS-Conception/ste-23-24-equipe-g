@@ -1,6 +1,6 @@
 package fr.unice.polytech.app;
 
-import fr.unice.polytech.app.Delivery.DeliveryPerson;
+import fr.unice.polytech.app.Users.DeliveryPerson;
 import fr.unice.polytech.app.Delivery.DeliverySystem;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.Restaurant;

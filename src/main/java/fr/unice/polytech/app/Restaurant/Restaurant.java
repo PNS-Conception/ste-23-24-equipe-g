@@ -68,7 +68,7 @@ public class Restaurant {
 
 
     private void userRefund(SingleOrder singleOrder) {
-        singleOrder.getClient().refund(singleOrder);
+        singleOrder.getClient().getPaiementSystem().refund(singleOrder);
     }
 
     public boolean addShift(LocalTime openingTime, LocalTime closingTime, Day day, RestaurantManager manager) {

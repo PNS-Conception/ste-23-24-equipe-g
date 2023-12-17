@@ -10,7 +10,7 @@ import java.util.List;
  * Represents a user in the application.
  * Implements the IUser interface.
  */
-public class User implements IUser{
+public class User {
 
     /**
      * Retrieves the list of restaurants.
