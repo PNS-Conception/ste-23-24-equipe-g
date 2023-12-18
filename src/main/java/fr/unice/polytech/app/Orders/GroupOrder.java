@@ -19,9 +19,8 @@ public class GroupOrder implements Order,DecoratorOrder {
     private UUID groupID;
     private List<CampusUser> members;
     private String routeDetails;
-    private LocalTime pickupTime;
-    private List<Restaurant> restaurants;
-    private String deliveryLocation;
+
+    //private List<Restaurant> restaurants;
     private String deliveryAddress;
     private DecoratorOrder order;
 
@@ -56,6 +55,16 @@ public class GroupOrder implements Order,DecoratorOrder {
 
     public void setOwner(CampusUser owner) {
         order.setOwner(owner);
+    }
+
+    @Override
+    public void setRouteDetails(String routeDetails) {
+        this.routeDetails = routeDetails;
+    }
+
+    @Override
+    public void setPickupTime(LocalTime pickupTime) {
+        order.setPickupTime(pickupTime);
     }
 
     public void addMember(CampusUser user,CampusUser owner) {
@@ -213,7 +222,7 @@ public class GroupOrder implements Order,DecoratorOrder {
     }
 
     public Restaurant getRestaurant() {
-        return restaurants.get(0);
+        return order.getRestaurants().get(0);
     }
 
     @Override
@@ -228,21 +237,21 @@ public class GroupOrder implements Order,DecoratorOrder {
 
     @Override
     public LocalTime getPickupTime() {
-        return pickupTime;
+        return order.getPickupTime();
     }
 
     @Override
     public List<Restaurant> getRestaurants() {
         for (Order singleOrder : subSingleOrders) {
             if (singleOrder.getRestaurant() != null) {
-                restaurants.add( singleOrder.getRestaurant());
+                order.getRestaurants().add( singleOrder.getRestaurant());
             }
         }
-        return restaurants;
+        return order.getRestaurants();
     }
 
     @Override
     public String getDeliveryLocation() {
-        return deliveryLocation;
+        return order.getDeliveryLocation();
     }
 }

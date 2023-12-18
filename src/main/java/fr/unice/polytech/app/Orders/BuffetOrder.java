@@ -36,6 +36,7 @@ public class BuffetOrder implements DecoratorOrder{
 
     @Override
     public String getRouteDetails() {
+        //System.out.println("Route details: " + order.getRouteDetails());
         return order.getRouteDetails();
     }
     @Override
@@ -170,7 +171,7 @@ public class BuffetOrder implements DecoratorOrder{
     }
 
     public boolean isOrderPickedUp() {
-        return order.getStatus() instanceof DelivredIState;
+        return order.getStatus() instanceof ValidatedIState;
     }
 
     public void validateForDelivery() throws Exception {
@@ -190,7 +191,7 @@ public class BuffetOrder implements DecoratorOrder{
     }
 
     public void setPickupTime(LocalTime pickupTime) {
-        this.pickupTime = pickupTime;
+        order.setPickupTime(pickupTime);
     }
 
     public String getContactPerson() {
@@ -218,7 +219,7 @@ public class BuffetOrder implements DecoratorOrder{
     }
 
     public void setRouteDetails(String routeDetails) {
-        this.routeDetails = routeDetails;
+        order.setRouteDetails(routeDetails);
     }
 
 

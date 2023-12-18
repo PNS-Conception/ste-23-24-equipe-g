@@ -162,4 +162,9 @@ public interface DecoratorOrder {
     CampusUser getOwner();
 
     void setOwner(CampusUser owner);
+
+
+    void setRouteDetails(String routeDetails);
+
+    void setPickupTime(LocalTime pickupTime);
 }

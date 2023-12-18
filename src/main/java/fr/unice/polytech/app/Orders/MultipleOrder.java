@@ -158,6 +158,15 @@ public class MultipleOrder implements Order,DecoratorOrder {
         order.setOwner(null);
     }
 
+    @Override
+    public void setRouteDetails(String routeDetails) {
+        order.setRouteDetails(routeDetails);
+    }
+
+    @Override
+    public void setPickupTime(LocalTime pickupTime) {
+        order.setPickupTime(pickupTime);
+    }
 
 
     public void addOrder(Order order) {

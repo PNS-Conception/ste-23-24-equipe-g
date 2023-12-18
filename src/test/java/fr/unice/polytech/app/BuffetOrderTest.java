@@ -2,9 +2,8 @@ package fr.unice.polytech.app;
 
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.Orders.*;
+import fr.unice.polytech.app.State.*;
 import fr.unice.polytech.app.User.*;
-import fr.unice.polytech.app.State.IState;
-import fr.unice.polytech.app.State.PaidIState;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
@@ -85,6 +84,7 @@ class BuffetOrderTest {
     void testGetRouteDetails() throws Exception {
         BuffetOrder order = createBuffetOrder();
         order.setRouteDetails("Route Test");
+        System.out.println(order.getRouteDetails());
         assertEquals("Route Test", order.getRouteDetails(), "Le détail de l'itinéraire doit être correct");
     }
 
@@ -150,6 +150,7 @@ class BuffetOrderTest {
     @Test
     void testIsOrderCancelled() throws Exception {
         BuffetOrder order =createBuffetOrder();
+        order.setStatus(new PaidIState());
         order.cancel();
         assertTrue(order.isOrderCancelled(), "La commande doit être marquée comme annulée");
     }
@@ -171,6 +172,7 @@ class BuffetOrderTest {
     @Test
     void testIsOrderPickedUp() throws Exception {
         BuffetOrder order = createBuffetOrder();
+        order.setStatus(new AssignedIState());
         order.pickUp();
         assertTrue(order.isOrderPickedUp(), "La commande doit être marquée comme récupérée");
     }
@@ -178,6 +180,7 @@ class BuffetOrderTest {
     @Test
     void testValidateForDelivery() throws Exception {
         BuffetOrder order = createBuffetOrder();
+        order.setStatus(new AssignedIState());
         order.validateForDelivery();
         assertTrue(order.isOrderPickedUp(), "La commande doit être validée pour la livraison");
     }
@@ -206,12 +209,14 @@ class BuffetOrderTest {
     @Test
     void testAccept() throws Exception {
         BuffetOrder order =createBuffetOrder();
+        order.setStatus(new PaidIState());
         order.accept();
     }
 
     @Test
     void testReject() throws Exception {
         BuffetOrder order = createBuffetOrder();
+        order.setStatus(new PaidIState());
         order.reject();
     }
 
@@ -225,18 +230,21 @@ class BuffetOrderTest {
     @Test
     void testAssign() throws Exception {
         BuffetOrder order = createBuffetOrder();
+        order.setStatus(new ReadyIState());
         order.assign();
     }
 
     @Test
     void testDeliver() throws Exception {
         BuffetOrder order = createBuffetOrder();
+        order.setStatus(new ValidatedIState());
         order.deliver();
     }
 
     @Test
     void testCancel() throws Exception {
         BuffetOrder order = createBuffetOrder();
+        order.setStatus(new PaidIState());
         order.cancel();
         assertTrue(order.isOrderCancelled(), "La commande doit être marquée comme annulée");
     }
@@ -244,6 +252,7 @@ class BuffetOrderTest {
     @Test
     void testPickUp() throws Exception {
         BuffetOrder order =createBuffetOrder();
+        order.setStatus(new AssignedIState());
         order.pickUp();
         assertTrue(order.isOrderPickedUp(), "La commande doit être marquée comme récupérée");
     }

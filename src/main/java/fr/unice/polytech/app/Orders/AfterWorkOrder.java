@@ -12,7 +12,6 @@ import java.util.UUID;
 public class AfterWorkOrder implements DecoratorOrder {
     private UUID id;
     DecoratorOrder order;
-    private LocalTime placedTime;
     private List<Item> items;
     private List<CampusUser> participants;
     private int numberOfParticipants;
@@ -27,7 +26,7 @@ public class AfterWorkOrder implements DecoratorOrder {
         this.items = new ArrayList<>(items);
         this.participants = new ArrayList<>(numberOfParticipants);
         this.numberOfParticipants = numberOfParticipants;
-        this.placedTime = LocalTime.now();
+        order.setPickupTime(LocalTime.now());
         placeOrder();
 
     }
@@ -93,7 +92,17 @@ public class AfterWorkOrder implements DecoratorOrder {
 
     @Override
     public void setOwner(CampusUser owner) {
+        order.setOwner(owner);
+    }
 
+    @Override
+    public void setRouteDetails(String routeDetails) {
+        order.setRouteDetails(routeDetails);
+    }
+
+    @Override
+    public void setPickupTime(LocalTime pickupTime) {
+        order.setPickupTime(pickupTime);
     }
 
     @Override
