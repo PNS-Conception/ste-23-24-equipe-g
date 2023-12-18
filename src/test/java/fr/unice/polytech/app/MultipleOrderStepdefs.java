@@ -218,6 +218,7 @@ public class MultipleOrderStepdefs {
         multipleOrder.addOrder(aliceSingleOrder);
         multipleOrder.addOrder(aliceSingleOrder2);
         multipleOrder.ready();
+
     }
 
     @When("the delivery person validates multiple order")
