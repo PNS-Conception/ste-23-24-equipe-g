@@ -8,16 +8,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * The Order interface represents an order placed by a customer.
- */
-public interface Order {
-
-    /**
-     * Returns the route details for the order.
-     *
-     * @return the route details
-     */
+public interface DecoratorOrder {
     String getRouteDetails();
 
     /**
@@ -171,4 +162,9 @@ public interface Order {
     CampusUser getOwner();
 
     void setOwner(CampusUser owner);
+
+
+    void setRouteDetails(String routeDetails);
+
+    void setPickupTime(LocalTime pickupTime);
 }

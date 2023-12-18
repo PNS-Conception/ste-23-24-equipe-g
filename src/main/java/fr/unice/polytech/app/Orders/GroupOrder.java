@@ -1,7 +1,7 @@
 package fr.unice.polytech.app.Orders;
 
 import fr.unice.polytech.app.State.PaidIState;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.State.PlacedIState;
 import fr.unice.polytech.app.State.IState;
@@ -13,17 +13,16 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class GroupOrder implements Order {
+public class GroupOrder implements Order,DecoratorOrder {
 
     private List<Order> subSingleOrders;
     private UUID groupID;
     private List<CampusUser> members;
     private String routeDetails;
-    private LocalTime pickupTime;
-    private List<Restaurant> restaurants;
-    private String deliveryLocation;
+
+    //private List<Restaurant> restaurants;
     private String deliveryAddress;
-    private Order order;
+    private DecoratorOrder order;
     private boolean isDeliveryDetailsLocked;
 
 
@@ -59,6 +58,16 @@ public class GroupOrder implements Order {
         order.setOwner(owner);
     }
 
+    @Override
+    public void setRouteDetails(String routeDetails) {
+        this.routeDetails = routeDetails;
+    }
+
+    @Override
+    public void setPickupTime(LocalTime pickupTime) {
+        order.setPickupTime(pickupTime);
+    }
+
     public void addMember(CampusUser user,CampusUser owner) {
         if (owner.equals(order.getOwner())){
             members.add(user);
@@ -75,7 +84,6 @@ public class GroupOrder implements Order {
             subSingleOrders.add(singleOrder);
         }
     }
-
 
     public void setStatus(IState orderStatus) {
         order.setStatus(orderStatus);
@@ -224,7 +232,7 @@ public class GroupOrder implements Order {
     }
 
     public Restaurant getRestaurant() {
-        return restaurants.get(0);
+        return order.getRestaurants().get(0);
     }
 
     @Override
@@ -244,21 +252,21 @@ public class GroupOrder implements Order {
 
     @Override
     public LocalTime getPickupTime() {
-        return pickupTime;
+        return order.getPickupTime();
     }
 
     @Override
     public List<Restaurant> getRestaurants() {
         for (Order singleOrder : subSingleOrders) {
             if (singleOrder.getRestaurant() != null) {
-                restaurants.add( singleOrder.getRestaurant());
+                order.getRestaurants().add( singleOrder.getRestaurant());
             }
         }
-        return restaurants;
+        return order.getRestaurants();
     }
 
     @Override
     public String getDeliveryLocation() {
-        return deliveryLocation;
+        return order.getDeliveryLocation();
     }
 }

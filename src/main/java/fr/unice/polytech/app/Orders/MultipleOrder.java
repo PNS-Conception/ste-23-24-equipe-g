@@ -1,6 +1,6 @@
 package fr.unice.polytech.app.Orders;
 
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.State.*;
@@ -12,19 +12,11 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class MultipleOrder implements Order {
+public class MultipleOrder implements Order,DecoratorOrder {
 
     private List<Order> subOrders;
-    //private String routeDetails;
-    //private LocalTime pickupTime;
-    //private String deliveryLocation;
-    //private String deliveryAddress;
-    //private IState status;
-    //private CampusUser owner;
-
-    Order order;
+    DecoratorOrder order;
     UUID id;
-    //private List<Restaurant> restaurants;
 
 
     public MultipleOrder(CampusUser owner) throws Exception {
@@ -166,6 +158,15 @@ public class MultipleOrder implements Order {
         order.setOwner(null);
     }
 
+    @Override
+    public void setRouteDetails(String routeDetails) {
+        order.setRouteDetails(routeDetails);
+    }
+
+    @Override
+    public void setPickupTime(LocalTime pickupTime) {
+        order.setPickupTime(pickupTime);
+    }
 
 
     public void addOrder(Order order) {

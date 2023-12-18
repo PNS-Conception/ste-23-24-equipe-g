@@ -3,14 +3,14 @@ package fr.unice.polytech.app.Orders;
 
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.State.*;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class BuffetOrder implements Order{
+public class BuffetOrder implements DecoratorOrder{
     private UUID orderId;
     private String deliveryAddress;
     private String contactPerson; // Usager destinataire
@@ -19,7 +19,7 @@ public class BuffetOrder implements Order{
     private String routeDetails;
     private LocalTime pickupTime;
 
-    Order order;
+    DecoratorOrder order;
 
 
     public BuffetOrder(Restaurant restaurant, CampusUser universityStaff, String contactPerson,
@@ -36,6 +36,7 @@ public class BuffetOrder implements Order{
 
     @Override
     public String getRouteDetails() {
+        //System.out.println("Route details: " + order.getRouteDetails());
         return order.getRouteDetails();
     }
     @Override
@@ -170,7 +171,7 @@ public class BuffetOrder implements Order{
     }
 
     public boolean isOrderPickedUp() {
-        return order.getStatus() instanceof DelivredIState;
+        return order.getStatus() instanceof ValidatedIState;
     }
 
     public void validateForDelivery() throws Exception {
@@ -190,7 +191,7 @@ public class BuffetOrder implements Order{
     }
 
     public void setPickupTime(LocalTime pickupTime) {
-        this.pickupTime = pickupTime;
+        order.setPickupTime(pickupTime);
     }
 
     public String getContactPerson() {
@@ -218,7 +219,7 @@ public class BuffetOrder implements Order{
     }
 
     public void setRouteDetails(String routeDetails) {
-        this.routeDetails = routeDetails;
+        order.setRouteDetails(routeDetails);
     }
 
 

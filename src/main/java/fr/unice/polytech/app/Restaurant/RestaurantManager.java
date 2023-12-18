@@ -1,11 +1,7 @@
-package fr.unice.polytech.app.Users;
+package fr.unice.polytech.app.Restaurant;
 
-import fr.unice.polytech.app.Restaurant.Day;
-import fr.unice.polytech.app.Restaurant.Dish;
-import fr.unice.polytech.app.Restaurant.Menu;
-import fr.unice.polytech.app.Restaurant.Restaurant;
-import fr.unice.polytech.app.Users.CampusUser;
-import fr.unice.polytech.app.Users.UserType;
+import fr.unice.polytech.app.User.CampusUser;
+import fr.unice.polytech.app.User.UserType;
 
 import java.time.LocalTime;
 

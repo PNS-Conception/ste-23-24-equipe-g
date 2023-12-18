@@ -1,6 +1,6 @@
 package fr.unice.polytech.app.System;
 
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 
 import java.util.HashMap;
 import java.util.Map;

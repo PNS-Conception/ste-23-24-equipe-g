@@ -1,9 +1,8 @@
-package fr.unice.polytech.app.Users;
+package fr.unice.polytech.app.Restaurant;
 
-import fr.unice.polytech.app.Restaurant.Restaurant;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 import fr.unice.polytech.app.Orders.SingleOrder;
-import fr.unice.polytech.app.Users.UserType;
+import fr.unice.polytech.app.User.UserType;
 
 import java.time.LocalTime;
 
@@ -51,7 +50,6 @@ public class StaffUser extends CampusUser {
     public void refuseOrder(SingleOrder singleOrder) {
         if (restaurant.getOrderList().contains(singleOrder)) {
             LocalTime time = LocalTime.now();
-            //difference between the time of the order and the current time
             long minutesPassed = time.getMinute() - singleOrder.getAcceptedTime().getMinute();
             restaurant.cancel(singleOrder,minutesPassed);
         }

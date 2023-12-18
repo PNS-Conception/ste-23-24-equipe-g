@@ -1,8 +1,7 @@
-package fr.unice.polytech.app.System;
+package fr.unice.polytech.app.Restaurant;
 
 import fr.unice.polytech.app.Orders.SingleOrder;
-import fr.unice.polytech.app.Restaurant.ExtensionDiscount;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,5 +1,5 @@
 package fr.unice.polytech.app.Orders;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.State.IState;
 import fr.unice.polytech.app.State.PlacedIState;
@@ -9,16 +9,12 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class AfterWorkOrder implements Order {
+public class AfterWorkOrder implements DecoratorOrder {
     private UUID id;
-    //private CampusUser organizer;
-    //private final Restaurant restaurant;
-    Order order;
-    private LocalTime placedTime;
+    DecoratorOrder order;
     private List<Item> items;
     private List<CampusUser> participants;
     private int numberOfParticipants;
-    //private IState status;
 
     public AfterWorkOrder(CampusUser organizer, Restaurant restaurant, List<Item> items, int numberOfParticipants) throws Exception {
         this.id = UUID.randomUUID();
@@ -30,7 +26,7 @@ public class AfterWorkOrder implements Order {
         this.items = new ArrayList<>(items);
         this.participants = new ArrayList<>(numberOfParticipants);
         this.numberOfParticipants = numberOfParticipants;
-        this.placedTime = LocalTime.now();
+        order.setPickupTime(LocalTime.now());
         placeOrder();
 
     }
@@ -96,7 +92,17 @@ public class AfterWorkOrder implements Order {
 
     @Override
     public void setOwner(CampusUser owner) {
+        order.setOwner(owner);
+    }
 
+    @Override
+    public void setRouteDetails(String routeDetails) {
+        order.setRouteDetails(routeDetails);
+    }
+
+    @Override
+    public void setPickupTime(LocalTime pickupTime) {
+        order.setPickupTime(pickupTime);
     }
 
     @Override
