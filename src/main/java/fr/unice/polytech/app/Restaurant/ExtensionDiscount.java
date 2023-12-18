@@ -1,6 +1,6 @@
 package fr.unice.polytech.app.Restaurant;
 
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;

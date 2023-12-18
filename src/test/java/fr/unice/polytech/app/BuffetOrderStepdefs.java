@@ -6,12 +6,11 @@ import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
 import fr.unice.polytech.app.State.ReadyIState;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.java.zh_cn.那么;
 
 import static org.junit.jupiter.api.Assertions.*;
 

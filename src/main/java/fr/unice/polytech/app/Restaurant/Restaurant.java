@@ -3,9 +3,7 @@ package fr.unice.polytech.app.Restaurant;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
-import fr.unice.polytech.app.System.DiscountSytem;
-import fr.unice.polytech.app.Users.CampusUser;
-import fr.unice.polytech.app.Users.RestaurantManager;
+import fr.unice.polytech.app.User.CampusUser;
 
 import java.time.LocalTime;
 import java.util.*;
@@ -167,6 +165,8 @@ public class Restaurant {
     public boolean setAfterworkMenu(boolean b) {
         return b;
     }
+
+
     public void setMenu(Menu menu, RestaurantManager manager) {
         if (manager == owner) {
             this.menu = menu;

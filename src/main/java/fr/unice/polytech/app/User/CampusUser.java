@@ -1,8 +1,7 @@
-package fr.unice.polytech.app.Users;
+package fr.unice.polytech.app.User;
 
 import fr.unice.polytech.app.Orders.Cart;
 import fr.unice.polytech.app.Orders.SingleOrder;
-import fr.unice.polytech.app.System.PaiementSystem;
 import fr.unice.polytech.app.Restaurant.CapacityManager;
 import fr.unice.polytech.app.Restaurant.Dish;
 import fr.unice.polytech.app.Restaurant.Item;

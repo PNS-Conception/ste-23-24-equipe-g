@@ -3,14 +3,14 @@ package fr.unice.polytech.app.Orders;
 
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.State.*;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class BuffetOrder implements Order{
+public class BuffetOrder implements DecoratorOrder{
     private UUID orderId;
     private String deliveryAddress;
     private String contactPerson; // Usager destinataire
@@ -19,7 +19,7 @@ public class BuffetOrder implements Order{
     private String routeDetails;
     private LocalTime pickupTime;
 
-    Order order;
+    DecoratorOrder order;
 
 
     public BuffetOrder(Restaurant restaurant, CampusUser universityStaff, String contactPerson,

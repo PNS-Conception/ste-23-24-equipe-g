@@ -1,11 +1,10 @@
-package fr.unice.polytech.app.Users;
+package fr.unice.polytech.app.Delivery;
 
-import fr.unice.polytech.app.Delivery.DeliverySystem;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 import fr.unice.polytech.app.Orders.Order;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.Restaurant;
-import fr.unice.polytech.app.Users.UserType;
+import fr.unice.polytech.app.User.UserType;
 
 import java.time.LocalTime;
 import java.util.List;

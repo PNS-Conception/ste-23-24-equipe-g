@@ -1,8 +1,8 @@
 
 package fr.unice.polytech.app.Statistic;
 
-import fr.unice.polytech.app.Users.CampusUser;
-import fr.unice.polytech.app.Users.DeliveryPerson;
+import fr.unice.polytech.app.User.CampusUser;
+import fr.unice.polytech.app.Delivery.DeliveryPerson;
 import fr.unice.polytech.app.Orders.Order;
 import fr.unice.polytech.app.Restaurant.*;
 

@@ -1,14 +1,12 @@
 package fr.unice.polytech.app.Orders;
 
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 
 
 
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.Restaurant.Item;
 import fr.unice.polytech.app.State.*;
-import fr.unice.polytech.app.Users.User;
-import fr.unice.polytech.app.Users.UserType;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -16,12 +14,11 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class SingleOrder implements Order {
+public class SingleOrder implements Order,DecoratorOrder {
     private boolean requiresSignatureAndVerification;
     private Cart cart;
     private String clientAddress;
     private LocalTime placedTime;
-
     private CampusUser user;
     private UUID id;
     private IState status ;

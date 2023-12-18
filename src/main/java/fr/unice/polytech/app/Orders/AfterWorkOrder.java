@@ -1,5 +1,5 @@
 package fr.unice.polytech.app.Orders;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.State.IState;
 import fr.unice.polytech.app.State.PlacedIState;
@@ -9,16 +9,13 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class AfterWorkOrder implements Order {
+public class AfterWorkOrder implements DecoratorOrder {
     private UUID id;
-    //private CampusUser organizer;
-    //private final Restaurant restaurant;
-    Order order;
+    DecoratorOrder order;
     private LocalTime placedTime;
     private List<Item> items;
     private List<CampusUser> participants;
     private int numberOfParticipants;
-    //private IState status;
 
     public AfterWorkOrder(CampusUser organizer, Restaurant restaurant, List<Item> items, int numberOfParticipants) throws Exception {
         this.id = UUID.randomUUID();

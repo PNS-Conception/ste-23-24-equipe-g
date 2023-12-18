@@ -1,8 +1,6 @@
-package fr.unice.polytech.app.System;
+package fr.unice.polytech.app.User;
 
 import fr.unice.polytech.app.Orders.SingleOrder;
-import fr.unice.polytech.app.Users.CampusUser;
-import fr.unice.polytech.app.Users.PaiementProxy;
 import fr.unice.polytech.app.Util.RandomGenerator;
 
 public class PaiementSystem  implements PaiementProxy {

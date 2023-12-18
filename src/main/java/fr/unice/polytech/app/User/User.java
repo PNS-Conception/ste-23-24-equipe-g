@@ -1,4 +1,4 @@
-package fr.unice.polytech.app.Users;
+package fr.unice.polytech.app.User;
 
 import fr.unice.polytech.app.System.Admin;
 import fr.unice.polytech.app.Restaurant.Menu;

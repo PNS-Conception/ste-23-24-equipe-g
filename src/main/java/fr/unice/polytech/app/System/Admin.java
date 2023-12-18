@@ -1,9 +1,9 @@
 package fr.unice.polytech.app.System;
 
-import fr.unice.polytech.app.Users.DeliveryPerson;
+import fr.unice.polytech.app.Delivery.DeliveryPerson;
 import fr.unice.polytech.app.Restaurant.Restaurant;
-import fr.unice.polytech.app.Users.RestaurantManager;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.Restaurant.RestaurantManager;
+import fr.unice.polytech.app.User.CampusUser;
 
 import java.util.ArrayList;
 import java.util.List;

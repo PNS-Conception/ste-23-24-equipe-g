@@ -2,13 +2,13 @@ package fr.unice.polytech.app;
 
 import fr.unice.polytech.app.Orders.AfterWorkOrder;
 import fr.unice.polytech.app.Restaurant.*;
-import fr.unice.polytech.app.Users.RestaurantManager;
+import fr.unice.polytech.app.Restaurant.RestaurantManager;
 import fr.unice.polytech.app.Restaurant.RestaurantService;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
 import fr.unice.polytech.app.State.PlacedIState;
 import fr.unice.polytech.app.System.Admin;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;

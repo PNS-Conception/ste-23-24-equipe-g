@@ -1,7 +1,7 @@
 package fr.unice.polytech.app.Orders;
 
 import fr.unice.polytech.app.State.PaidIState;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.State.PlacedIState;
 import fr.unice.polytech.app.State.IState;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class GroupOrder implements Order {
+public class GroupOrder implements Order,DecoratorOrder {
 
     private List<Order> subSingleOrders;
     private UUID groupID;
@@ -23,7 +23,7 @@ public class GroupOrder implements Order {
     private List<Restaurant> restaurants;
     private String deliveryLocation;
     private String deliveryAddress;
-    private Order order;
+    private DecoratorOrder order;
 
 
     public GroupOrder(CampusUser owner) throws Exception {
