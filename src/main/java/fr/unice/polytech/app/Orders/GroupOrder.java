@@ -18,10 +18,6 @@ public class GroupOrder implements Order,DecoratorOrder {
     private List<Order> subSingleOrders;
     private UUID groupID;
     private List<CampusUser> members;
-    private String routeDetails;
-
-    //private List<Restaurant> restaurants;
-    private String deliveryAddress;
     private DecoratorOrder order;
     private boolean isDeliveryDetailsLocked;
 
@@ -60,7 +56,7 @@ public class GroupOrder implements Order,DecoratorOrder {
 
     @Override
     public void setRouteDetails(String routeDetails) {
-        this.routeDetails = routeDetails;
+        order.setRouteDetails(routeDetails);
     }
 
     @Override
@@ -79,8 +75,7 @@ public class GroupOrder implements Order,DecoratorOrder {
     }
 
     public void addOrder(SingleOrder singleOrder) {
-        if (singleOrder.getDeliveryLocation().equals(this.deliveryLocation) &&
-                singleOrder.getDeliveryLocation().equals(this.deliveryAddress)) {
+        if (singleOrder.getDeliveryLocation().equals(order.getDeliveryLocation())) {
             subSingleOrders.add(singleOrder);
         }
     }
@@ -213,15 +208,15 @@ public class GroupOrder implements Order,DecoratorOrder {
     }
 
     public String getDeliveryAddress() {
-        return deliveryAddress;
+        return order.getDeliveryLocation();
     }
 
     public void setDeliveryAddress(String deliveryAddress) {
         if (this.subSingleOrders.isEmpty()) {
-            this.deliveryAddress = deliveryAddress;
+            order.setDeliveryLocation(deliveryAddress);
         }
         if (!isDeliveryDetailsLocked) {
-            this.deliveryAddress = deliveryAddress;
+            order.setDeliveryLocation(deliveryAddress);
         }
     }
 
@@ -238,16 +233,16 @@ public class GroupOrder implements Order,DecoratorOrder {
     @Override
     public void setDeliveryLocation(String deliveryLocation) {
         if (this.subSingleOrders.isEmpty()) {
-            this.deliveryLocation = deliveryLocation;
+            order.setDeliveryLocation(deliveryLocation);
         }
         if (!isDeliveryDetailsLocked) {
-            this.deliveryLocation = deliveryLocation;
+            order.setDeliveryLocation(deliveryLocation);
         }
     }
 
     @Override
     public String getRouteDetails() {
-        return routeDetails;
+        return order.getRouteDetails();
     }
 
     @Override

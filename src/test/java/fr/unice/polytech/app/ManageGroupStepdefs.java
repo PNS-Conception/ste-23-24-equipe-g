@@ -170,6 +170,7 @@ public class ManageGroupStepdefs {
     public void aliceLeaveTheGroupOrder() throws Exception {
         alice.createItem(new Dish("pizza",10,0), 2);
         aliceSingleOrder = new SingleOrder( alice,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
+        aliceSingleOrder.setDeliveryLocation("Nice");
         groupOrder.addOrder(aliceSingleOrder);
         groupOrder.quit(alice);
         groupOrder.setOwner(groupOrder.getMembers().get(0));

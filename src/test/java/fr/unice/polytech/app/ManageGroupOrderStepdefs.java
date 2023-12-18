@@ -53,6 +53,7 @@ public class ManageGroupOrderStepdefs {
         restaurant1=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita",  7.99), new Dish("Pepperoni",8.99))));
         alice.createItem(new Dish("pizza",10), 2);
         aliceSingleOrder = new SingleOrder(alice,restaurant1 );
+        aliceSingleOrder.setDeliveryLocation("Nice");
         groupOrder.addOrder(aliceSingleOrder);
         aliceSingleOrder.placeOrder();
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
@@ -65,6 +66,7 @@ public class ManageGroupOrderStepdefs {
         restaurant2=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
         bob.createItem(new Dish("pasta",11), 1);
         bobSingleOrder = new SingleOrder(bob,restaurant2);
+        bobSingleOrder.setDeliveryLocation("Nice");
         groupOrder.addOrder(bobSingleOrder);
         bobSingleOrder.placeOrder();
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
@@ -92,6 +94,7 @@ public class ManageGroupOrderStepdefs {
         restaurant3=new Restaurant(restaurant, new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni", 8.99))));
         bob.createItem(new Dish("pasta",11), 1);
         bobSingleOrder = new SingleOrder( bob,restaurant3 );
+        bobSingleOrder.setDeliveryLocation("Nice");
         groupOrder.addOrder(bobSingleOrder);
         bobSingleOrder.placeOrder();
     }
@@ -165,12 +168,14 @@ public class ManageGroupOrderStepdefs {
         restaurant1=new Restaurant("restaurant", new Menu(Arrays.asList(new Dish("Margherita", 7.99), new Dish("Pepperoni",  8.99))));
         alice.createItem(new Dish("pasta",11,0), 1);
         aliceSingleOrder =alice.order(restaurant1);
+        aliceSingleOrder.setDeliveryLocation("Nice");
         when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
         aliceSingleOrder.getClient().getPaiementSystem().setRandomGenerator(mockRandomGenerator);
         aliceSingleOrder.getPaidMock();
         aliceSingleOrder.accept();
         bob.createItem(new Dish("pasta",11,0), 1);
         bobSingleOrder = bob.order(restaurant2);
+        bobSingleOrder.setDeliveryLocation("Nice");
         bobSingleOrder.getClient().getPaiementSystem().setRandomGenerator(mockRandomGenerator);
         bobSingleOrder.getPaidMock();
         bobSingleOrder.accept();
