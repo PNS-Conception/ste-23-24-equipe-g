@@ -2,9 +2,8 @@ package fr.unice.polytech.app;
 
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.Orders.*;
-import fr.unice.polytech.app.Users.*;
-import fr.unice.polytech.app.State.IState;
-import fr.unice.polytech.app.State.PaidIState;
+import fr.unice.polytech.app.State.*;
+import fr.unice.polytech.app.User.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
@@ -19,7 +18,7 @@ class BuffetOrderTest {
     @Test
     void testOrderInitialization() throws Exception {
         Restaurant restaurant = new Restaurant("Restaurant Test", createMenu());
-        CampusUser staff = new CampusUser("Alice", "Université");
+        CampusUser staff = new CampusUser("Alice",null, "Université");
         formula formula = new formula("Formule1", 100.0,createItems());
         Buffet buffet = new Buffet(formula, 5);
 
@@ -35,7 +34,7 @@ class BuffetOrderTest {
     void testChangeOrder() throws Exception {
         // Initialiser BuffetOrder
         Restaurant restaurant = new Restaurant("Restaurant Test", createMenu());
-        CampusUser staff = new CampusUser("Alice", "Université");
+        CampusUser staff = new CampusUser("Alice",null, "Université");
         formula formula = new formula("Formule1", 100.0, createItems());
         Buffet buffet = new Buffet(formula, 5);
         BuffetOrder order = new BuffetOrder(restaurant, staff, "Bob", 30, buffet);
@@ -85,6 +84,7 @@ class BuffetOrderTest {
     void testGetRouteDetails() throws Exception {
         BuffetOrder order = createBuffetOrder();
         order.setRouteDetails("Route Test");
+        System.out.println(order.getRouteDetails());
         assertEquals("Route Test", order.getRouteDetails(), "Le détail de l'itinéraire doit être correct");
     }
 
@@ -120,7 +120,7 @@ class BuffetOrderTest {
         // Supposons que ces méthodes et constructeurs existent dans vos classes
         Restaurant restaurant = restaurantService.createRestaurant("Simple Buffet", createMenu());
         formula formulaIssaNissa = new formula("Issa Nissa", 30,createItems());
-        CampusUser universityStaff = new CampusUser("Alice","au pays des merveilles");
+        CampusUser universityStaff = new CampusUser("Alice",null,"au pays des merveilles");
         String contactPerson = "Bob";
         int numberOfPeople = 54;
         int numberOfItems = 15;
@@ -150,15 +150,15 @@ class BuffetOrderTest {
     @Test
     void testIsOrderCancelled() throws Exception {
         BuffetOrder order =createBuffetOrder();
-        order.cancelOrder();
-
+        order.setStatus(new PaidIState());
+        order.cancel();
         assertTrue(order.isOrderCancelled(), "La commande doit être marquée comme annulée");
     }
 
     @Test
     void testDelete() throws Exception {
         BuffetOrder order = createBuffetOrder();
-        order.delete();
+        order.setOwner(null);
         assertNull(order.getOwner(), "Le propriétaire doit être supprimé");
     }
 
@@ -172,6 +172,7 @@ class BuffetOrderTest {
     @Test
     void testIsOrderPickedUp() throws Exception {
         BuffetOrder order = createBuffetOrder();
+        order.setStatus(new AssignedIState());
         order.pickUp();
         assertTrue(order.isOrderPickedUp(), "La commande doit être marquée comme récupérée");
     }
@@ -179,6 +180,7 @@ class BuffetOrderTest {
     @Test
     void testValidateForDelivery() throws Exception {
         BuffetOrder order = createBuffetOrder();
+        order.setStatus(new AssignedIState());
         order.validateForDelivery();
         assertTrue(order.isOrderPickedUp(), "La commande doit être validée pour la livraison");
     }
@@ -207,12 +209,14 @@ class BuffetOrderTest {
     @Test
     void testAccept() throws Exception {
         BuffetOrder order =createBuffetOrder();
+        order.setStatus(new PaidIState());
         order.accept();
     }
 
     @Test
     void testReject() throws Exception {
         BuffetOrder order = createBuffetOrder();
+        order.setStatus(new PaidIState());
         order.reject();
     }
 
@@ -226,18 +230,21 @@ class BuffetOrderTest {
     @Test
     void testAssign() throws Exception {
         BuffetOrder order = createBuffetOrder();
+        order.setStatus(new ReadyIState());
         order.assign();
     }
 
     @Test
     void testDeliver() throws Exception {
         BuffetOrder order = createBuffetOrder();
+        order.setStatus(new ValidatedIState());
         order.deliver();
     }
 
     @Test
     void testCancel() throws Exception {
         BuffetOrder order = createBuffetOrder();
+        order.setStatus(new PaidIState());
         order.cancel();
         assertTrue(order.isOrderCancelled(), "La commande doit être marquée comme annulée");
     }
@@ -245,6 +252,7 @@ class BuffetOrderTest {
     @Test
     void testPickUp() throws Exception {
         BuffetOrder order =createBuffetOrder();
+        order.setStatus(new AssignedIState());
         order.pickUp();
         assertTrue(order.isOrderPickedUp(), "La commande doit être marquée comme récupérée");
     }

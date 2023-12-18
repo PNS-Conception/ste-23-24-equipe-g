@@ -8,6 +8,7 @@ public class Dish {
     private double notRegularPrice;
     private List<String> ingredients;
 
+
     public Dish(String name, double price ,double notRegularPrice) {
         this.name = name;
         this.price = price;

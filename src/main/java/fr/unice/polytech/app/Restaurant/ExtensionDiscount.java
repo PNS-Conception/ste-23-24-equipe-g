@@ -1,6 +1,6 @@
 package fr.unice.polytech.app.Restaurant;
 
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -41,28 +41,29 @@ public class ExtensionDiscount {
         this.date = NDays;
     }
 
-
     public void addNDays(int NDays) {
         date = date.plusDays(NDays);
     }
+
     public LocalDate getDatePlusNDays() {
         return date;
     }
 
     public void setIsDiscountValid(boolean isDiscountvalid) {
-        this.isDiscountvalid= isDiscountvalid;
+        this.isDiscountvalid = isDiscountvalid;
     }
 
     public void setIsDiscountValid() {
-        isDiscountvalid= LocalDate.now().isBefore(date);
+        isDiscountvalid = LocalDate.now().isBefore(date);
     }
 
     public boolean getIsDiscountValid() {
         return isDiscountvalid;
     }
+
     public void extendDiscount() {
-        //date = date.plusDays(15);
-        date=LocalDate.now().plusDays(15);
+        // date = date.plusDays(15);
+        date = LocalDate.now().plusDays(15);
     }
 
     public boolean isValid() {

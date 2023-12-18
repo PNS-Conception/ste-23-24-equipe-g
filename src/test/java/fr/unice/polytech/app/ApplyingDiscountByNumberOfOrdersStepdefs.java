@@ -2,7 +2,8 @@ package fr.unice.polytech.app;
 
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.*;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
+import fr.unice.polytech.app.Restaurant.RestaurantManager;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -25,13 +26,13 @@ public class ApplyingDiscountByNumberOfOrdersStepdefs {
         user = new CampusUser(arg0, "password", "email");
         restaurant = new Restaurant(arg2, new RestaurantManager("test", "test", "test"), "test");
         numberOfOrdersPerUser.put(user, arg1);
-        restaurant.setNumberOfDishesPerUser(numberOfOrdersPerUser);
+        restaurant.getDiscountSystem().setNumberOfDishesPerUser(numberOfOrdersPerUser);
     }
 
     @And("{string} is offering a discount of {int}% on the {int}th order")
     public void isOfferingADiscountOfOnTheThOrder(String arg0, int arg1, int arg2) {
-        restaurant.setNumberOfDishesForDiscount(arg2);
-        restaurant.setPercentageDiscountByNbOfDishes(arg1);
+        restaurant.getDiscountSystem().setNumberOfDishesForDiscount(arg2);
+        restaurant.getDiscountSystem().setPercentageDiscountByNbOfDishes(arg1);
     }
 
     @When("{string} orders {int} dish from {string} for {int} and pays")
@@ -39,8 +40,8 @@ public class ApplyingDiscountByNumberOfOrdersStepdefs {
         Dish dish = new Dish(arg2, arg3);
         user.selectRestaurant(restaurant);
         user.createItem(dish, arg1);
-        singleOrder =user.order(user.getCart(), restaurant);
-        restaurant.addNbDishesToUser(user, singleOrder);
+        singleOrder =user.order( restaurant);
+        restaurant.getDiscountSystem().addNbDishesToUser(user, singleOrder);
     }
 
 
@@ -48,8 +49,8 @@ public class ApplyingDiscountByNumberOfOrdersStepdefs {
     @And("the number of orders should be set to {int} for {string}")
     public void theNumberOfOrdersShouldBeSetToFor(int arg0, String arg1) {
         numberOfOrdersPerUser.put(user, arg0);
-        restaurant.setNumberOfDishesPerUser(numberOfOrdersPerUser);
-        assertEquals(arg0, restaurant.getNumberOfDishesForUser(user));
+        restaurant.getDiscountSystem().setNumberOfDishesPerUser(numberOfOrdersPerUser);
+        assertEquals(arg0, restaurant.getDiscountSystem().getNumberOfDishesForUser(user));
     }
 
     @Then("the order total should be {string}")

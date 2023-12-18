@@ -1,6 +1,6 @@
 package fr.unice.polytech.app.Orders;
 
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.State.*;
@@ -11,32 +11,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MultipleOrder implements Order {
+
+public class MultipleOrder implements Order,DecoratorOrder {
 
     private List<Order> subOrders;
-    private String routeDetails;
-    private LocalTime pickupTime;
-    private String deliveryLocation;
-    private String deliveryAddress;
-    private IState status;
-    private CampusUser owner;
-    //private List<Restaurant> restaurants;
+    DecoratorOrder order;
+    UUID id;
 
 
     public MultipleOrder(CampusUser owner) throws Exception {
-
-        this.owner = owner;
+         id= UUID.randomUUID();
+        this.order = new SingleOrder();
+        order.setOwner(owner);
         placeOrder();
         this.subOrders = new ArrayList<>();
     }
 
     @Override
     public String getRouteDetails() {
-        return routeDetails;
+        return order.getRouteDetails();
     }
     @Override
     public LocalTime getPickupTime() {
-        return pickupTime;
+        return order.getPickupTime();
     }
     @Override
     public List<Restaurant> getRestaurants() {
@@ -48,11 +45,11 @@ public class MultipleOrder implements Order {
     }
     @Override
     public String getDeliveryLocation() {
-        return deliveryLocation;
+        return order.getDeliveryLocation();
     }
     @Override
     public void setStatus(IState orderStatus) {
-        this.status = orderStatus;
+        order.setStatus(orderStatus);
     }
 
     @Override
@@ -62,12 +59,12 @@ public class MultipleOrder implements Order {
 
     @Override
     public void setDeliveryLocation(String deliveryLocation) {
-        this.deliveryLocation = deliveryLocation;
+        order.setDeliveryLocation(deliveryLocation);
     }
 
     @Override
     public IState getStatus() {
-        return status;
+        return order.getStatus();
     }
 
     @Override
@@ -77,7 +74,7 @@ public class MultipleOrder implements Order {
 
     @Override
     public LocalTime getDeliveryTime() {
-        return getDeliveryTime();
+        return order.getDeliveryTime();
     }
 
     @Override
@@ -87,7 +84,7 @@ public class MultipleOrder implements Order {
 
     @Override
     public UUID getId() {
-        return getId();
+        return id;
     }
 
     @Override
@@ -97,17 +94,17 @@ public class MultipleOrder implements Order {
 
     @Override
     public void pay() throws Exception {
-        status.pay(this);
+        order.pay();
     }
 
     @Override
     public void accept() throws Exception {
-        status.acceptOrder(this);
+        order.accept();
     }
 
     @Override
     public void reject() throws Exception {
-        status.rejectOrder(this);
+        order.reject();
     }
 
     @Override
@@ -119,45 +116,58 @@ public class MultipleOrder implements Order {
             }
         }
         if (count == subOrders.size()) {
-            status.readyOrder(this);
+            order.ready();
         }
     }
 
 
     @Override
     public void assign() throws Exception {
-        status.assign(this);
+        order.assign();
     }
 
     @Override
     public void deliver() throws Exception {
-        status.delivery(this);
+        order.deliver();
     }
 
     @Override
     public void cancel() throws Exception {
-        status.cancelOrder(this);
+        order.cancel();
     }
 
     @Override
     public void pickUp() throws Exception {
-        status.validate(this);
+        order.pickUp();
     }
 
     @Override
     public void placeOrder() throws Exception {
-        status=new PlacedIState();
+        order.placeOrder();
     }
 
     public void addSubOrder(Order order){
         subOrders.add(order);
     }
     public CampusUser getOwner() {
-        return owner;
+        return order.getOwner();
     }
-    public void setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
+
+    @Override
+    public void setOwner(CampusUser owner) {
+        order.setOwner(null);
     }
+
+    @Override
+    public void setRouteDetails(String routeDetails) {
+        order.setRouteDetails(routeDetails);
+    }
+
+    @Override
+    public void setPickupTime(LocalTime pickupTime) {
+        order.setPickupTime(pickupTime);
+    }
+
 
     public void addOrder(Order order) {
         subOrders.add(order);
@@ -194,9 +204,6 @@ public class MultipleOrder implements Order {
     }
 
 
-    public void delete() {
-        owner = null;
-    }
 
     public boolean isOrderReady() {
         for (Order order : subOrders) {

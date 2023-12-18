@@ -1,6 +1,6 @@
 package fr.unice.polytech.app.Statistic;
 
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 import fr.unice.polytech.app.Orders.Order;
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.Restaurant.Item;
@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.*;
+
 
 public class MetricsService {
 

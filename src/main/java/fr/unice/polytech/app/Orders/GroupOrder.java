@@ -1,6 +1,7 @@
 package fr.unice.polytech.app.Orders;
 
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.State.PaidIState;
+import fr.unice.polytech.app.User.CampusUser;
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.State.PlacedIState;
 import fr.unice.polytech.app.State.IState;
@@ -11,28 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class GroupOrder implements Order {
+
+public class GroupOrder implements Order,DecoratorOrder {
 
     private List<Order> subSingleOrders;
     private UUID groupID;
-    private CampusUser owner;
     private List<CampusUser> members;
-    private IState status;
+    private DecoratorOrder order;
+    private boolean isDeliveryDetailsLocked;
 
-    private String routeDetails;
-    private LocalTime pickupTime;
-    private List<Restaurant> restaurants;
-    private String deliveryLocation;
-    private String deliveryAddress;
 
     public GroupOrder(CampusUser owner) throws Exception {
-        super();
         this.groupID = UUID.randomUUID();
         this.subSingleOrders =new ArrayList<>();
         this.members=new ArrayList<>();
         addMember(owner);
+        order = new SingleOrder();
+        setOwner(owner);
         placeOrder();
-        this.owner = owner;
 
     }
 
@@ -50,15 +47,25 @@ public class GroupOrder implements Order {
 
 
     public CampusUser getOwner() {
-        return owner;
+        return order.getOwner();
     }
 
     public void setOwner(CampusUser owner) {
-        this.owner = owner;
+        order.setOwner(owner);
+    }
+
+    @Override
+    public void setRouteDetails(String routeDetails) {
+        order.setRouteDetails(routeDetails);
+    }
+
+    @Override
+    public void setPickupTime(LocalTime pickupTime) {
+        order.setPickupTime(pickupTime);
     }
 
     public void addMember(CampusUser user,CampusUser owner) {
-        if (owner.equals(this.owner)) {
+        if (owner.equals(order.getOwner())){
             members.add(user);
         }
     }
@@ -68,15 +75,17 @@ public class GroupOrder implements Order {
     }
 
     public void addOrder(SingleOrder singleOrder) {
-        subSingleOrders.add(singleOrder);
+        if (singleOrder.getDeliveryLocation().equals(order.getDeliveryLocation())) {
+            subSingleOrders.add(singleOrder);
+        }
     }
 
     public void setStatus(IState orderStatus) {
-        this.status = orderStatus;
+        order.setStatus(orderStatus);
     }
 
     public IState getStatus() {
-        return status;
+        return order.getStatus();
     }
 
     @Override
@@ -106,20 +115,26 @@ public class GroupOrder implements Order {
 
     @Override
     public void pay() throws Exception {
-        status.pay(this);
+        int count = 0;
         for (Order singleOrder : subSingleOrders) {
-            singleOrder.pay();
+            if(singleOrder.getStatus() instanceof PaidIState){
+                count++;
+            }
         }
+        if (count == subSingleOrders.size()) {
+            order.pay();
+        }
+        isDeliveryDetailsLocked = true;
     }
 
     @Override
     public void accept() throws Exception {
-        status.acceptOrder(this);
+        order.accept();
     }
 
     @Override
     public void reject() throws Exception {
-        status.rejectOrder(this);
+        order.reject();
     }
 
     @Override
@@ -127,44 +142,41 @@ public class GroupOrder implements Order {
         int count = 0;
         for (Order singleOrder : subSingleOrders) {
             if (singleOrder.getStatus() instanceof ReadyIState) {
-                System.out.println(singleOrder.getStatus());
                 count++;
             }
         }
         if (count == subSingleOrders.size()) {
-            status.readyOrder(this);
+            order.ready();
         }
     }
 
     @Override
     public void assign() throws Exception {
-        status.assign(this);
+        order.assign();
     }
 
     @Override
     public void deliver() throws Exception {
-        status.delivery(this);
+        order.deliver();
     }
 
     @Override
     public void cancel() throws Exception {
-        status.cancelOrder(this);
+        order.cancel();
     }
 
     @Override
     public void pickUp() throws Exception {
-        status.validate(this);
+        order.pickUp();
     }
 
     @Override
     public void placeOrder() throws Exception {
-        status= new PlacedIState();
+        order.placeOrder();
     }
 
     public Boolean deleteGroup(CampusUser owner) {
-        System.out.println(status);
-        System.out.println(status instanceof PlacedIState);
-        if (owner.equals(this.owner) && ((status instanceof PlacedIState)||(status ==null))) {
+        if (owner.equals(getOwner()) && ((getStatus() instanceof PlacedIState)||(getStatus() ==null))) {
             members.clear();
             subSingleOrders.clear();
             return true;
@@ -178,7 +190,7 @@ public class GroupOrder implements Order {
     }
 
     public void cancelOrder(SingleOrder singleOrder, CampusUser user) throws Exception {
-        if (user==singleOrder.user && singleOrder.getStatus() instanceof PlacedIState) {
+        if (user==singleOrder.getClient() && singleOrder.getStatus() instanceof PlacedIState) {
             subSingleOrders.remove(singleOrder);
         }
     }
@@ -196,50 +208,60 @@ public class GroupOrder implements Order {
     }
 
     public String getDeliveryAddress() {
-        return deliveryAddress;
+        return order.getDeliveryLocation();
     }
 
     public void setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
+        if (this.subSingleOrders.isEmpty()) {
+            order.setDeliveryLocation(deliveryAddress);
+        }
+        if (!isDeliveryDetailsLocked) {
+            order.setDeliveryLocation(deliveryAddress);
+        }
     }
 
     public void exclude(CampusUser alice, CampusUser bob) {
-        if (alice.equals(this.owner)) {
+        if (alice.equals(getOwner())) {
             members.remove(bob);
         }
     }
 
     public Restaurant getRestaurant() {
-        return restaurants.get(0);
+        return order.getRestaurants().get(0);
     }
 
     @Override
     public void setDeliveryLocation(String deliveryLocation) {
-        this.deliveryAddress = deliveryLocation;
+        if (this.subSingleOrders.isEmpty()) {
+            order.setDeliveryLocation(deliveryLocation);
+        }
+        if (!isDeliveryDetailsLocked) {
+            order.setDeliveryLocation(deliveryLocation);
+        }
     }
 
     @Override
     public String getRouteDetails() {
-        return routeDetails;
+        return order.getRouteDetails();
     }
 
     @Override
     public LocalTime getPickupTime() {
-        return pickupTime;
+        return order.getPickupTime();
     }
 
     @Override
     public List<Restaurant> getRestaurants() {
         for (Order singleOrder : subSingleOrders) {
             if (singleOrder.getRestaurant() != null) {
-                 restaurants.add( singleOrder.getRestaurant());
+                order.getRestaurants().add( singleOrder.getRestaurant());
             }
         }
-        return restaurants;
+        return order.getRestaurants();
     }
 
     @Override
     public String getDeliveryLocation() {
-        return deliveryLocation;
+        return order.getDeliveryLocation();
     }
 }

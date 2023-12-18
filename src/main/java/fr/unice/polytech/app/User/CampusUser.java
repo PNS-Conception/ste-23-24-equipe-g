@@ -1,7 +1,7 @@
-package fr.unice.polytech.app.Users;
+package fr.unice.polytech.app.User;
 
+import fr.unice.polytech.app.Orders.Cart;
 import fr.unice.polytech.app.Orders.SingleOrder;
-import fr.unice.polytech.app.Util.RandomGenerator;
 import fr.unice.polytech.app.Restaurant.CapacityManager;
 import fr.unice.polytech.app.Restaurant.Dish;
 import fr.unice.polytech.app.Restaurant.Item;
@@ -14,22 +14,23 @@ import java.util.UUID;
 
 
 
-public class CampusUser extends User {
+public class CampusUser extends User implements PaiementProxy {
     private UUID id;
     private String name;
     private String password;
     private String email;
     private List<SingleOrder> History;
-    private List<Item> cart;
+    private Cart cart;
     private double balance;
     private UserType type;
-    private RandomGenerator randomGenerator;
+
     private String deliveryPersonIdReceived;
     private String deliveryPersonPhoneNumberReceived;
     private String notifiedDeliveryPersonId;
     private String notifiedDeliveryPersonPhoneNumber;
-    //Liste de notes des livreurs et float moyenne
     private List<Integer> deliveryPersonRatings;
+
+    private PaiementSystem paiementSystem;
 
 
     public CampusUser( String name, String password, String email) {
@@ -39,31 +40,24 @@ public class CampusUser extends User {
         this.email = email;
         this.type = UserType.CLIENT;
         this.History = new ArrayList<>();
-        this.cart = new ArrayList<>();
+        this.cart = new Cart(new ArrayList<>());
         this.balance = 0;
         this.deliveryPersonRatings = new ArrayList<>();
+        this.paiementSystem = new PaiementSystem(this);
+
     }
 
-    public CampusUser( String name, String email) {
 
-        this.id = UUID.randomUUID();
-        this.name = name;
-        this.email = email;
-        this.type = UserType.CLIENT;
-        this.History = new ArrayList<>();
-        this.cart = new ArrayList<>();
-        this.balance = 0;
-        this.deliveryPersonRatings = new ArrayList<>();
-    }
 
     public CampusUser() {
         this.id = UUID.randomUUID();
         this.name = "mockUser";
         this.type = UserType.CLIENT;
         this.History = new ArrayList<>();
-        this.cart = new ArrayList<>();
+        this.cart = new Cart(new ArrayList<>());
         this.balance = 0;
         this.deliveryPersonRatings = new ArrayList<>();
+        this.paiementSystem = new PaiementSystem(this);
     }
 
 
@@ -72,24 +66,27 @@ public class CampusUser extends User {
         cart.add(newItem);
     }
 
+    public void createItem(Item item) {
+        cart.add(item);
+    }
+
     public void deleteItem(Item item) {
         cart.remove(item);
     }
 
-    public SingleOrder order(List<Item> items, Restaurant restaurant) throws Exception {
-        SingleOrder newSingleOrder = new SingleOrder(items, this, restaurant);
+    public SingleOrder order(Restaurant restaurant) throws Exception {
+        SingleOrder newSingleOrder = new SingleOrder(this, restaurant);
         History.add(newSingleOrder);
-        cart.clear();
         return newSingleOrder;
     }
 
-    public SingleOrder order(List<Item> items, Restaurant restaurant, LocalDateTime orderTime) throws Exception {
-        int totalQuantity = items.stream().mapToInt(Item::getQuantity).sum();
+    public SingleOrder order(Restaurant restaurant, LocalDateTime orderTime) throws Exception {
+        int totalQuantity = cart.getItems().stream().mapToInt(Item::getQuantity).sum();
         CapacityManager capacityManager = CapacityManager.getInstance();
         boolean canPlaceOrder = capacityManager.canPlaceOrder(restaurant, orderTime, totalQuantity);
 
         if (canPlaceOrder) {
-            SingleOrder newSingleOrder = new SingleOrder(items, this, restaurant);
+            SingleOrder newSingleOrder = new SingleOrder(this, restaurant);
             History.add(newSingleOrder);
             cart.clear();
             return newSingleOrder;
@@ -105,6 +102,11 @@ public class CampusUser extends User {
         singleOrder.cancel();
         return true;
     }
+
+    public void refund(SingleOrder singleOrder) {
+        paiementSystem.refund(singleOrder);
+    }
+
     /**
      * Reçoit les détails de la livraison et les traite d'une certaine manière.
      * @param deliveryPersonId L'ID du livreur.
@@ -116,12 +118,10 @@ public class CampusUser extends User {
     }
 
     public void setBalance(double price) {
-        this.balance += price;
+        this.balance = price;
     }
 
-    public void setRandomGenerator(RandomGenerator randomGenerator) {
-        this.randomGenerator = randomGenerator;
-    }
+
 
 
     public List<SingleOrder> getHistory() {
@@ -133,50 +133,8 @@ public class CampusUser extends User {
         return restaurant;
     }
 
-    public boolean makePayment(SingleOrder singleOrder, CampusUser user) throws Exception {
 
-        //9 fois sur 10, la commande est validée, 1 fois sur 10 il y a une erreur.
-        //if (Math.random() < 0.9) {
-        if (true) {
-            if (balance > 0){
-                if(balance >= singleOrder.getPrice()){
-                    balance -= singleOrder.getPrice();
-                }else{
-                    singleOrder.setPrice(singleOrder.getPrice() - balance);
-                    balance = 0;
-                }
-            }
-            singleOrder.pay();
-            History.add(singleOrder);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean makePaymentmock(SingleOrder singleOrder, CampusUser client) throws Exception {
-        //9 fois sur 10, la commande est validée, 1 fois sur 10 il y a une erreur.
-        if (randomGenerator.nextDouble() < 0.9) {
-            if (balance > 0){
-                if(balance >= singleOrder.getPrice()){
-                    balance -= singleOrder.getPrice();
-                }else{
-                    singleOrder.setPrice(singleOrder.getPrice() - balance);
-                    balance = 0;
-                }
-            }
-            singleOrder.pay();
-            History.add(singleOrder);
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-
-    public List<Item> getCart() {
+    public Cart getCart() {
         return cart;
 
     }
@@ -235,12 +193,6 @@ public class CampusUser extends User {
         return History.get(History.size()-1);
     }
 
-    public void refund(SingleOrder singleOrder) {
-        setBalance(singleOrder.getPrice());
-        History.remove(singleOrder);
-
-    }
-
     public String getPassword(){
         return password;
     }
@@ -264,6 +216,10 @@ public class CampusUser extends User {
             sum += rating;
         }
         return sum / deliveryPersonRatings.size();
+    }
+
+    public PaiementSystem getPaiementSystem() {
+        return paiementSystem;
     }
 }
 

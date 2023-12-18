@@ -3,7 +3,7 @@ package fr.unice.polytech.app;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 
 import fr.unice.polytech.app.Delivery.DeliveryPerson;
 import fr.unice.polytech.app.Orders.*;
@@ -25,7 +25,7 @@ public class ExtensionReportUserStepdefs {
     @When("the delivery person rates the customer with a score of {int}")
     public void theDeliveryPersonRatesTheCustomerWithAScoreOf(int rate) throws Exception {
         deliveryPerson = new DeliveryPerson("Livreur", "test", "test");
-        deliveryPerson.rateUser(client, rate);
+        deliveryPerson.getDeliverySystem().rateUser(client, rate);
     }
 
     @Then("the customer's average rating becomes {double}")

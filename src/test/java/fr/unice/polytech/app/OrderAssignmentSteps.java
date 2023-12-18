@@ -7,7 +7,8 @@ import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.AssignedIState;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
+import fr.unice.polytech.app.Restaurant.RestaurantManager;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -37,7 +38,7 @@ public class OrderAssignmentSteps {
             CampusUser user = new CampusUser("John Doe", "password", "johndoe@example.com");
 
 
-            singleOrder = new SingleOrder(items, user, restaurant);
+            singleOrder = new SingleOrder( user, restaurant);
             singleOrder.setStatus(new AcceptedIState());
             singleOrder.ready();
         }

@@ -7,17 +7,19 @@ import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.Restaurant.RestaurantManager;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
+import fr.unice.polytech.app.Util.RandomGenerator;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
+import org.mockito.Mockito;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 public class CancelOrderStepsdefs {
 
@@ -27,10 +29,12 @@ public class CancelOrderStepsdefs {
 
     private LocalTime currentTime;
 
+    RandomGenerator mockRandomGenerator = Mockito.mock(RandomGenerator.class);
+
     @Given("^a client \"([^\"]*)\" with order$")
     public void aClientWithOrder(String clientName) throws Exception {
         client = new CampusUser( clientName, "password", "email@example.com");
-        singleOrder = new SingleOrder(new ArrayList<>(), client,restaurant);
+        singleOrder = new SingleOrder( client,restaurant);
     }
 
 
@@ -45,7 +49,7 @@ public class CancelOrderStepsdefs {
         client.createItem(pizza, quantity1);
         client.createItem(pasta, quantity2);
 
-        singleOrder = client.order(client.getCart(),restaurant);
+        singleOrder = client.order(restaurant);
 
         singleOrder.placeOrder();
     }
@@ -66,7 +70,9 @@ public class CancelOrderStepsdefs {
     @When("^the order is placed, paid, and accepted at (\\d+):(\\d+)$")
     public void order_is_placed_paid_and_accepted_at(int hours, int minutes) throws Exception {
         singleOrder.setPlacedTime(LocalTime.of(hours, minutes));
-        singleOrder.getPaid();
+        when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
+        singleOrder.getClient().getPaiementSystem().setRandomGenerator(mockRandomGenerator);
+        singleOrder.getPaidMock();
         singleOrder.accept();
     }
 

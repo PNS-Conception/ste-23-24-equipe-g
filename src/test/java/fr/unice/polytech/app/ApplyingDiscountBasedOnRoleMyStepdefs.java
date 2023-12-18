@@ -5,14 +5,11 @@ import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.Restaurant.RestaurantManager;
 import fr.unice.polytech.app.Restaurant.StaffUser;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -51,7 +48,9 @@ public class ApplyingDiscountBasedOnRoleMyStepdefs {
     @When("the customer validates the cart")
     public void theCustomerValidatesTheCart() throws Exception {
         user = new CampusUser("regular", "password", "email");
-        singleOrder = user.order( new ArrayList<>(Arrays.asList(item, item2)), restaurant);
+        user.createItem(item2);
+        user.createItem(item);
+        singleOrder = user.order(restaurant);
     }
 
     @Given("A staff")
@@ -65,7 +64,7 @@ public class ApplyingDiscountBasedOnRoleMyStepdefs {
     }
 
     @Given("A delivery person")
-    public void aDeliveryPerson() {
+    public void aDeliveryPerson() throws Exception {
         deliveryPerson = new DeliveryPerson("delivery", "password", "phone");
     }
 
@@ -77,17 +76,24 @@ public class ApplyingDiscountBasedOnRoleMyStepdefs {
 
     @When("the staff validates the cart")
     public void theStaffValidatesTheCart() throws Exception {
-        singleOrder = staff.order(new ArrayList<>(Arrays.asList(item, item2)), restaurant);
+        staff.createItem(item2);
+        staff.createItem(item);
+        singleOrder = staff.order( restaurant);
+
     }
 
     @When("the manager validates the cart")
     public void theManagerValidatesTheCart() throws Exception {
-        singleOrder = manager.order(new ArrayList<>(Arrays.asList(item, item2)), restaurant);
+        manager.createItem(item2);
+        manager.createItem(item);
+        singleOrder = manager.order( restaurant);
     }
 
     @When("the delivery person validates the cart")
     public void theDeliveryPersonValidatesTheCart() throws Exception {
-        singleOrder = deliveryPerson.order(new ArrayList<>(Arrays.asList(item, item2)), restaurant);
+        deliveryPerson.createItem(item2);
+        deliveryPerson.createItem(item);
+        singleOrder = deliveryPerson.order( restaurant);
     }
 
     @And("from a restaurant {string}")

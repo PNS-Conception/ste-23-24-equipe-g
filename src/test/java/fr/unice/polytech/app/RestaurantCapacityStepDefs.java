@@ -3,7 +3,7 @@ package fr.unice.polytech.app;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.CapacityManager;
 import fr.unice.polytech.app.Restaurant.*;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -75,7 +75,8 @@ public class RestaurantCapacityStepDefs {
             Dish dish = new Dish("Pizza", 8.99); // Supposons que "Pizza" coûte 8.99
             Item newItem = new Item(dish, quantity);
             System.out.println(quantity+"+"+date+"+"+name);
-            singleOrder = user.order(Collections.singletonList(newItem), restaurant, dateTime);
+            user.createItem(newItem);
+            singleOrder = user.order( restaurant, dateTime);
         } catch (IllegalStateException e) {
             singleOrder = null;
         } catch (Exception e) {
@@ -132,7 +133,8 @@ public class RestaurantCapacityStepDefs {
         try {
             Dish dish = new Dish("Pizza", 8.99);
             Item newItem = new Item(dish, quantity);
-            singleOrder = user.order(Collections.singletonList(newItem), restaurant, dateTime);
+            user.createItem(newItem);
+            singleOrder = user.order( restaurant, dateTime);
         } catch (IllegalStateException e) {
             singleOrder = null;
         } catch (Exception e) {

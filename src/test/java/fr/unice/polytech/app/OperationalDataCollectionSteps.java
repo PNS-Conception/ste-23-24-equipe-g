@@ -5,7 +5,8 @@ import fr.unice.polytech.app.Orders.Order;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.Statistic.DataCollector;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
+import fr.unice.polytech.app.Restaurant.RestaurantManager;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -30,7 +31,7 @@ public class OperationalDataCollectionSteps {
         Item item = new Item(dish, 2);
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
-        testOrder = new SingleOrder(items, new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
+        testOrder = new SingleOrder( new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
     }
 
     @When("an order is placed")
@@ -86,7 +87,7 @@ public class OperationalDataCollectionSteps {
         Item item = new Item(dish, 2);
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
-        testOrder = new SingleOrder(items, testUser, new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
+        testOrder = new SingleOrder( testUser, new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
     }
 
     @When("a user places an order")

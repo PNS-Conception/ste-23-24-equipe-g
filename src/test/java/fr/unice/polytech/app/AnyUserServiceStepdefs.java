@@ -4,7 +4,7 @@ import fr.unice.polytech.app.Restaurant.Menu;
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.Restaurant.RestaurantManager;
 import fr.unice.polytech.app.System.Admin;
-import fr.unice.polytech.app.Users.User;
+import fr.unice.polytech.app.User.User;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

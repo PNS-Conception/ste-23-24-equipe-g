@@ -3,7 +3,7 @@ package fr.unice.polytech.app.Restaurant;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 
 import java.time.LocalTime;
 import java.util.*;
@@ -12,22 +12,14 @@ public class Restaurant {
     private UUID id;
     private String name;
     private Menu menu;
-    private Menu afterWorkMenu;
     private List<Menu> menus = new ArrayList<>();
     private String address;
     private CampusUser owner;
     private List<Day.Shift> schedule;
     private List<SingleOrder> singleOrderList;
     private boolean full;
-    private Map<CampusUser,Integer> numberOfDishesPerUser = new HashMap<>();
-    private int numberOfOrdersPerUser;
-    private int numberOfOrdersForDiscount;
 
-    private List<ExtensionDiscount> extensionDiscounts = new ArrayList<>();
-    private int NumberOfDaysForDiscount;
-    private int percentageDiscount;
-    private int percentageDiscountByNbOfOrders;
-    private int numberOfDishesForDiscount;
+    private DiscountSytem discountSystem;
 
     public Restaurant(String name, RestaurantManager manager, String address){
         this.id = UUID.randomUUID();
@@ -35,10 +27,9 @@ public class Restaurant {
         this.singleOrderList = new ArrayList<>();
         schedule = new ArrayList<>();
         this.menu = new Menu();
-        //System.out.println(manager.getEmail());
         this.owner = manager;
         this.address = address;
-
+        discountSystem = new DiscountSytem();
     }
 
     public Restaurant(String name, Menu menu) {
@@ -47,13 +38,8 @@ public class Restaurant {
         singleOrderList = new ArrayList<>();
         schedule = new ArrayList<>();
         this.menu = menu;
+        discountSystem = new DiscountSytem();
     }
-
-//    public void setMenu(Menu menu, RestaurantManager manager) {
-//        if (manager == owner) {
-//            this.menu = menu;
-//        }
-//    }
 
     public Menu getMenu() {
         return menu;
@@ -80,7 +66,7 @@ public class Restaurant {
 
 
     private void userRefund(SingleOrder singleOrder) {
-        singleOrder.getClient().refund(singleOrder);
+        singleOrder.getClient().getPaiementSystem().refund(singleOrder);
     }
 
     public boolean addShift(LocalTime openingTime, LocalTime closingTime, Day day, RestaurantManager manager) {
@@ -150,134 +136,10 @@ public class Restaurant {
     }
 
 
-    public void addNbDishesToUser(CampusUser user, SingleOrder singleOrder){
-        if(numberOfDishesPerUser.containsKey(user)){
-            int currentOrders = numberOfDishesPerUser.get(user)+ singleOrder.getNumberOfDishes() ;
-            if (currentOrders > numberOfDishesForDiscount) {
-                numberOfDishesPerUser.put(user, 0);
-            } else {
-                numberOfDishesPerUser.put(user, currentOrders);
-            }
-        }else{
-            numberOfDishesPerUser.put(user,1);
-        }
+    public DiscountSytem getDiscountSystem() {
+        return discountSystem;
     }
 
-    public int getNumberOfDishesForUser(CampusUser user){
-        return numberOfDishesPerUser.getOrDefault(user, 0);
-    }
-
-    public boolean isEligibleForDiscountByNbOfDishes(CampusUser user){
-        if(numberOfDishesPerUser.containsKey(user)){
-            return  numberOfDishesPerUser.get(user) == numberOfDishesForDiscount;
-        }
-        return false;
-    }
-
-
-
-    public void setNumberOfDishesPerUser(Map<CampusUser,Integer> numberOfDishesPerUser){
-        this.numberOfDishesPerUser = numberOfDishesPerUser;
-    }
-
-    public void setPercentageDiscountByNbOfDishes(int percentageDiscount){
-        this.percentageDiscount = percentageDiscount;
-    }
-
-    public int getPercentageDiscountByNbOfDishes() {
-        return percentageDiscount;
-    }
-
-    public void setNumberOfDishesPerUser(int numberOfOrdersPerUser){
-        this.numberOfOrdersPerUser = numberOfOrdersPerUser;
-    }
-
-    public int getNumberOfDishesPerUser(){
-        return numberOfOrdersPerUser;
-    }
-
-    public int getNumberOfDishesForDiscount(){
-        return numberOfDishesForDiscount;
-    }
-
-    public void setNumberOfOrdersForDiscount(int numberOfOrdersForDiscount){
-        this.numberOfOrdersForDiscount = numberOfOrdersForDiscount;
-    }
-
-    public void setNumberOfDishesForDiscount(int numberOfDishesForDiscount){
-        this.numberOfDishesForDiscount = numberOfDishesForDiscount;
-    }
-
-
-    public void setNumberOfDaysForDiscount(int numberOfDaysForDiscount) {
-        NumberOfDaysForDiscount = numberOfDaysForDiscount;
-    }
-
-    public void addNbOrderToUser(CampusUser user) {
-        if (NumberOfDaysForDiscount==0 || numberOfOrdersForDiscount==0){
-            return;
-        }
-        ExtensionDiscount extensionDiscount = getExtensionDiscount(user);
-        if (extensionDiscount == null) {
-
-            extensionDiscount = new ExtensionDiscount(user, numberOfOrdersForDiscount, NumberOfDaysForDiscount);
-            extensionDiscounts.add(extensionDiscount);
-        }else {
-            extensionDiscount.setNumberOfOrders(numberOfOrdersForDiscount);
-        }
-
-    }
-
-    public ExtensionDiscount getExtensionDiscount(CampusUser user) {
-        for (ExtensionDiscount extensionDiscount : extensionDiscounts) {
-            if (extensionDiscount.getClient() == user) {
-                return extensionDiscount;
-            }
-        }
-        return null;
-    }
-
-    public void removeNbDishesToUser(CampusUser user, SingleOrder singleOrder) {
-        if(numberOfDishesPerUser.containsKey(user)){
-            int currentOrders = numberOfDishesPerUser.get(user)- singleOrder.getNumberOfDishes() ;
-            if (currentOrders > numberOfDishesForDiscount) {
-                numberOfDishesPerUser.put(user, 0);
-            } else {
-                numberOfDishesPerUser.put(user, currentOrders);
-            }
-        }else{
-            numberOfDishesPerUser.put(user,0);
-        }
-    }
-
-    public void removeNbOrderToUser(CampusUser user) {
-        if (NumberOfDaysForDiscount==0 || numberOfOrdersForDiscount==0){
-            return;
-        }
-        ExtensionDiscount extensionDiscount = getExtensionDiscount(user);
-        if (extensionDiscount != null) {
-            extensionDiscount.setNumberOfOrders(extensionDiscount.getNumberOfOrders()-1);
-        }
-    }
-
-    public boolean isEligibleForDiscountByNbOfOrders(CampusUser user){
-        if (NumberOfDaysForDiscount==0 || numberOfOrdersForDiscount==0){
-            return false;
-        }
-        ExtensionDiscount extensionDiscount = getExtensionDiscount(user);
-        if (extensionDiscount != null && extensionDiscount.getIsDiscountValid()) {
-            return extensionDiscount.isValid();
-        }
-        return false;
-    }
-
-    public double getPercentageDiscountByNbOfOrders() {
-        return percentageDiscountByNbOfOrders;
-    }
-
-    public void setPercentageDiscountByNbOfOrders(int percentageDiscountByNbOfOrders) {
-        this.percentageDiscountByNbOfOrders = percentageDiscountByNbOfOrders;
-    }
 
     public void removeShift(Day.Shift shift) {
         schedule.remove(shift);
@@ -295,13 +157,6 @@ public class Restaurant {
         this.owner= manager;
     }
     public boolean offersAfterworkMenus() {
-//        if (menu == null) {
-//            return false;
-//        }
-//        return menus.stream().anyMatch(menu -> menu != null && menu.isAfterworkMenu());
-//        if (menu==afterWorkMenu)
-//            return true;
-//        return false;
             return menu != null && menu.isAfterworkMenu();
         }
 
@@ -310,10 +165,12 @@ public class Restaurant {
     public boolean setAfterworkMenu(boolean b) {
         return b;
     }
+
+
     public void setMenu(Menu menu, RestaurantManager manager) {
         if (manager == owner) {
             this.menu = menu;
-            menus.add(menu); // Ajoutez le menu à la liste menus
+            menus.add(menu);
         }
     }
 

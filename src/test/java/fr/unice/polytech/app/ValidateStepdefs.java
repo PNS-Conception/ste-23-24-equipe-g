@@ -1,5 +1,6 @@
 package fr.unice.polytech.app;
 
+import fr.unice.polytech.app.Orders.Cart;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.State.*;
@@ -19,7 +20,7 @@ public class ValidateStepdefs {
 
     @Given("I have an order with status {string}")
     public void i_have_an_order_with_status(String status) throws Exception {
-        singleOrder = new SingleOrder(new ArrayList<>());
+        singleOrder = new SingleOrder();
         switch (status.toLowerCase()) {
             case "placed":
                 singleOrder.placeOrder();

@@ -8,7 +8,9 @@ import java.util.*;
 
 import static fr.unice.polytech.app.Restaurant.Day.getAllDayOfWeeks;
 
-
+/**
+ * The RestaurantService class provides functionality for managing restaurants and their capacities.
+ */
 public class RestaurantService {
 
     private static RestaurantService instance;
@@ -16,17 +18,34 @@ public class RestaurantService {
     private CapacityManager capacityManager;
     private RestaurantRepository restaurantRepository; // Assuming there's a repository for data access
 
+    /**
+     * Constructs a new RestaurantService instance.
+     */
     public RestaurantService() {
         capacityManager = CapacityManager.getInstance();
         this.restaurants = new HashMap<>();
     }
 
+    /**
+     * Returns the singleton instance of RestaurantService.
+     *
+     * @return the singleton instance of RestaurantService
+     */
     public static synchronized RestaurantService getInstance() {
         if (instance == null) {
             instance = new RestaurantService();
         }
         return instance;
     }
+
+    /**
+     * Creates a new restaurant with the given name and menu.
+     *
+     * @param name the name of the restaurant
+     * @param menu the menu of the restaurant
+     * @return the newly created restaurant
+     * @throws IllegalArgumentException if a restaurant with the same name already exists
+     */
     public Restaurant createRestaurant(String name, Menu menu) {
         if (restaurants.containsKey(name)) {
             throw new IllegalArgumentException("Restaurant already exists with this name: " + name);
@@ -36,6 +55,12 @@ public class RestaurantService {
         initializeDefaultCapacity(newRestaurant); // Supposons que cette méthode existe pour initialiser la capacité
         return newRestaurant;
     }
+
+    /**
+     * Returns the default shifts for each day of the week.
+     *
+     * @return the list of default shifts
+     */
     private List<Day.Shift> getDefaultShifts() {
         List<Day.Shift> defaultShifts = new ArrayList<>();
         for (Day day : getAllDayOfWeeks()) {
@@ -44,7 +69,11 @@ public class RestaurantService {
         return defaultShifts;
     }
 
-
+    /**
+     * Initializes the default capacity for the given restaurant.
+     *
+     * @param restaurant the restaurant to initialize the capacity for
+     */
     private void initializeDefaultCapacity(Restaurant restaurant) {
         List<Day.Shift> shifts = restaurant.getSchedule().isEmpty() ? getDefaultShifts() : restaurant.getSchedule();
 
@@ -68,6 +97,11 @@ public class RestaurantService {
         }
     }
 
+    /**
+     * Returns a list of all restaurants.
+     *
+     * @return the list of all restaurants
+     */
     public List<Restaurant> getAllRestaurants() {
         // Return a pre-populated list of mocked restaurants
         // This is just for testing; in a real app, you'd query the database
@@ -87,6 +121,12 @@ public class RestaurantService {
         }
     }
 
+    /**
+     * Returns the restaurant with the given name.
+     *
+     * @param name the name of the restaurant
+     * @return the restaurant with the given name, or null if not found
+     */
     public Restaurant getRestaurantByName(String name) {
         return restaurants.get(name);
     }

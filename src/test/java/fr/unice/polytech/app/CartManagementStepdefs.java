@@ -3,7 +3,7 @@ package fr.unice.polytech.app;
 import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.Restaurant.RestaurantManager;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -36,8 +36,8 @@ public class CartManagementStepdefs {
 
     @Then("cart contains {int} item {string} with {int} as the quantity")
     public void cartContainsItemWithAsTheQuantity(int itemCount, String itemName, int quantity) {
-        assertEquals(itemCount, user.getCart().size());
-        Item item = findItemByName(user.getCart(), itemName);
+        assertEquals(itemCount, user.getCart().getItems().size());
+        Item item = findItemByName(user.getCart().getItems(), itemName);
         assertNotNull(item);
         assertEquals(quantity, item.getQuantity());
     }
@@ -54,8 +54,8 @@ public class CartManagementStepdefs {
 
     @Then("my cart contains {int} {string} and {int} {string}")
     public void myCartContainsAnd(int quantity1, String itemName1, int quantity2, String itemName2) {
-        Item item1 = findItemByName(user.getCart(), itemName1);
-        Item item2 = findItemByName(user.getCart(), itemName2);
+        Item item1 = findItemByName(user.getCart().getItems(), itemName1);
+        Item item2 = findItemByName(user.getCart().getItems(), itemName2);
 
         assertNotNull(item1);
         assertNotNull(item2);
@@ -66,23 +66,26 @@ public class CartManagementStepdefs {
 
     @When("I validate my cart of {int} {string}")
     public void iValidateMyCartOf(int quantity, String itemName) throws Exception {
-        List<Item> items = List.of(new Item(new Dish(itemName, 0, 0), quantity));
-        SingleOrder singleOrder = user.order(items,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
+
+        user.createItem(new Dish(itemName, 0, 0), quantity);
+
+        user.order(new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
     }
 
     @Then("my order contains {int} {string}")
     public void myOrderContains(int quantity, String itemName) {
         SingleOrder lastSingleOrder = user.getHistory().get(user.getHistory().size() - 1);
+
         assertNotNull(lastSingleOrder);
 
-        Item item = findItemByName(lastSingleOrder.getItems(), itemName);
+        Item item = findItemByName(lastSingleOrder.getCart().getItems(), itemName);
         assertNotNull(item);
         assertEquals(quantity, item.getQuantity());
     }
 
     @When("I want to add {int} more {string}")
     public void iWantToAddMore(int additionalQuantity, String itemName) {
-        Item existingItem = findItemByName(user.getCart(), itemName);
+        Item existingItem = findItemByName(user.getCart().getItems(), itemName);
         assertNotNull(existingItem);
 
         int currentQuantity = existingItem.getQuantity();
@@ -92,14 +95,14 @@ public class CartManagementStepdefs {
 
     @Then("the quantity of {string} is set to {int} in the basket")
     public void theQuantityOfIsSetToInTheBasket(String itemName, int newQuantity) {
-        Item item = findItemByName(user.getCart(), itemName);
+        Item item = findItemByName(user.getCart().getItems(), itemName);
         assertNotNull(item);
         assertEquals(newQuantity, item.getQuantity());
     }
 
     @When("I want to remove {int} {string}")
     public void iWantToRemove(int removalQuantity, String itemName) {
-        Item existingItem = findItemByName(user.getCart(), itemName);
+        Item existingItem = findItemByName(user.getCart().getItems(), itemName);
         assertNotNull(existingItem);
 
         int currentQuantity = existingItem.getQuantity();

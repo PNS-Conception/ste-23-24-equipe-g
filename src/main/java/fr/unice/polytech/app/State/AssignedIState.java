@@ -1,6 +1,13 @@
+/**
+ * Represents the assigned state of an order.
+ * In this state, the order has been assigned to a delivery person.
+ * The order cannot be placed, paid, cancelled, accepted, rejected, or delivered.
+ * However, it can be validated and marked as ready for delivery.
+ */
 package fr.unice.polytech.app.State;
 
 import fr.unice.polytech.app.Orders.Order;
+
 
 public class AssignedIState implements IState {
 

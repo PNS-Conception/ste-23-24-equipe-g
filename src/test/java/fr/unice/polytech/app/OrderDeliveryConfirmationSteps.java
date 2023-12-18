@@ -6,7 +6,8 @@ import fr.unice.polytech.app.Orders.SingleOrder;
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.State.*;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
+import fr.unice.polytech.app.Restaurant.RestaurantManager;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -29,7 +30,7 @@ public class OrderDeliveryConfirmationSteps {
         ArrayList<Item> items = new ArrayList<>();
         items.add(item);
 
-        singleOrder = new SingleOrder(items, new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
+        singleOrder = new SingleOrder( new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
         switch (status.toLowerCase()) {
             case "placed":
                 singleOrder.placeOrder();
@@ -138,9 +139,8 @@ public class OrderDeliveryConfirmationSteps {
     @Given("the user cannot confirm receipt")
     public void the_user_cannot_confirm_receipt() throws Exception {
         // Simulez la situation où l'utilisateur ne peut pas confirmer la réception
-        //singleOrder= new SingleOrder(new ArrayList<>(), new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
         deliveryPerson = new DeliveryPerson( "Delivery Person",null, "123456789");
-        singleOrder = new SingleOrder(new ArrayList<>(), new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
+        singleOrder = new SingleOrder(new CampusUser("user123","null", "User123"), new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
         singleOrder.setUserUnableToConfirm();
         singleOrder.setStatus(new ReadyIState());
         deliveryPerson.assignOrder(singleOrder);

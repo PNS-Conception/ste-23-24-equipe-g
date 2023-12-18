@@ -3,13 +3,15 @@ package fr.unice.polytech.app;
 
 import fr.unice.polytech.app.Orders.*;
 import fr.unice.polytech.app.Restaurant.*;
+import fr.unice.polytech.app.State.AcceptedIState;
 import fr.unice.polytech.app.State.CancelledIState;
 import fr.unice.polytech.app.State.ReadyIState;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
@@ -31,7 +33,7 @@ public class BuffetOrderStepdefs {
         // Supposons que ces méthodes et constructeurs existent dans vos classes
         Restaurant restaurant = restaurantService.createRestaurant("Issa Nissa", createIssaNissaMenu());
         formula formulaIssaNissa = new formula("Issa Nissa", 30,createIssaNissaItems());
-        CampusUser universityStaff = new CampusUser("Alice","au pays des merveilles");
+        CampusUser universityStaff = new CampusUser("Alice",null,"au pays des merveilles");
         String contactPerson = "Bob";
         int numberOfPeople = 30;
         int numberOfItems = 10;
@@ -43,7 +45,7 @@ public class BuffetOrderStepdefs {
         // Supposons que ces méthodes et constructeurs existent dans vos classes
         Restaurant restaurant = restaurantService.createRestaurant("Simple Buffet", createMenu());
         formula formulaIssaNissa = new formula("Issa Nissa", 30,createItems());
-        CampusUser universityStaff = new CampusUser("Alice","au pays des merveilles");
+        CampusUser universityStaff = new CampusUser("Alice",null,"au pays des merveilles");
         String contactPerson = "Bob";
         int numberOfPeople = 54;
         int numberOfItems = 15;
@@ -169,16 +171,16 @@ public class BuffetOrderStepdefs {
         assertEquals(contactPerson, buffetIssaNissa.getContactPerson());
     }
     @And("^the order is cancelled$")
-    public void the_order_is_cancelled() {
-        buffetIssaNissa.cancelOrder();
+    public void the_order_is_cancelled() throws Exception {
+        buffetIssaNissa.setStatus(new AcceptedIState());
+        buffetIssaNissa.cancel();
     }
 
     @Then("^the status of the order should be definitively \"([^\"]*)\"$")
     public void the_status_of_the_order_should_be(String status) {
         if (status.equals("cancelled"))
             assertTrue(buffetIssaNissa.getStatus() instanceof CancelledIState);
-            assertFalse(buffetIssaNissa.getStatus() instanceof ReadyIState);
-
+        assertFalse(buffetIssaNissa.getStatus() instanceof ReadyIState);
         assertEquals(status, "Cancelled");
     }
 
@@ -190,7 +192,7 @@ public class BuffetOrderStepdefs {
     @Given("^\"([^\"]*)\" from university staff has ordered a \"([^\"]*)\" for \"([^\"]*)\" people for a university event$")
     public void alice_from_university_staff_has_ordered_a_buffet_for_people_for_a_university_event(String staffName, String buffetType, int numberOfPeople) throws Exception {
         restaurantService = new RestaurantService();
-        CampusUser staffMember = new CampusUser(staffName, "University Staff");
+        CampusUser staffMember = new CampusUser(staffName,null, "University Staff");
         Restaurant restaurant = restaurantService.getRestaurantByName("University Restaurant");
         buffetOrder = createBuffetOrder();
     }

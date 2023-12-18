@@ -6,13 +6,16 @@ import fr.unice.polytech.app.Restaurant.*;
 import fr.unice.polytech.app.Restaurant.RestaurantManager;
 import fr.unice.polytech.app.State.PaidIState;
 import fr.unice.polytech.app.State.PlacedIState;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
+import fr.unice.polytech.app.Util.RandomGenerator;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 public class ManageGroupStepdefs {
 
@@ -21,6 +24,8 @@ public class ManageGroupStepdefs {
     CampusUser bob;
     GroupOrder groupOrder;
     SingleOrder aliceSingleOrder;
+
+    RandomGenerator mockRandomGenerator = Mockito.mock(RandomGenerator.class);
 
 
 
@@ -164,11 +169,14 @@ public class ManageGroupStepdefs {
     @When("Alice leave the group order")
     public void aliceLeaveTheGroupOrder() throws Exception {
         alice.createItem(new Dish("pizza",10,0), 2);
-        aliceSingleOrder = new SingleOrder(alice.getCart(), alice,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
+        aliceSingleOrder = new SingleOrder( alice,new Restaurant("test", new RestaurantManager("test", "test", "test"), "test"));
+        aliceSingleOrder.setDeliveryLocation("Nice");
         groupOrder.addOrder(aliceSingleOrder);
         groupOrder.quit(alice);
         groupOrder.setOwner(groupOrder.getMembers().get(0));
-        aliceSingleOrder.getPaid();
+        when(mockRandomGenerator.nextDouble()).thenReturn(0.0); // Force la réussite
+        aliceSingleOrder.getClient().getPaiementSystem().setRandomGenerator(mockRandomGenerator);
+        aliceSingleOrder.getPaidMock();
         groupOrder.cancelOrder(aliceSingleOrder, alice,2);
     }
 

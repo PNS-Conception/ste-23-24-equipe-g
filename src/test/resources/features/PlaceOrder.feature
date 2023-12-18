@@ -13,5 +13,3 @@ Feature: place an order
     When the client create the order delivery time is 17:00 20|10|2022
     And placed at 16:10 20|10|2022
     Then the order status is placed
-
-    # add the credit thing

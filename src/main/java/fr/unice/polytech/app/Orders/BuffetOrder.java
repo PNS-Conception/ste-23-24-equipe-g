@@ -3,32 +3,31 @@ package fr.unice.polytech.app.Orders;
 
 import fr.unice.polytech.app.Restaurant.Restaurant;
 import fr.unice.polytech.app.State.*;
-import fr.unice.polytech.app.Users.CampusUser;
+import fr.unice.polytech.app.User.CampusUser;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class BuffetOrder implements Order{
+public class BuffetOrder implements DecoratorOrder{
     private UUID orderId;
-    private Restaurant restaurant;
-    private String deliveryLocation;
     private String deliveryAddress;
-    private LocalTime pickupTime;
-    private IState status;
     private String contactPerson; // Usager destinataire
-    private CampusUser universityStaff; // Membre du staff universitaire
     private int numberOfPeople; // Nombre de personnes
     private Buffet buffet; // Type de buffet (Issa Nissa, Mignardises, etc.)
     private String routeDetails;
+    private LocalTime pickupTime;
+
+    DecoratorOrder order;
 
 
     public BuffetOrder(Restaurant restaurant, CampusUser universityStaff, String contactPerson,
                        int numberOfPeople, Buffet buffetType) throws Exception {
         this.orderId = UUID.randomUUID();
-        this.restaurant = restaurant;
-        this.universityStaff = universityStaff;
+        order = new SingleOrder();
+        setOwner(universityStaff);
+        setRestaurant(restaurant);
         this.contactPerson = contactPerson;
         this.numberOfPeople = numberOfPeople;
         this.buffet= buffetType;
@@ -37,25 +36,26 @@ public class BuffetOrder implements Order{
 
     @Override
     public String getRouteDetails() {
-        return routeDetails;
+        //System.out.println("Route details: " + order.getRouteDetails());
+        return order.getRouteDetails();
     }
     @Override
     public LocalTime getPickupTime() {
-        return pickupTime;
+        return order.getPickupTime();
     }
     @Override
     public List<Restaurant> getRestaurants() {
         List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(restaurant);
+        restaurants.add(order.getRestaurant());
         return restaurants;
     }
     @Override
     public String getDeliveryLocation() {
-        return deliveryLocation;
+        return order.getDeliveryLocation();
     }
     @Override
     public void setStatus(IState orderStatus) {
-        this.status = orderStatus;
+        order.setStatus(orderStatus);
     }
 
     @Override
@@ -65,12 +65,12 @@ public class BuffetOrder implements Order{
 
     @Override
     public void setDeliveryLocation(String deliveryLocation) {
-        this.deliveryLocation = deliveryLocation;
+        order.setDeliveryLocation(deliveryLocation);
     }
 
     @Override
     public IState getStatus() {
-        return status;
+        return order.getStatus();
     }
 
     @Override
@@ -85,7 +85,7 @@ public class BuffetOrder implements Order{
 
     @Override
     public double getPrice() {
-        if(status instanceof CancelledIState)
+        if(order.getStatus() instanceof CancelledIState)
             return 0;
         return getBuffet().getFormule().getPrix()* buffet.getFormuleList().size();
     }
@@ -97,79 +97,81 @@ public class BuffetOrder implements Order{
 
     @Override
     public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+        order.setRestaurant(restaurant);
     }
 
     @Override
     public void pay() throws Exception {
-        status=new PaidIState();
+        order.pay();
     }
 
     @Override
     public void accept() throws Exception {
-        status=new AcceptedIState();
+        order.accept();
     }
 
     @Override
     public void reject() throws Exception {
-        status=new RejectedIState();
+        order.reject();
     }
 
     @Override
     public void ready() throws Exception {
-         status=  buffet.ready()?new ReadyIState() :new PlacedIState();
+         order.setStatus( buffet.ready()?new ReadyIState() :new PlacedIState());
     }
 
 
     @Override
     public void assign() throws Exception {
-        status=new AssignedIState();
+        order.assign();
     }
 
     @Override
     public void deliver() throws Exception {
-        status=new DelivredIState();
+        order.deliver();
     }
 
     @Override
     public void cancel() throws Exception {
-        status=new CancelledIState();
+        order.cancel();
     }
 
     @Override
     public void pickUp() throws Exception {
-        status=new DelivredIState();
+        order.pickUp();
     }
 
     @Override
     public void placeOrder() throws Exception {
-        status=new PlacedIState();
+        order.placeOrder();
     }
     public CampusUser getOwner() {
-        return universityStaff;
+        return order.getOwner();
     }
+
+    @Override
+    public void setOwner(CampusUser owner) {
+        order.setOwner(owner);
+    }
+
     public void setDeliveryAddress(String deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
     }
     public boolean isOrdersPaid() {
-        return status instanceof PaidIState;
+        return order.getStatus() instanceof PaidIState;
     }
 
     public boolean isOrderCancelled() {
-        return status instanceof CancelledIState;
+        return order.getStatus() instanceof CancelledIState;
     }
 
-
-    public void delete() {
-        universityStaff = null;
-    }
 
     public boolean isOrderReady() {
-        return status instanceof ReadyIState;
+        return order.getStatus() instanceof ReadyIState;
     }
 
     public boolean isOrderPickedUp() {
-        return status instanceof DelivredIState;
+        return order.getStatus() instanceof ValidatedIState;
     }
 
     public void validateForDelivery() throws Exception {
@@ -189,7 +191,7 @@ public class BuffetOrder implements Order{
     }
 
     public void setPickupTime(LocalTime pickupTime) {
-        this.pickupTime = pickupTime;
+        order.setPickupTime(pickupTime);
     }
 
     public String getContactPerson() {
@@ -198,14 +200,6 @@ public class BuffetOrder implements Order{
 
     public void setContactPerson(String contactPerson) {
         this.contactPerson = contactPerson;
-    }
-
-    public CampusUser getUniversityStaff() {
-        return universityStaff;
-    }
-
-    public void setUniversityStaff(CampusUser universityStaff) {
-        this.universityStaff = universityStaff;
     }
 
     public int getNumberOfPeople() {
@@ -225,12 +219,9 @@ public class BuffetOrder implements Order{
     }
 
     public void setRouteDetails(String routeDetails) {
-        this.routeDetails = routeDetails;
+        order.setRouteDetails(routeDetails);
     }
 
-    public void cancelOrder() {
-        status=new CancelledIState();
-    }
 
     public void changeOrder(formula newFormula, int newNumberOfPeople) {
         this.buffet.setFormule(newFormula);
