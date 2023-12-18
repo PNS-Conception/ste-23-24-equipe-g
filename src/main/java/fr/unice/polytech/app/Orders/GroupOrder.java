@@ -24,6 +24,7 @@ public class GroupOrder implements Order {
     private String deliveryLocation;
     private String deliveryAddress;
     private Order order;
+    private boolean isDeliveryDetailsLocked;
 
 
     public GroupOrder(CampusUser owner) throws Exception {
@@ -69,8 +70,12 @@ public class GroupOrder implements Order {
     }
 
     public void addOrder(SingleOrder singleOrder) {
-        subSingleOrders.add(singleOrder);
+        if (singleOrder.getDeliveryLocation().equals(this.deliveryLocation) &&
+                singleOrder.getDeliveryLocation().equals(this.deliveryAddress)) {
+            subSingleOrders.add(singleOrder);
+        }
     }
+
 
     public void setStatus(IState orderStatus) {
         order.setStatus(orderStatus);
@@ -116,6 +121,7 @@ public class GroupOrder implements Order {
         if (count == subSingleOrders.size()) {
             order.pay();
         }
+        isDeliveryDetailsLocked = true;
     }
 
     @Override
@@ -203,7 +209,12 @@ public class GroupOrder implements Order {
     }
 
     public void setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
+        if (this.subSingleOrders.isEmpty()) {
+            this.deliveryAddress = deliveryAddress;
+        }
+        if (!isDeliveryDetailsLocked) {
+            this.deliveryAddress = deliveryAddress;
+        }
     }
 
     public void exclude(CampusUser alice, CampusUser bob) {
@@ -218,7 +229,12 @@ public class GroupOrder implements Order {
 
     @Override
     public void setDeliveryLocation(String deliveryLocation) {
-        this.deliveryAddress = deliveryLocation;
+        if (this.subSingleOrders.isEmpty()) {
+            this.deliveryLocation = deliveryLocation;
+        }
+        if (!isDeliveryDetailsLocked) {
+            this.deliveryLocation = deliveryLocation;
+        }
     }
 
     @Override
