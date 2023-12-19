@@ -157,7 +157,8 @@ Le projet est structuré comme suit pour assurer une organisation claire et une 
         - **`Util/`**: Utilitaires et fonctions communes.
     - **`test/java/fr/unice/polytech/app/`**: Definitions des Steps.
 - **`test/resources/features/`**: Scénarios de test basés sur des fonctionnalités.
-  Cette structure offre une vue claire de l'organisation du projet, facilitant à la fois le développement et la maintenance. Les dossiers sont organisés de manière logique, reflétant les différents aspects et composants du système.
+
+Cette structure offre une vue claire de l'organisation du projet, facilitant à la fois le développement et la maintenance. Les dossiers sont organisés de manière logique, reflétant les différents aspects et composants du système.
 
 ## Milestones et Suivi de Progression
 - **Milestone 1**: ![100%](https://progress-bar.dev/100)  Infrastructure de Base et Commandes Simples
