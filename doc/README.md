@@ -37,7 +37,7 @@ Les principales caractéristiques du projet incluent :
 - **US #25 commandes pour les événements AfterWork.**: ![100%](https://progress-bar.dev/100) En tant qu' utilisateur souhaitant organiser un événement Afterwork,
   Je veux avoir la possibilité de créer des ordres pour ces événements,
   Afin de pouvoir organiser des événements Afterwork sans processus de paiement immédiat ni de livraison.
-  - `issue`: [commandes pour les événements AfterWork](hhttps://github.com/PNS-Conception/ste-23-24-equipe-g/issues/25)
+  - `issue`: [commandes pour les événements AfterWork](https://github.com/PNS-Conception/ste-23-24-equipe-g/issues/25)
 - **US #24 Gestion de commandes multiples.**: ![100%](https://progress-bar.dev/100) En tant que [utilisateur], Je veux [pouvoir créer, ajouter, annuler et gérer plusieurs commandes en une seule fois] afin de [simplifier le processus de commande groupée]
   - `issue`: [Gestion de commandes multiples](https://github.com/PNS-Conception/ste-23-24-equipe-g/issues/24)
 - **US #23 Extension de la remise.**: ![100%](https://progress-bar.dev/100) En tant que [utilisateur], Je veux [pouvoir créer, ajouter, annuler et gérer plusieurs commandes en une seule fois] afin de [simplifier le processus de commande groupée]
