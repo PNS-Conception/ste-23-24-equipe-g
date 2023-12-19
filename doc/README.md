@@ -25,8 +25,8 @@ Les principales caractéristiques du projet incluent :
 
 ## Membres de l'Équipe et Rôles
 - **PO (Product Owner)**: Sara ZENKRI - Définition de la vision produit
-- **Archi (Architecte)**: Malek FARHAT - Conception de l'architecture système
-- **QA (Quality Assurance)**: Clement Chatelin - Assurance de la qualité et tests
+- **Archi (Architecte)**: Melek FARHAT - Conception de l'architecture système
+- **QA (Quality Assurance)**: Clement CHATELAIN - Assurance de la qualité et tests
 - **Ops (Operations)**: Kaleb SIKA - Gestion de l'infrastructure et déploiements
 
 ## User Stories Principales
