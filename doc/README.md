@@ -54,10 +54,26 @@ java -jar target/demo-1.0-SNAPSHOT.jar
 ```
 
 ## Architecture et Structure du Projet
-![Architecture](lien-vers-image-darchitecture.jpg)
-- `src/`: Contient le code source.
-- `test/`: Tests unitaires et d'intégration.
-- `doc/`: Documentation technique et rapport de projet.
+![Architecture](https://github.com/votre_utilisateur/votre_projet/images/architecture.jpg)
+Le projet est structuré comme suit pour assurer une organisation claire et une maintenance facile :
+
+- **`.github/`**: Contient les configurations spécifiques à GitHub, comme les templates pour les issues et les workflows d'intégration continue.
+- **`.idea/`**: Répertoire de configuration pour l'environnement de développement IntelliJ IDEA.
+- **`doc/`**: Documentation technique, rapports de projet et autres documents relatifs.
+- **`src/`**: Le cœur du code source de l'application.
+  - **`main/java/fr/unice/polytech/app/`**: Code source principal de l'application, organisé par packages fonctionnels.
+    - **`Delivery/`**: Gestion des livraisons.
+    - **`Orders/`**: Traitement des commandes.
+    - **`Restaurant/`**: Fonctionnalités liées aux restaurants.
+    - **`State/`**: Gestion des états (par exemple, état de commande).
+    - **`Statistic/`**: Calcul et gestion des statistiques.
+    - **`System/`**: Fonctionnalités de base du système.
+    - **`User/`**: Gestion des utilisateurs.
+    - **`Util/`**: Utilitaires et fonctions communes.
+  - **`test/java/fr/unice/polytech/app/`**: Tests unitaires et d'intégration, reflétant la structure du code source.
+- **`test/resources/features/`**: Scénarios de test basés sur des fonctionnalités, utilisés pour des tests d'acceptation ou des tests basés sur le comportement (BDD).
+
+Cette structure offre une vue claire de l'organisation du projet, facilitant à la fois le développement et la maintenance. Les dossiers sont organisés de manière logique, reflétant les différents aspects et composants du système.
 
 ## Milestones et Suivi de Progression
 - **Milestone 1**: ![100%](https://progress-bar.dev/100)  Infrastructure de Base et Commandes Simples
