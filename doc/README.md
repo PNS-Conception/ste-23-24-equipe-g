@@ -31,10 +31,100 @@ Les principales caractéristiques du projet incluent :
 - **Ops (Operations)**: Kaleb SIKA - Gestion de l'infrastructure et déploiements
 
 ## User Stories Principales
-- **US #12**: ![100%](https://progress-bar.dev/100) En tant qu'utilisateur, je veux pouvoir me connecter afin d'accéder à mon espace personnel.
-    - `Feature Branch`: [feature/login](https://github.com/SI4-Equipe-G/projet/tree/feature/login)
-- **US #34**: ![85%](https://progress-bar.dev/85) En tant qu'administrateur, je veux générer des rapports pour suivre l'activité des utilisateurs.
-    - `Feature Branch`: [feature/report-generation](https://github.com/SI4-Equipe-G/projet/tree/feature/report-generation)
+- **US #28 Buffet Order Management.**: ![95%](https://progress-bar.dev/100) En tant que membre du personnel universitaire (par exemple, une secrétaire), je veux pouvoir commander des buffets pour divers événements universitaires, afin d'assurer une organisation efficace et une expérience satisfaisante pour les participants.
+  - `issue`: [Buffet Order Management](https://github.com/PNS-Conception/ste-23-24-equipe-g/issues/28)
+- **US #27 Extension Signalement des Usagers.**: ![100%](https://progress-bar.dev/100) En tant que[livreur], Je veux [pouvoir noter l'utilisateur].
+  - `issue`: [Extension Signalement des Usagers](https://github.com/PNS-Conception/ste-23-24-equipe-g/issues/27)
+- **US #25 commandes pour les événements AfterWork.**: ![100%](https://progress-bar.dev/100) En tant qu' utilisateur souhaitant organiser un événement Afterwork,
+  Je veux avoir la possibilité de créer des ordres pour ces événements,
+  Afin de pouvoir organiser des événements Afterwork sans processus de paiement immédiat ni de livraison.
+  - `issue`: [commandes pour les événements AfterWork](hhttps://github.com/PNS-Conception/ste-23-24-equipe-g/issues/25)
+- **US #24 Gestion de commandes multiples.**: ![100%](https://progress-bar.dev/100) En tant que [utilisateur], Je veux [pouvoir créer, ajouter, annuler et gérer plusieurs commandes en une seule fois] afin de [simplifier le processus de commande groupée]
+  - `issue`: [Gestion de commandes multiples](https://github.com/PNS-Conception/ste-23-24-equipe-g/issues/24)
+- **US #23 Extension de la remise.**: ![100%](https://progress-bar.dev/100) En tant que [utilisateur], Je veux [pouvoir créer, ajouter, annuler et gérer plusieurs commandes en une seule fois] afin de [simplifier le processus de commande groupée]
+  - `issue`: [Extension de la remise](https://github.com/PNS-Conception/ste-23-24-equipe-g/issues/23)
+- **US #29 Visualiser la liste des restaurants..**: ![100%](https://progress-bar.dev/100) En tant que [utilisateur], Je veux [pouvoir voir la liste des restaurants disponibles] afin de [choisir un restaurant pour passer une commande]
+  - `issue`: [Visualiser la liste des restaurants](https://github.com/PNS-Conception/ste-23-24-equipe-g/issues/29)
+- **US #19 Accès aux métriques opérationnelles.**: ![100%](https://progress-bar.dev/100) En tant qu' administrateur ou partie prenante,
+  Je veux accéder aux métriques réalisées à partir des données collectées,
+  Afin de pouvoir analyser ces métriques pour une prise de décision éclairée.
+  - `issue`: [Accès aux métriques opérationnelles](https://github.com/PNS-Conception/ste-23-24-equipe-g/issues/19)
+- **US #11 Passez une commande de groupe.**: ![100%](https://progress-bar.dev/100)
+  - `Issue`: [Passez une commande de groupe](https://github.com/PNS-Conception/ste-23-24-equipe-g/issues/11)
+    - ⭐ **Titre/Title**: Placer une commande de groupe.
+      - ⭐ Description
+      En tant que [utilisateur Alice, membre du groupe de commande], Je veux [pouvoir placer, annuler, recevoir et finaliser une commande groupée] afin de [coordonner efficacement les commandes avec d'autres membres du groupe].
+
+      - 🌟 Priorité/Priority
+      Must have/Doit avoir : la première version de ce produit nécessite absolument cette fonctionnalité - elle est essentielle au succès du produit.
+
+      - 🌟 Estimation/Estimate M
+
+      - ✨ Règle métier /Business rules
+        - Une commande groupée est créée avec "Alice" en tant que propriétaire et "Bob" en tant que membre.
+        - "Alice" peut placer une commande depuis un restaurant et payer pour elle.
+        - "Bob" peut placer une commande depuis un restaurant et payer pour lui.
+        - "Bob" peut placer une commande depuis un restaurant et payer pour lui.
+        -  Si toutes les commandes dans le groupe sont payées, le statut de la commande groupée est "Paid", et les restaurants reçoivent la commande.
+        -  Si toutes les commandes ne sont pas payées, le statut de la commande groupée n'est pas "Paid", et les restaurants ne reçoivent pas la commande.
+        -  Si une commande individuelle est annulée, le statut de la commande groupée reste "Placed", le membre est retiré du groupe, et il est remboursé.
+        -  Si toutes les commandes individuelles sont annulées, le statut de la commande groupée devient "Canceled", tous les membres sont remboursés, et le groupe est supprimé.
+        -  Si toutes les commandes individuelles sont acceptées, le statut de la commande groupée devient "Ready", et tous les membres sont notifiés.
+        -  Si la commande groupée est validée par le livreur, le statut devient "Picked up", et tous les membres sont notifiés.
+        -  Si la commande groupée est livrée, le statut devient "Delivered", tous les membres sont notifiés, et le groupe est supprimé.
+
+        - 🌟 Critères d'acceptation/Acceptance criteria
+      
+          - **Scénario 1: Placer une commande groupée où toutes les commandes sont payées**
+           ```bash
+          - _Etant donné_ qu un groupe de commande est créé avec "Alice" en tant que propriétaire et "Bob" en tant que membre...
+          - _Quand_ "Alice" place une commande depuis le restaurant "Vapiano" et paye pour elle...
+          - _Alors_ le statut de la commande groupée doit être "Paid"...
+           ``` 
+          - **Scénario: Placer une commande groupée où il y a des commandes ne sont pas payées.**
+           ```bash
+              _Etant donné_ qu un groupe de commande est créé avec "Alice" en tant que propriétaire et "Bob" en tant que membre
+              _Quand_ "Alice" place une commande depuis le restaurant "Vapiano" et paye pour elle
+              _Et_ "Bob" place une commande depuis "le déclice" mais ne paye pas
+              _Alors_ le statut de la commande groupée ne doit pas être "Placed"
+              _Et_ les restaurants ne doivent pas recevoir la commande.
+           ``` 
+          - **Scénario: Annuler toutes les commandes individuelles dans le groupe de commande groupée.**
+           ```bash
+              _Etant donné_ qu une commande groupée est placée
+              _Quand_ tous les membres annulent leurs commandes
+              _Alors_ le statut de la commande groupée doit être "Canceled"
+              _Et_ tous les membres doivent être remboursés
+              _Et_ le groupe doit être supprimé.
+           ``` 
+        - **Scénario: La commande groupée est prête après l'acceptation de toutes les commandes individuelles.**
+          ```bash
+              _Etant donné_ que toutes les commandes individuelles sont acceptées
+              _Quand_ toutes les commandes individuelles sont prêtes
+              _Alors_ le statut de la commande groupée doit être "Ready"
+              _Et_ tous les membres doivent être notifiés.
+          ``` 
+          **Scénario: La commande groupée est récupérée après validation par le livreur.**
+          ```bash
+              _Etant donné_ que la commande groupée est prête
+              _Quand_ le livreur valide la commande groupée
+              _Alors_ le statut de la commande groupée doit être "Picked up"
+              _Et_ tous les membres doivent être notifiés.
+          ``` 
+          - **Scénario:La commande groupée est livrée après validation par le livreur.**
+          ```bash
+              _Etant donné_ que la commande groupée est récupérée
+              _Quand_ le livreur effectue la livraison
+              _Alors_ le statut de la commande groupée doit être "Delivered"
+              _Et_ tous les membres doivent être notifiés
+              _Et_ le groupe doit être supprimé.
+          ``` 
+
+
+#### [Autres scénarios ici]
+
+
+  
 
 ## Guide d'Installation et de Lancement
 ### Prérequis
