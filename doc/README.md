@@ -1,5 +1,6 @@
 # SI4-Equipe-G - SophiaTech Eats
-
+![Badge de statut](https://img.shields.io/badge/status-complet-brightgreen)
+![Badge de version](https://img.shields.io/badge/version-1.0.0-blue)
 ## Table des Matières
 - [Introduction](#introduction)
 - [Membres de l'Équipe et Rôles](#membres-de-léquipe-et-rôles)
@@ -22,8 +23,6 @@ Les principales caractéristiques du projet incluent :
 - **Analyses statistiques** : Fournissant des insights précieux sur les volumes de commande, l'efficacité de la livraison et les préférences des utilisateurs.
 - **Flexibilité et adaptabilité** : Avec la capacité d'ajouter de nouvelles fonctionnalités, comme la diversification des types de commandes (buffets, afterworks, etc.) et le signalement des usagers par les livreurs.
 
-![Badge de statut](https://img.shields.io/badge/status-complet-brightgreen)
-![Badge de version](https://img.shields.io/badge/version-1.0.0-blue)
 ## Membres de l'Équipe et Rôles
 - **PO (Product Owner)**: Sara ZENKRI - Définition de la vision produit
 - **Archi (Architecte)**: Malek FARHAT - Conception de l'architecture système
@@ -120,10 +119,6 @@ Les principales caractéristiques du projet incluent :
               _Et_ le groupe doit être supprimé.
           ``` 
 
-
-#### [Autres scénarios ici]
-
-
   
 
 ## Guide d'Installation et de Lancement
@@ -179,3 +174,6 @@ Cette structure offre une vue claire de l'organisation du projet, facilitant à 
 - **Rapport Final**: [TeamSI4-Equipe-G-rendu2.pdf](https://github.com/SI4-Equipe-G/projet/doc/TeamSI4-Equipe-G-rendu2.pdf)
 - **Documentation du projet**: [Voir Etude de cas](https://unice-my.sharepoint.com/personal/mireille_blay_unice_fr/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fmireille%5Fblay%5Funice%5Ffr%2FDocuments%2FENSEIGNEMENTS%5F23%5F24%2FCOURS%2FCOO%20DISTANT%2FTDs%2FPOUB%2FCaseStudy23%2D24%2Epdf&parent=%2Fpersonal%2Fmireille%5Fblay%5Funice%5Ffr%2FDocuments%2FENSEIGNEMENTS%5F23%5F24%2FCOURS%2FCOO%20DISTANT%2FTDs%2FPOUB&ga=1)
 - **Extension du projet**: [Voir SophiaTech Eats: new functionalities](https://unice-my.sharepoint.com/:w:/g/personal/mireille_blay_unice_fr/EWrdQ4sG4wxDoOhWGgfyKgMBClaCekdUJuKiWhSCDGCSyg?e=fhGgVV)
+
+![Badge de statut](https://img.shields.io/badge/status-complet-brightgreen)
+![Badge de version](https://img.shields.io/badge/version-1.0.0-blue)
