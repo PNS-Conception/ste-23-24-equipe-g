@@ -155,9 +155,8 @@ Le projet est structuré comme suit pour assurer une organisation claire et une 
     - **`System/`**: Fonctionnalités de base du système.
     - **`User/`**: Gestion des utilisateurs.
     - **`Util/`**: Utilitaires et fonctions communes.
-  - **`test/java/fr/unice/polytech/app/`**: Tests unitaires et d'intégration, reflétant la structure du code source.
-- **`test/resources/features/`**: Scénarios de test basés sur des fonctionnalités, utilisés pour des tests d'acceptation ou des tests basés sur le comportement (BDD).
-
+  - **`test/java/fr/unice/polytech/app/`**: Definitions des Steps.
+- **`test/resources/features/`**: Scénarios de test basés sur des fonctionnalités.
 Cette structure offre une vue claire de l'organisation du projet, facilitant à la fois le développement et la maintenance. Les dossiers sont organisés de manière logique, reflétant les différents aspects et composants du système.
 
 ## Milestones et Suivi de Progression
