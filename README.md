@@ -171,7 +171,7 @@ Cette structure offre une vue claire de l'organisation du projet, facilitant à 
 - [Voir Milestones](https://github.com/PNS-Conception/ste-23-24-equipe-g/milestones?state=closed)
 
 ## Rapport de Projet et Documentation
-- **Rapport Final**: [TeamSI4-Equipe-G-rendu2.pdf](https://github.com/SI4-Equipe-G/projet/doc/TeamSI4-Equipe-G-rendu2.pdf)
+- **Rapport Final**: [TeamSI4-Equipe-G-rendu2.pdf](https://github.com/PNS-Conception/ste-23-24-equipe-g/blob/main/doc/TeamSI4-Equipe-G-rendu2.pdf)
 - **Documentation du projet**: [Voir Etude de cas](https://unice-my.sharepoint.com/personal/mireille_blay_unice_fr/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fmireille%5Fblay%5Funice%5Ffr%2FDocuments%2FENSEIGNEMENTS%5F23%5F24%2FCOURS%2FCOO%20DISTANT%2FTDs%2FPOUB%2FCaseStudy23%2D24%2Epdf&parent=%2Fpersonal%2Fmireille%5Fblay%5Funice%5Ffr%2FDocuments%2FENSEIGNEMENTS%5F23%5F24%2FCOURS%2FCOO%20DISTANT%2FTDs%2FPOUB&ga=1)
 - **Extension du projet**: [Voir SophiaTech Eats: new functionalities](https://unice-my.sharepoint.com/:w:/g/personal/mireille_blay_unice_fr/EWrdQ4sG4wxDoOhWGgfyKgMBClaCekdUJuKiWhSCDGCSyg?e=fhGgVV)
 
